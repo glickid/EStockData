@@ -1,0 +1,12 @@
+* {
+    margin : 0;
+    box-sizing:  border-box;
+}
+
+#the-nav-bar {
+    background-color: rgb(246, 174, 144);
+}
+
+#the-container {
+    background-color: rgb(68,114,196)
+}
