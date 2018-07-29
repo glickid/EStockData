@@ -1,10 +1,15 @@
 
-app.factory('dataSrv', function ($http, $q, $log, $timeout, $interval, configSrv) {
+app.factory('dataSrv', function ($http, $q, $log, $timeout, $localStorage, configSrv) {
 
     var currencyObject = {};
     // var currencyIndex = 0;
     var premises = [];
     var Ndxinfo = {};
+
+    if (typeof $localStorage.currencyObject !== "undefined")
+    {
+        currencyObject = $localStorage.currencyObject;
+    }
 
     function getRTperformance() {
         var key = configSrv.getStockInfoApiKey()
@@ -82,6 +87,7 @@ app.factory('dataSrv', function ($http, $q, $log, $timeout, $interval, configSrv
         }
 
         $q.all(premises).then(function (response) {
+            $localStorage.currencyObject = currencyObject;
             async.resolve(currencyObject);
         }, function (error) {
             $log.log(error);

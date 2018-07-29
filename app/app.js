@@ -1,4 +1,4 @@
-var app = angular.module("StockDataApp", ["ngRoute"]);
+var app = angular.module("StockDataApp", ["ngRoute", "ngStorage"]);
 
 app.config(function($routeProvider) {
     $routeProvider
