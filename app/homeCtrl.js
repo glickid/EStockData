@@ -1,16 +1,56 @@
-app.controller('homeCtrl', function ($scope, $log) {
+app.controller('homeCtrl', function ($scope, $timeout, dataSrv, configSrv) {
     var d = new Date();
-    
+    $scope.currencyObj = {};
+    $scope.RTPUpdated = "";
+    $scope.RTPObject = {};
+    $scope.quantity = 3;
+    $scope.NDXinfo = {};
+
     $scope.updated = (
         ("00" + d.getDate()).slice(-2) + "/" +
-        ("00" + (d.getMonth() + 1)).slice(-2) +  " " +
-        ("00" + d.getHours()).slice(-2) + ":" + 
-        ("00" + d.getMinutes()).slice(-2) + ":" + 
+        ("00" + (d.getMonth() + 1)).slice(-2) + " " +
+        ("00" + d.getHours()).slice(-2) + ":" +
+        ("00" + d.getMinutes()).slice(-2) + ":" +
         ("00" + d.getSeconds()).slice(-2));
 
+    getRTPerformance();
+    getNDXinfo();
+    getCurrencies();
+    
 
-    // function getRTPerformance ()
-    // {
-    //     dataSrv.getRTperformance()
-    // }
+    // $interval(getCurrencies, 2000);
+
+    function getRTPerformance() {
+        dataSrv.getRTperformance().then(function (reply) {
+            $scope.RTPUpdated = reply["updated"];
+            $scope.RTPObject = reply["data"];
+        }, function (err) {
+            console.log(err);
+        })
+    }
+
+    function getCurrency(C1, C2) {
+        dataSrv.getCurrencyValue(C1, C2).then(function (reply) {
+            $scope.currencyObj = reply;
+        }, function (err) {
+            console.log(err);
+        })
+    }
+
+    function getCurrencies() {
+        dataSrv.getCurrencies().then(function (reply) {
+            $scope.currencyObj = reply;
+        }, function (err) {
+            console.log(err);
+        });
+    }
+
+    function getNDXinfo()
+    {
+        dataSrv.getNDX().then(function(reply){
+            $scope.NDXinfo = reply;
+        }, function(err){
+            console.log(err)
+        })
+    }
 });

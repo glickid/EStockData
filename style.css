@@ -10,3 +10,15 @@
 #the-container {
     background-color: rgb(68,114,196)
 }
+
+#QDays {
+    width: 50px;
+    height: 20px;
+}
+
+@media only screen and (max-width: 600px) {
+    #register-btn {
+        position: relative;
+        bottom: 30px;
+    }
+}
