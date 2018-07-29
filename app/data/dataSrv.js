@@ -70,7 +70,6 @@ app.factory('dataSrv', function ($http, $q, $log, $timeout, $interval, configSrv
     }
 
     function getCurrencies() {
-        var premises = [];
         var async = $q.defer();
         var currArr = configSrv.getCurrencyArr();
         var C1 = currArr[0];
@@ -78,14 +77,8 @@ app.factory('dataSrv', function ($http, $q, $log, $timeout, $interval, configSrv
 
         for (var i = 1; i < currArr.length; i++) {
             C2 = currArr[i];
-            premises.push(
                 $timeout(getCurrencyValue.bind(null, C1, C2),
                     (30000 + (15000 * (i - 1))))
-                // $interval(getCurrencyValue(currArr[0], currArr[i]), //(1150+(1150*i)));
-            );
-            // $timeout(function(){
-            //     $log.log(currArr[i]);
-            // }, 2000)
         }
 
         $q.all(premises).then(function (response) {
@@ -95,9 +88,7 @@ app.factory('dataSrv', function ($http, $q, $log, $timeout, $interval, configSrv
             async.reject("failed to currency values")
         });
 
-        // //return(premises[premises.length-1].promise);
-        return (async.promise);
-        return;
+        return (async.promise); 
     }
 
     function getNDX() {
@@ -107,6 +98,7 @@ app.factory('dataSrv', function ($http, $q, $log, $timeout, $interval, configSrv
 
         var async = $q.defer();
 
+        // DEBUG:
         // var time = new Date().getSeconds();
         // $log.log(time);
 

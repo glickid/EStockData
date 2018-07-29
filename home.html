@@ -1,7 +1,7 @@
 <div class="container">
     <div class="row">
-        <div class="col-md-3 col-sm-6" style="background-color: black">
-            <div class="container bg-success text-light">
+        <div class="col-md-3 col-sm-6 mt-1 mb-1" style="background-color: black">
+            <div class="container bg-info text-light mt-1">
                 <small><u>Real-Time US-Sector performance</u></small><br/>
                 <small>last updated: {{RTPUpdated}}</small>
                 <div ng-repeat="(key,val) in RTPObject">
@@ -28,8 +28,8 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-3 col-sm-12" style="background-color: black">
-            <div class="container bg-warning text-light">
+        <div class="col-md-3 col-sm-12 mt-1 mb-1" style="background-color: black">
+            <div class="container bg-info text-light mt-1">
                 <h3><u>Nasdaq 100 Index</u></h3>
                 <div class="">
                   <label for="QDays">Last days to show:</label>
@@ -39,7 +39,7 @@
                 <div ng-repeat="(key1, val1) in NDXinfo | objLimitTo:quantity">
                     <small><u>{{key1}}</u></small>
                     <div ng-class="{'mb-3':$last}" ng-repeat="(key2, val2) in val1">
-                        <small>{{key2}}: {{val2}}</small>
+                        <small>{{key2}}: <span class="float-right">{{val2}}</span></small>
                     </div>
                 </div>
             </div>
