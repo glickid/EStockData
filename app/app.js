@@ -6,10 +6,10 @@ app.config(function($routeProvider) {
       templateUrl : 'home.html',
       controller : 'homeCtrl'
     })
-    .when('/login', {
-        templateUrl : 'App/user/login.html',
-        controller : 'userCtrl'
-    })
+    // .when('/login', {
+    //     templateUrl : 'App/user/login.html',
+    //     controller : 'userCtrl'
+    // })
     .when('/signin', {
         templateUrl : 'App/user/signin.html',
         controller : 'userCtrl'

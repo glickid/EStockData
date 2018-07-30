@@ -1,0 +1,18 @@
+{
+    "users": [
+        {
+            "id": 1,
+            "fname": "yossi",
+            "lname": "G.",
+            "email": "yossi@yossi.com",
+            "password": "123"
+        },
+        {
+            "id": 2,
+            "fname": "John",
+            "lname": "Doe",
+            "email": "john@john.com",
+            "password": "123"
+        }
+    ]
+}
