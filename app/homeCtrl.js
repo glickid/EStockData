@@ -1,4 +1,4 @@
-app.controller('homeCtrl', function ($scope, $timeout, dataSrv, configSrv) {
+app.controller('homeCtrl', function ($scope, $timeout, dataSrv, configSrv, userSrv) {
     var d = new Date();
     $scope.currencyObj = {};
     $scope.RTPUpdated = "";
@@ -19,7 +19,12 @@ app.controller('homeCtrl', function ($scope, $timeout, dataSrv, configSrv) {
     
 
     // $interval(getCurrencies, 2000);
+    $scope.isUserLoggedIn = function() {
+        return userSrv.isLoggedIn();
+    }
 
+    $scope.activerUser = userSrv.getActiveUser();
+    
     function getRTPerformance() {
         dataSrv.getRTperformance().then(function (reply) {
             $scope.RTPUpdated = reply["updated"];

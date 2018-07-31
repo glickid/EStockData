@@ -2,50 +2,80 @@
     <div class="row">
         <div class="col-md-3 col-sm-6 mt-1 mb-1" style="background-color: black">
             <div class="container bg-info text-light mt-1">
-                <small><u>Real-Time US-Sector performance</u></small><br/>
+                <small>
+                    <u>Real-Time US-Sector performance</u>
+                </small>
+                <br/>
                 <small>last updated: {{RTPUpdated}}</small>
                 <div ng-repeat="(key,val) in RTPObject">
-                    <small>{{key}}: <span class="float-right">{{val}}</span></small>
+                    <small>{{key}}:
+                        <span class="float-right">{{val}}</span>
+                    </small>
                 </div>
             </div>
             <div class="container bg-info text-light mt-2">
-                <small><u>Major Currencies (value in USD)</u></small><br/>
+                <small>
+                    <u>Major Currencies (value in USD)</u>
+                </small>
+                <br/>
                 <div ng-repeat="(key,val) in currencyObj">
-                    <small class="mt-2">{{key}}: <span class="float-right">{{val}}</span></small>
+                    <small class="mt-2">{{key}}:
+                        <span class="float-right">{{val}}</span>
+                    </small>
                 </div>
             </div>
         </div>
         <div class="col-md-6 col-sm-6">
-            <div class="jumbotron jumbotron-fluid mt-5">
+            <div class="jumbotron jumbotron-fluid mt-5" ng-hide="isUserLoggedIn()">
                 <div class="container">
                     <img id="main-icon" class="d-inline-block" src="assests/1477521928_10_icon-icons.com_74620.png" alt="" width="50px">
                     <h1 class="d-inline-block display-4">EStockData</h1>
                     <p class="lead">Welcome to the EStockData website</p>
                     <hr class="my-2">
                     <p>As a registered user you would be able to:
-                        <ul>        
+                        <ul>
                             <li>Manage a virtaul stock-portfolio</li>
                             <li>See detailed stock-charts</li>
                             <li>See crypto currencies</li>
-                        </ul> 
-                    <div class="lead mt-2 float-right">
-                        <a id="register-btn" class="btn btn-primary btn-lg" href="" role="button" data-toggle="modal" data-target="#SignInModal">Register Now!</a>
-                    </div>
+                        </ul>
+                        <div class="lead mt-2 float-right">
+                            <a id="register-btn" class="btn btn-primary btn-lg" href="" role="button" data-toggle="modal" data-target="#SignInModal">Register Now!</a>
+                        </div>
+                </div>
+            </div>
+            <div ng-show="isUserLoggedIn()" class="container bg-light mt-5">
+                <h1 class="display-5">Welcome {{activerUser.fname}}</h1>
+                <div class="lead mt-2">
+                    <a class="btn btn-primary btn-lg action-btn" href="" role="button">
+                        Manage my virtaul stock-portfolio</a>
+                </div>
+                <div class="lead mt-2">
+                    <a class="btn btn-primary btn-lg action-btn" href="" role="button">
+                        See detailed stock-charts</a>
+                </div>
+                <div class="lead mt-2 pb-4">
+                    <a class="btn btn-primary btn-lg action-btn" href="" role="button">
+                        See crypto currencies</a>
                 </div>
             </div>
         </div>
         <div class="col-md-3 col-sm-12 mt-1 mb-1" style="background-color: black">
             <div class="container bg-info text-light mt-1">
-                <h3><u>Nasdaq 100 Index</u></h3>
+                <h3>
+                    <u>Nasdaq 100 Index</u>
+                </h3>
                 <div class="">
-                  <label for="QDays">Last days to show:</label>
-                  <input type="number"
-                     name="QDays" id="QDays" ng-model="quantity">
+                    <label for="QDays">Last days to show:</label>
+                    <input type="number" name="QDays" id="QDays" ng-model="quantity">
                 </div>
                 <div ng-repeat="(key1, val1) in NDXinfo | objLimitTo:quantity">
-                    <small><u>{{key1}}</u></small>
+                    <small>
+                        <u>{{key1}}</u>
+                    </small>
                     <div ng-class="{'mb-3':$last}" ng-repeat="(key2, val2) in val1">
-                        <small>{{key2}}: <span class="float-right">{{val2}}</span></small>
+                        <small>{{key2}}:
+                            <span class="float-right">{{val2}}</span>
+                        </small>
                     </div>
                 </div>
             </div>

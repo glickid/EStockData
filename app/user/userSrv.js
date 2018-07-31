@@ -1,6 +1,7 @@
 app.factory('userSrv', function ($http, $q) {
 
-    var activeUser = null;//new User({fname:"Nir", lname:"Channes", id:"1", email:"nir@nir.com"});//null;
+    //var activeUser = null;//
+     var activeUser = null; //new User({fname:"Yossi", lname:"G.", id:"1", email:"yossi@yossi.com"});
 
     function User(plainUser) {
         this.fname = plainUser.fname;
@@ -48,11 +49,27 @@ app.factory('userSrv', function ($http, $q) {
         return activeUser;
     }
 
+    function createNewUser (newUser) {
+        activeUser = new User(newUser);
+
+        // var async = $q.defer();
+
+        //var loginURL = "app/db.json/users?email=" + email + "&password=" + password;
+        // var loginURL = "app/db.json/users";
+        // $http.post(activeUser).then(function (response) {
+        //     async.resolve(activeUser);
+        // }, function (err) {
+        //     async.reject(err);
+        // });
+
+        // return async.promise;
+    }
     return {
         login: login,
         isLoggedIn: isLoggedIn,
         logout: logout,
-        getActiveUser: getActiveUser
+        getActiveUser: getActiveUser,
+        createNewUser : createNewUser
     }
 
 

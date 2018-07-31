@@ -1,0 +1,89 @@
+<div id="signup-container" class="container">
+    <div class="row main">
+        <div class="main-login main-center">
+                <img id="main-icon" class="d-inline-block" src="assests/1477521928_10_icon-icons.com_74620.png" alt="" width="50px">
+                <h1 class="d-inline-block display-4">EStockData</h1>
+                <p class="lead">Please Register </p>
+                
+            <form class="" method="post" action="#">
+
+                <div class="form-group">
+                    <label for="name" class="cols-sm-2 control-label">First Name</label>
+                    <div class="cols-sm-10">
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                <i class="fa fa-user fa" aria-hidden="true"></i>
+                             <!-- <i class="far fa-user"></i> -->
+                            </span>
+                            <input type="text" class="form-control signup-input" name="name" id="fname" 
+                            placeholder="Enter your first Name" ng-model="fname"/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                        <label for="name" class="cols-sm-2 control-label">Last Name</label>
+                        <div class="cols-sm-10">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fa fa-user fa" aria-hidden="true"></i>
+                                 <!-- <i class="far fa-user"></i> -->
+                                </span>
+                                <input type="text" class="form-control signup-input" name="name" id="lname" 
+                                placeholder="Enter your last Name" ng-model="lname" />
+                            </div>
+                        </div>
+                    </div>
+
+                <div class="form-group">
+                    <label for="email" class="cols-sm-2 control-label">Your Email</label>
+                    <div class="cols-sm-10">
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                <i class="fa fa-envelope fa"></i>
+                            </span>
+                            <input type="text" class="form-control signup-input" name="email" id="email" 
+                            placeholder="Enter your Email" ng-model="email"/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password" class="cols-sm-2 control-label">Password</label>
+                    <div class="cols-sm-10">
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                <i class="fa fa-lock fa-lg" aria-hidden="true"></i>
+                            </span>
+                            <input type="password" class="form-control signup-input" name="password" 
+                            id="password" placeholder="Enter your Password" ng-model="password"/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirm" class="cols-sm-2 control-label">Confirm Password</label>
+                    <div class="cols-sm-10">
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                <i class="fa fa-lock fa-lg" aria-hidden="true"></i>
+                            </span>
+                            <input type="password" class="form-control signup-input" name="confirm" id="confirm" placeholder="Confirm your Password" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group ">
+                    <a href="javascript:void(0)" type="button" id="button"
+                     class="btn btn-primary btn-lg btn-block login-button" ng-click="signup()">Register</a>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> -->
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<!-- <script src="js/bootstrap.min.js"></script> -->
