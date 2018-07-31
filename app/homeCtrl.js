@@ -24,7 +24,7 @@ app.controller('homeCtrl', function ($scope, $timeout, dataSrv, configSrv, userS
     }
 
     $scope.activerUser = userSrv.getActiveUser();
-    
+
     function getRTPerformance() {
         dataSrv.getRTperformance().then(function (reply) {
             $scope.RTPUpdated = reply["updated"];
@@ -57,5 +57,10 @@ app.controller('homeCtrl', function ($scope, $timeout, dataSrv, configSrv, userS
         }, function(err){
             console.log(err)
         })
+    }
+
+    $scope.managePortfolio = function()
+    {
+        $location.path("#!/portfolio");
     }
 });

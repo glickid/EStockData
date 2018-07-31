@@ -14,6 +14,10 @@ app.config(function($routeProvider) {
         templateUrl : 'App/user/signup.html',
         controller : 'userCtrl'
     })
+    .when('/portfolio', {
+        templateUrl : 'App/portfolio/portfolio.html',
+        controller : 'portfolioCtrl'
+    })
     // .when('/movies/:movieID', {
     //     templateUrl : 'App/Movies/movieDetails.html',
     //     controller : 'movieDetailsCtrl'
