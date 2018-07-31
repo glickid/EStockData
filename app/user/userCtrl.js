@@ -5,13 +5,12 @@ app.controller('userCtrl', function ($scope, $log, $location, userSrv) {
     $scope.password = "";
     $scope.fname = "";
     $scope.lname = ""
-    
+
     $scope.invalidLogin = false;
     $scope.errorMessage = "";
 
-    $scope.signup = function ()
-    {
-        var newUser = { "fname": $scope.fname, "lname": $scope.lname, "email": $scope.email, "password":$scope.password}
+    $scope.signup = function () {
+        var newUser = { "fname": $scope.fname, "lname": $scope.lname, "email": $scope.email, "password": $scope.password }
         userSrv.createNewUser(newUser);
         $location.path("#!/");
     }
@@ -25,5 +24,13 @@ app.controller('userCtrl', function ($scope, $log, $location, userSrv) {
             $scope.invalidLogin = true;
             $scope.errorMessage = "Invalid Username or password!";
         })
+    }
+
+    $scope.resetModal = function () {
+        $scope.email = "";
+        $scope.password = "";
+        $scope.errorMessage = "";
+        $scope.invalidLogin = false;
+        // $('#SignInModal').modal('hide');
     }
 })
