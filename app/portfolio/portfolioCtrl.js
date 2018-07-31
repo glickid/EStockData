@@ -1,6 +1,6 @@
 app.controller('portfolioCtrl', function ($scope, $location, dataSrv, configSrv, userSrv, portfolioSrv) {
 
-    $scope.stockArr= [];
+    $scope.stockArr = [];
 
     // $scope.stockArr = loadUserPortfolio()
 
@@ -11,23 +11,36 @@ app.controller('portfolioCtrl', function ($scope, $location, dataSrv, configSrv,
 
     $scope.searchStock = function (searchStr) {
         if (searchStr.length > 2) {
-            portfolioSrv.searchStock(searchStr).then(function (response) {
+            dataSrv.searchStock(searchStr).then(function (response) {
                 $scope.stockList = response;
-            }, function (err) {;
+            }, function (err) {
                 console.log(err);
                 $scope.stockList = "";
             })
         }
     }
 
-    $scope.addStockToPortfolio = function(stockSymbol) {
-        $scope.stockArr.push({"Name":"apple","Symbol":"APP","dayProfit":"2%","overallProfit":"3%",
-        "purchasePrice":200,"currentPrice":300,"dayVolume":232323});
+    $scope.addStockToPortfolio = function (stockName, stockSymbol) {
+
+        dataSrv.getStockInfo(stockSymbol).then(function (response) {
+            portfolioSrv.addStockToPortfolio(stockName, stockSymbol, response).then(function (response1) {
+                $scope.stockArr.push({
+                    "Name": response1.name, "Symbol": response1.symbol, 
+                    "dayChange": response1.dayChange(), "overallProfit": response1.overallProfit(),
+                    "purchasePrice": response1.pprice, "currentPrice": response1.cprice, 
+                    "dayVolume": response1.dvolume});   
+            }, function (err) {
+                console.log(err);
+            });
+        }, function (err) {
+            console.log(err);
+        });
+
         $scope.stockList = "";
     }
 
-    $scope.removeStock = function(stock) {
+    $scope.removeStock = function (stock) {
         var index = $scope.stockArr.indexOf(stock);
-        $scope.stockArr.splice(index,1);
+        $scope.stockArr.splice(index, 1);
     }
 });

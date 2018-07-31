@@ -151,7 +151,10 @@ span.input-group-addon i {
     z-index: 2;
     width: 100%;
   }
-  
+
+.portfolio-container {
+    height:100%;
+}
 @media only screen and (max-width: 600px) {
     #register-btn {
         position: relative;

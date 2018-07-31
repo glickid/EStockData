@@ -124,7 +124,66 @@ app.factory('dataSrv', function ($http, $q, $log, $timeout, $localStorage, confi
         return async.promise;
     }
 
+    function getStockInfo(symbol) {
+        var key = configSrv.getStockInfoApiKey();
+        var theUrl = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=" + symbol + "&outputsize=compact&apikey=" + key;
+        var async = $q.defer();
+        var retObj = {}
+        $http.get(theUrl).then(function (response) {
+            $log.log(response);
+
+            if (response.data.hasOwnProperty("Time Series (Daily)")) {
+                infoObj = response.data["Time Series (Daily)"];
+
+                var first = infoObj[Object.keys(infoObj)[0]];
+
+                retObj["currentPrice"] = first["4. close"];
+                retObj["openPrice"] = first["1. open"];
+                retObj["dayVolume"] = first["5. volume"];
+            }
+            async.resolve(retObj);
+        }, function (err) {
+            $log.error(err);
+            async.reject("failed to get NDX info");
+        })
+
+        premises.push(async.promise);
+        return async.promise;
+    }
+
+    function searchStock (searchStr){
+        var async = $q.defer();
+        var stockList = {};
+        //var loginURL = "app/db.json/users?email=" + email + "&password=" + password;
+        var loginURL = "app/db.json";
+        $http.get(loginURL).then(function (response) {
+            var stocksArr = response.data.Stocks;
+            var lowerName = "";
+            var lowerSym = "";
+            var lowerStr = searchStr.toLowerCase();
+
+            for (var i =0; i<stocksArr.length; i++)
+            {
+                lowerName = stocksArr[i].Name.toLowerCase();
+                lowerSym = stocksArr[i].Symbol.toLowerCase();
+                
+                if (( lowerName.includes(lowerStr)) || 
+                    ( lowerSym.includes(lowerStr)))
+                {
+                    stockList[stocksArr[i].Name] = stocksArr[i].Symbol;
+                }
+            }
+            async.resolve(stockList);
+        }, function (err) {
+            async.reject(err);
+        });
+
+        return async.promise;
+    }
+
     return {
+        searchStock : searchStock,
+        getStockInfo : getStockInfo,
         getRTperformance: getRTperformance,
         getCurrencies: getCurrencies,
         getCurrencyValue: getCurrencyValue,

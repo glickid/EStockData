@@ -1,36 +1,36 @@
 app.factory('portfolioSrv', function ($http, $q) {
 
-    function searchStock (searchStr){
-        var async = $q.defer();
-        var stockList = {};
-        //var loginURL = "app/db.json/users?email=" + email + "&password=" + password;
-        var loginURL = "app/db.json";
-        $http.get(loginURL).then(function (response) {
-            var stocksArr = response.data.Stocks;
-            var lowerName = "";
-            var lowerSym = "";
-            var lowerStr = searchStr.toLowerCase();
+    function Stock (name, symbol, purchasePrice, CurrentPrice, dayVolume, dayOpen){
+        this.name = name;
+        this.symbol = symbol; 
+        this.pprice = purchasePrice;
+        this.cprice = CurrentPrice;
+        this.dvolume = dayVolume;
+        this.dopen = dayOpen;
+        this.dayChange = function(){
+            var num = (((this.cprice-this.dopen)/this.dopen)*100);
+            return num.toFixed(2) + "%";
+        }
+        this.overallProfit= function(){
+           var num = (((this.cprice-this.pprice)/this.pprice)*100);
+           return num.toFixed(2) + "%";
+        }
+    }
+    
 
-            for (var i =0; i<stocksArr.length; i++)
-            {
-                lowerName = stocksArr[i].Name.toLowerCase();
-                lowerSym = stocksArr[i].Symbol.toLowerCase();
-                
-                if (( lowerName.includes(lowerStr)) || 
-                    ( lowerSym.includes(lowerStr)))
-                {
-                    stockList[stocksArr[i].Name] = stocksArr[i].Symbol;
-                }
-            }
-            async.resolve(stockList);
-        }, function (err) {
-            async.reject(err);
-        });
+    function addStockToPortfolio (stockName, stockSymbol, infoObj) {
+
+        var async = $q.defer();
+
+        var stock = new Stock(stockName, stockSymbol, infoObj["currentPrice"], infoObj["currentPrice"],
+                    infoObj["dayVolume"], infoObj["openPrice"]);
+        //TODO : post stock to user portfolio in DB
+        async.resolve(stock);
 
         return async.promise;
     }
 
-    return { 
-        searchStock: searchStock
+    return {
+        addStockToPortfolio : addStockToPortfolio
     }
 })
