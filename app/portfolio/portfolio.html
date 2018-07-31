@@ -1,11 +1,36 @@
 <div class="container">
-{{stock}}
     <form class="search-box my-2">
         <input type="text" class="bg-info text-dark form-control" placeholder="Search Stock" ng-model="input" ng-change="searchStock(input)">
         <div class="search-results list-group">
-            <a href="javascript:void(0)" class="list-group-item list-group-item-action" ng-repeat="(key, value) in stockList" 
-            ng-click="">{{key}} (Symbol: {{value}})</a>
+            <a href="javascript:void(0)" class="list-group-item list-group-item-action" ng-repeat="(key, value) in stockList" ng-click="addStockToPortfolio(value)">{{key}} (Symbol: {{value}})</a>
         </div>
     </form>
-
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Stock Name</th>
+                    <th>Symbol</th>
+                    <th>Today's Profit/Loss</th>
+                    <th>Overall Profit/Loss</th>
+                    <th>Purchase Price</th>
+                    <th>Current Price</th>
+                    <th>Today's Volume</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="stock in stockArr">
+                    <td>{{stock.Name}}</td>
+                    <td>{{stock.Symbol}}</td>
+                    <td>{{stock.dayProfit}}</td>
+                    <td>{{stock.overallProfit}}</td>
+                    <td>{{stock.purchasePrice}}</td>
+                    <td>{{stock.currentPrice}}</td>
+                    <td>{{stock.dayVolume}}</td>
+                    <td><button type="button" class="btn btn-danger" ng-click="removeStock(stock)">DELETE</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
