@@ -3,14 +3,13 @@ app.controller('userCtrl', function ($scope, $log, $location, userSrv) {
 
     resetScopeInfo();
 
-    function resetScopeInfo ()
-    {
-    $scope.email = "";
-    $scope.password = "";
-    $scope.fname = "";
-    $scope.lname = "";
-    $scope.invalidLogin = false;
-    $scope.errorMessage = "";
+    function resetScopeInfo() {
+        $scope.email = "";
+        $scope.password = "";
+        $scope.fname = "";
+        $scope.lname = "";
+        $scope.invalidLogin = false;
+        $scope.errorMessage = "";
     }
 
     $scope.signup = function () {
