@@ -1,4 +1,4 @@
-app.controller('homeCtrl', function ($scope, $timeout, dataSrv, configSrv, userSrv) {
+app.controller('homeCtrl', function ($scope, $location, dataSrv, configSrv, userSrv) {
     var d = new Date();
     $scope.currencyObj = {};
     $scope.RTPUpdated = "";
