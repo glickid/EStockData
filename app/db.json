@@ -5,14 +5,17 @@
             "fname": "yossi",
             "lname": "G.",
             "email": "yossi@yossi.com",
-            "password": "123"
+            "password": "123",
+            "portfolio": [{"Name":"Alphabet Inc. Class A", "Symbol": "GOOGL", 
+                "purchasePrice": 1225.07, "purchaseDate":"2018-07-31"}]
         },
         {
             "id": 2,
             "fname": "John",
             "lname": "Doe",
             "email": "john@john.com",
-            "password": "123"
+            "password": "123",
+            "portfolio": []
         }
     ],
      "Stocks" : [

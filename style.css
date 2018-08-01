@@ -145,7 +145,6 @@ span.input-group-addon i {
 }
 /* signup */
 
-
 .search-results {
     position: absolute;
     z-index: 2;
@@ -154,6 +153,24 @@ span.input-group-addon i {
 
 .portfolio-container {
     height:100%;
+}
+
+.thead-portfolio {
+    color: rgb(246, 174, 144);
+}
+.portfolio-table > table > tbody > tr > td {
+    word-break:break-all;
+    min-width: 75px;
+    margin-bottom: 50px;
+    height: 100%;
+}
+
+.action-icon {
+    width: 10px;
+}
+
+#actions-td {
+    width: 137px;
 }
 @media only screen and (max-width: 600px) {
     #register-btn {

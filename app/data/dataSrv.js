@@ -124,23 +124,31 @@ app.factory('dataSrv', function ($http, $q, $log, $timeout, $localStorage, confi
         return async.promise;
     }
 
-    function getStockInfo(symbol) {
+    function getStockInfo(name, symbol) {
         var key = configSrv.getStockInfoApiKey();
-        var theUrl = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=" + symbol + "&outputsize=compact&apikey=" + key;
+        // var theUrl = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=" + symbol + "&outputsize=compact&apikey=" + key;
+        var theUrl = "https://api.iextrading.com/1.0/stock/" + symbol + "/chart/1m";
         var async = $q.defer();
         var retObj = {}
         $http.get(theUrl).then(function (response) {
-            $log.log(response);
+            // $log.log(response);
 
-            if (response.data.hasOwnProperty("Time Series (Daily)")) {
-                infoObj = response.data["Time Series (Daily)"];
-
+            // if (response.data.hasOwnProperty("Time Series (Daily)")) {
+                // infoObj = response.data["Time Series (Daily)"];
+                infoObj = response.data;
                 var first = infoObj[Object.keys(infoObj)[0]];
 
-                retObj["currentPrice"] = first["4. close"];
-                retObj["openPrice"] = first["1. open"];
-                retObj["dayVolume"] = first["5. volume"];
-            }
+                // retObj["currentPrice"] = first["4. close"];
+                // retObj["openPrice"] = first["1. open"];
+                // retObj["dayVolume"] = first["5. volume"];
+                retObj["currentPrice"] = first["close"];
+                retObj["openPrice"] = first["open"];
+                retObj["dayVolume"] = first["volume"];
+                retObj["changePercent"] = first["changePercent"];
+                retObj["name"] = name;
+                retObj["symbol"] = symbol;
+
+           // }
             async.resolve(retObj);
         }, function (err) {
             $log.error(err);
