@@ -109,7 +109,7 @@ app.factory('dataSrv', function ($http, $q, $log, $timeout, $localStorage, confi
         // $log.log(time);
 
         $http.get(theUrl).then(function (response) {
-            $log.log(response);
+            // $log.log(response);
 
             if (response.data.hasOwnProperty("Time Series (Daily)")) {
                 Ndxinfo = response.data["Time Series (Daily)"];
@@ -125,7 +125,7 @@ app.factory('dataSrv', function ($http, $q, $log, $timeout, $localStorage, confi
     }
 
     function getStockInfo(name, symbol) {
-        var key = configSrv.getStockInfoApiKey();
+        // var key = configSrv.getStockInfoApiKey();
         // var theUrl = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=" + symbol + "&outputsize=compact&apikey=" + key;
         var theUrl = "https://api.iextrading.com/1.0/stock/" + symbol + "/chart/1m";
         var async = $q.defer();
@@ -136,15 +136,15 @@ app.factory('dataSrv', function ($http, $q, $log, $timeout, $localStorage, confi
             // if (response.data.hasOwnProperty("Time Series (Daily)")) {
                 // infoObj = response.data["Time Series (Daily)"];
                 infoObj = response.data;
-                var first = infoObj[Object.keys(infoObj)[0]];
+                var last = infoObj[Object.keys(infoObj)[Object.keys(infoObj).length - 1]];
 
                 // retObj["currentPrice"] = first["4. close"];
                 // retObj["openPrice"] = first["1. open"];
                 // retObj["dayVolume"] = first["5. volume"];
-                retObj["currentPrice"] = first["close"];
-                retObj["openPrice"] = first["open"];
-                retObj["dayVolume"] = first["volume"];
-                retObj["changePercent"] = first["changePercent"];
+                retObj["currentPrice"] = last["close"];
+                retObj["openPrice"] = last["open"];
+                retObj["dayVolume"] = last["volume"];
+                retObj["changePercent"] = last["changePercent"];
                 retObj["name"] = name;
                 retObj["symbol"] = symbol;
 
@@ -189,9 +189,27 @@ app.factory('dataSrv', function ($http, $q, $log, $timeout, $localStorage, confi
         return async.promise;
     }
 
+    function getStockStats(symbol) {
+        // var key = configSrv.getStockInfoApiKey();
+        var theUrl = "https://api.iextrading.com/1.0//stock/" + symbol + "/stats";
+        var async = $q.defer();
+        // var retObj = {};
+
+        $http.get(theUrl).then(function (response) {
+            async.resolve(response);
+        }, function (err) {
+            $log.error(err);
+            async.reject("failed to get NDX info");
+        })
+
+        premises.push(async.promise);
+        return async.promise;
+    }
+
     return {
         searchStock : searchStock,
         getStockInfo : getStockInfo,
+        getStockStats : getStockStats,
         getRTperformance: getRTperformance,
         getCurrencies: getCurrencies,
         getCurrencyValue: getCurrencyValue,

@@ -165,13 +165,22 @@ span.input-group-addon i {
     height: 100%;
 }
 
-.action-icon {
-    width: 10px;
+.portfolio-table > table  td, .portfolio-table > table  th {
+    padding: .3rem;
 }
+
+/* .action-icon {
+    width: 10px;
+} */
 
 #actions-td {
     width: 137px;
 }
+
+.stock-info-item {
+    line-height: 1em;
+}
+
 @media only screen and (max-width: 600px) {
     #register-btn {
         position: relative;
