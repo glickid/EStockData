@@ -13,7 +13,8 @@ app.controller('userCtrl', function ($scope, $log, $location, userSrv) {
     }
 
     $scope.signup = function () {
-        var newUser = { "fname": $scope.fname, "lname": $scope.lname, "email": $scope.email, "password": $scope.password }
+        var newUser = { "fname": $scope.fname, "lname": $scope.lname, "email": $scope.email, 
+                        "password": $scope.password, "portfolio":[] };
         userSrv.createNewUser(newUser);
         $location.path("#!/");
         resetScopeInfo();
