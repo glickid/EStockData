@@ -8,18 +8,22 @@ app.factory('portfolioSrv', function ($http, $q) {
         this.cprice = CurrentPrice;
         this.dvolume = dayVolume;
         this.dopen = dayOpen;
-        this.dayChange = function () {
-            var num = (((this.cprice - this.dopen) / this.dopen) * 100);
-            return num.toFixed(2);
-        }
-        this.overallProfit = function () {
-            var num = (((this.cprice - this.pprice) / this.pprice) * 100);
-            return num.toFixed(2);
-        }
+        this.dayChange = calcDayChange (this);
+        this.overallProfit = calcOverallProfit(this)
     }
 
     var stockArr = [];
 
+    function calcDayChange (stock) {
+        var num = (((stock.cprice - stock.dopen) / stock.dopen) * 100);
+        return num.toFixed(2);
+    }
+
+    function calcOverallProfit(stock) {
+        var num = (((stock.cprice - stock.pprice) / stock.pprice) * 100);
+        return num.toFixed(2);
+    }
+    
     function buildStockPortfolio(obj, infoObj) {
         var async = $q.defer();
 
@@ -27,7 +31,7 @@ app.factory('portfolioSrv', function ($http, $q) {
             infoObj["currentPrice"], infoObj["dayVolume"], infoObj["openPrice"]);
         stockArr.push(stock);
         //TODO : post stock to user portfolio in DB
-        async.resolve(stock);
+        async.resolve(stockArr);
 
         return async.promise;
     }
@@ -52,11 +56,28 @@ app.factory('portfolioSrv', function ($http, $q) {
             infoObj["dayVolume"], infoObj["openPrice"]);
         stockArr.push(stock);
         //TODO : post stock to user portfolio in DB
-        async.resolve(stock);
+        async.resolve(stockArr);
 
         return async.promise;
     }
 
+    function removeStockFromPortfolio(stockName, stockSymbol) {
+        var async = $q.defer();
+
+        for(var i=0; i< stockArr.length; i++)
+        {
+            if (stockArr[i].symbol === stockSymbol)
+            {
+                stockArr.splice(i, 1);
+                break;
+            }
+        }
+        //todo: update stock array to user in DB
+        async.resolve(stockArr);
+
+        return async.promise;
+    };
+    
     function updateStockInPortfolio(stockName, stockSymbol, infoObj) {
         var async = $q.defer();
         var i=0;
@@ -70,7 +91,7 @@ app.factory('portfolioSrv', function ($http, $q) {
         }
         //TODO : post stock to user portfolio in DB
         if (i<stockArr.length)
-            async.resolve(stockArr[i]);
+            async.resolve(stockArr);
         else
             async.reject("stock not found in array");
 
@@ -80,6 +101,7 @@ app.factory('portfolioSrv', function ($http, $q) {
     return {
         updateStockInPortfolio : updateStockInPortfolio,
         buildStockPortfolio: buildStockPortfolio,
-        addStockToPortfolio: addStockToPortfolio
+        addStockToPortfolio: addStockToPortfolio,
+        removeStockFromPortfolio : removeStockFromPortfolio
     }
 })

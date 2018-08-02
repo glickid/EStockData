@@ -61,7 +61,7 @@ app.controller('homeCtrl', function ($scope, $location, dataSrv, configSrv, user
 
     $scope.managePortfolio = function()
     {
-        $location.path("#!/portfolio");
-        // $scope.$apply();
+        $location.path("/portfolio");
+        // resetScopeInfo();
     }
 });
