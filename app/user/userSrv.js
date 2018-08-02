@@ -3,7 +3,7 @@ app.factory('userSrv', function ($http, $q) {
     //var activeUser = null;//
      var activeUser = new User({fname:"Yossi", lname:"G.", id:"1", email:"yossi@yossi.com",
      "portfolio": [{"Name":"Alphabet Inc. Class A", "Symbol": "GOOGL", 
-     "purchasePrice": 1225.07, "purchaseDate":"2018-07-31"}]});
+     "purchasePrice": 1225.07, "purchaseDate":"2018-07-31", "alerts": [{"alertId": 1}] }] });
 
     function User(plainUser) {
         this.fname = plainUser.fname;

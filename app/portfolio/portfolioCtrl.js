@@ -1,8 +1,6 @@
-app.controller('portfolioCtrl', function ($scope, $location, dataSrv, configSrv, userSrv, portfolioSrv) {
+app.controller('portfolioCtrl', function ($scope, $location, dataSrv, alertsSrv, userSrv, portfolioSrv) {
 
     $scope.stockArr = [];
-
-    // $scope.stockArr = loadUserPortfolio()
 
     var activerUser = userSrv.getActiveUser();
     if (activerUser === null) {
@@ -10,49 +8,34 @@ app.controller('portfolioCtrl', function ($scope, $location, dataSrv, configSrv,
     }
 
     var userPortfolio = activerUser["portfolio"];
-    // if (userPortfolio.length !=0)
-    // {
 
     for (var i = 0; i < userPortfolio.length; i++) {
-        dataSrv.getStockInfo(userPortfolio[i]["Name"], userPortfolio[i]["Symbol"]).then(function (response) {
-            var obj = userPortfolio.find(x => x.Symbol === response.symbol)
-            portfolioSrv.buildStockPortfolio(obj, response)
-                .then(function (response1) {
-                    $scope.stockArr = response1;
-                    // var obj = userPortfolio.find(x => x.Symbol === response1.symbol);
-                    // if (obj) {
-                    //     $scope.stockArr.push({
-                    //         "Name": response1.name, "Symbol": response1.symbol,
-                    //         "dayChange": response1.dayChange(), "overallProfit": response1.overallProfit(),
-                    //         "purchasePrice": obj["purchasePrice"],
-                    //         "purchaseDate": obj["purchaseDate"],
-                    //         "currentPrice": response1.cprice,
-                    //         "dayVolume": response1.dvolume
-                    //     });
-                    // }
-                }, function (err) {
-                    console.log(err);
-                });
+        dataSrv.getStockInfo(userPortfolio[i]["Name"], userPortfolio[i]["Symbol"], userPortfolio[i])
+            .then(function (response) {
+                //var obj = userPortfolio.find(x => x.Symbol === response.symbol)
 
-        }, function (err) {
-            console.log(err);
-        })
+                portfolioSrv.buildStockPortfolio(response["returnedParam"], response)
+                    .then(function (response1) {
+                        $scope.stockArr = response1;
+                    }, function (err) {
+                        console.log(err);
+                    });
+            }, function (err) {
+                console.log(err);
+            })
     }
+
+    alertsSrv.loadAlerts().then(function (response) {
+        //do_nothing
+    }, function (err) {
+        console.log(err);
+    });
 
     $scope.refreshStock = function (stock) {
         dataSrv.getStockInfo(stock.name, stock.symbol).then(function (response) {
             portfolioSrv.updateStockInPortfolio(stock.name, stock.symbol, response)
                 .then(function (response1) {
                     $scope.stockArr = response1;
-                    // for (var index = 0; index < $scope.stockArr.length; index++) {
-                    //     if ($scope.stockArr[index]["Symbol"] === response1.symbol) {
-                    //         $scope.stockArr[index]["currentPrice"] = response1.cprice;
-                    //         $scope.stockArr[index]["dayVolume"] = response1.dvolume;
-                    //         $scope.stockArr[index]["dayChange"] = response1.dayChange();
-                    //         $scope.stockArr[index]["overallProfit"] = response1.overallProfit();
-                    //         break;
-                    //     }
-                    // }
                 }, function (err) {
                     console.log(err);
                 });
@@ -156,7 +139,39 @@ app.controller('portfolioCtrl', function ($scope, $location, dataSrv, configSrv,
         });
     }
 
-    $scope.setStockAlert = function (stock) {
+    $scope.alertPrice = 0;
+    $scope.alertType = "";
+
+    $scope.setAlertInfo = function (stock) {
+        $scope.alertStock = stock.name;
+        $scope.alertSymbol = stock.symbol;
+    }
+
+    $scope.resetAlertModal = function () {
+        $scope.alertStock = "";
+        $scope.alertSymbol = "";
+        $scope.alertPrice = 0;
+        $scope.alertType = "";
+    }
+
+    $scope.setStockAlert = function () {
+        alertsSrv.setNewAlert(activerUser["id"], $scope.alertType, $scope.alertSymbol, $scope.alertPrice)
+            .then(function (response) {
+                portfolioSrv.addAlertToStock($scope.alertSymbol, response.id)
+                .then(function (response) {
+                    $scope.stockArr = response;
+                    $('#stockAlertModal').modal('hide');
+                    $scope.resetAlertModal();
+                }, function (err) {
+                    console.log(err);
+                    $('#stockAlertModal').modal('hide');
+                    $scope.resetAlertModal();
+                });
+            }, function (err) {
+                console.log(err);
+                $('#stockAlertModal').modal('hide');
+                $scope.resetAlertModal();
+            });
 
     }
 });

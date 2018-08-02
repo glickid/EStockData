@@ -1,6 +1,6 @@
 app.factory('portfolioSrv', function ($http, $q) {
 
-    function Stock(name, symbol, purchasePrice, purchaseDate, CurrentPrice, dayVolume, dayOpen) {
+    function Stock(name, symbol, purchasePrice, purchaseDate, CurrentPrice, dayVolume, dayOpen, alerts) {
         this.name = name;
         this.symbol = symbol;
         this.pprice = purchasePrice;
@@ -8,13 +8,14 @@ app.factory('portfolioSrv', function ($http, $q) {
         this.cprice = CurrentPrice;
         this.dvolume = dayVolume;
         this.dopen = dayOpen;
-        this.dayChange = calcDayChange (this);
+        this.dayChange = calcDayChange(this);
         this.overallProfit = calcOverallProfit(this)
+        this.alertsArr = alerts;
     }
 
     var stockArr = [];
 
-    function calcDayChange (stock) {
+    function calcDayChange(stock) {
         var num = (((stock.cprice - stock.dopen) / stock.dopen) * 100);
         return num.toFixed(2);
     }
@@ -23,13 +24,31 @@ app.factory('portfolioSrv', function ($http, $q) {
         var num = (((stock.cprice - stock.pprice) / stock.pprice) * 100);
         return num.toFixed(2);
     }
-    
+ 
     function buildStockPortfolio(obj, infoObj) {
         var async = $q.defer();
 
-        var stock = new Stock(obj["Name"], obj["Symbol"], obj["purchasePrice"], obj["purchaseDate"],
-            infoObj["currentPrice"], infoObj["dayVolume"], infoObj["openPrice"]);
-        stockArr.push(stock);
+        var updated = false;
+        for (var i = 0; i < stockArr.length; i++) {
+            if (stockArr[i].symbol === infoObj["symbol"]) {
+                stockArr[i].cprice = infoObj["currentPrice"];
+                stockArr[i].dvolume = infoObj["dayVolume"];
+                stockArr[i].dayOpen = infoObj["openPrice"];
+                // for (var j=0; j< obj.alerts.legth; j++)
+                // {
+                    // stockArr[i].alerts = alertsSrv.getAlertInfo(obj.alerts[j].alertId);
+                // }
+                stockArr[i].alerts = obj.alerts;
+                updated = true;
+                break;
+            }
+        }
+        if (!updated) //need to add
+        {
+            var stock = new Stock(obj["Name"], obj["Symbol"], obj["purchasePrice"], obj["purchaseDate"],
+                infoObj["currentPrice"], infoObj["dayVolume"], infoObj["openPrice"], obj["alerts"]);
+            stockArr.push(stock);
+        }
         //TODO : post stock to user portfolio in DB
         async.resolve(stockArr);
 
@@ -53,7 +72,7 @@ app.factory('portfolioSrv', function ($http, $q) {
         var async = $q.defer();
 
         var stock = new Stock(stockName, stockSymbol, infoObj["currentPrice"], calcCurrentDate(), infoObj["currentPrice"],
-            infoObj["dayVolume"], infoObj["openPrice"]);
+            infoObj["dayVolume"], infoObj["openPrice"], []);
         stockArr.push(stock);
         //TODO : post stock to user portfolio in DB
         async.resolve(stockArr);
@@ -64,10 +83,8 @@ app.factory('portfolioSrv', function ($http, $q) {
     function removeStockFromPortfolio(stockName, stockSymbol) {
         var async = $q.defer();
 
-        for(var i=0; i< stockArr.length; i++)
-        {
-            if (stockArr[i].symbol === stockSymbol)
-            {
+        for (var i = 0; i < stockArr.length; i++) {
+            if (stockArr[i].symbol === stockSymbol) {
                 stockArr.splice(i, 1);
                 break;
             }
@@ -77,10 +94,10 @@ app.factory('portfolioSrv', function ($http, $q) {
 
         return async.promise;
     };
-    
+
     function updateStockInPortfolio(stockName, stockSymbol, infoObj) {
         var async = $q.defer();
-        var i=0;
+        var i = 0;
         for (; i < stockArr.length; i++) {
             if (stockArr[i].symbol === stockSymbol) {
                 stockArr[i].cprice = infoObj["currentPrice"];
@@ -90,7 +107,7 @@ app.factory('portfolioSrv', function ($http, $q) {
             }
         }
         //TODO : post stock to user portfolio in DB
-        if (i<stockArr.length)
+        if (i < stockArr.length)
             async.resolve(stockArr);
         else
             async.reject("stock not found in array");
@@ -98,10 +115,28 @@ app.factory('portfolioSrv', function ($http, $q) {
         return async.promise;
 
     }
+
+    function addAlertToStock (stockSymbol, alertId) {
+        var async = $q.defer();
+
+        for(var i=0; i<stockArr.length; i++){
+            if (stockArr[i].symbol === stockSymbol)
+            {
+                stockArr[i].alertsArr.push({"alertId": alertId});
+                //todo: update DB
+                async.resolve(stockArr);
+                break;
+            }
+        }
+
+        return async.promise;
+    }
+
     return {
-        updateStockInPortfolio : updateStockInPortfolio,
+        addAlertToStock : addAlertToStock,
+        updateStockInPortfolio: updateStockInPortfolio,
         buildStockPortfolio: buildStockPortfolio,
         addStockToPortfolio: addStockToPortfolio,
-        removeStockFromPortfolio : removeStockFromPortfolio
+        removeStockFromPortfolio: removeStockFromPortfolio
     }
 })

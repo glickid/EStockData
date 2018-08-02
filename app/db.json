@@ -10,7 +10,7 @@
                             "Symbol": "GOOGL", 
                             "purchasePrice": 1225.07, 
                             "purchaseDate":"2018-07-31",
-                            "Alerts": [{"alertId": 1}]}]
+                            "alerts": [{"alertId": 1}]}]
         },
         {
             "id": 2,
@@ -21,10 +21,11 @@
             "portfolio": []
         }
     ],
-    "Alerts" : [
+    "alerts" : [
         {
             "id" : 1,
-            "UserId" : 1,
+            "userId" : 1,
+            "alertType": "take-profit",
             "stockSymbol": "GOOGL",
             "price": 1227
         }

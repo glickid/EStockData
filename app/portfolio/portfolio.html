@@ -49,7 +49,7 @@
                         <button type="button" class="btn btn-info" data-toggle="modal" data-target="#stockInfoModal" ng-click="getStockInfo(stock)">
                             <i class="fas fa-info action-icon"></i>
                         </button>
-                        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#stockAlertModal" ng-click="setStockAlert(stock)">
+                        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#stockAlertModal" ng-click="setAlertInfo(stock)">
                             <i class="far fa-bell action-icon"></i>
                         </button>
                     </td>
@@ -230,30 +230,33 @@
     </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="stockAlertModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
-        aria-hidden="true">
+    <div class="modal fade" id="stockAlertModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="resetModal()">
+                    <h2 class="form-signin-heading">Set Alert for {{alertStock}} (symbol: {{alertSymbol}})</h2>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="resetAlertModal()">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
                     <form class="form-signin">
-                        <h2 class="form-signin-heading">Please sign in</h2>
-                        <label for="inputEmail" class="sr-only">Email address</label>
-                        <input ng-model="email" type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
-                        <label for="inputPassword" class="sr-only">Password</label>
-                        <input ng-model="password" type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+                        <label for="alert-price" >Enter Price to set Alert for</label>
+                        <input ng-model="alertPrice" type="number" id="alert-price" class="form-control" required
+                            autofocus>
+                        <label for="alert-type" >Select Alert type</label>
+                        <select ng-model="alertType" id="alert-type" class="form-control" required>
+                            <option value="take-profit">Take Profit</option>
+                            <option value="stop-loss">Stop Loss</option>
+                        </select>
                         <!-- <div class="checkbox">
                                 <label>
                                     <input type="checkbox" value="remember-me"> Remember me
                                 </label>
                             </div> -->
-                        <button ng-click="login()" class="btn btn-lg btn-primary btn-block" type="button">Sign in</button>
+                        <button ng-click="setStockAlert()" class="btn btn-lg btn-primary btn-block" type="button">Set Alert</button>
                     </form>
-                    <div id="login-error" class="alert alert-danger" role="alert" ng-hide='errorMessage===""'>{{errorMessage}}</div>
+                    <!-- <div id="login-error" class="alert alert-danger" role="alert" ng-hide='errorMessage===""'>{{errorMessage}}</div> -->
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal" ng-click="resetModal()">Close</button>

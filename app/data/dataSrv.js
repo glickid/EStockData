@@ -124,7 +124,7 @@ app.factory('dataSrv', function ($http, $q, $log, $timeout, $localStorage, confi
         return async.promise;
     }
 
-    function getStockInfo(name, symbol) {
+    function getStockInfo(name, symbol, returnedParam) {
         // var key = configSrv.getStockInfoApiKey();
         // var theUrl = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=" + symbol + "&outputsize=compact&apikey=" + key;
         var theUrl = "https://api.iextrading.com/1.0/stock/" + symbol + "/chart/1m";
@@ -147,6 +147,7 @@ app.factory('dataSrv', function ($http, $q, $log, $timeout, $localStorage, confi
                 retObj["changePercent"] = last["changePercent"];
                 retObj["name"] = name;
                 retObj["symbol"] = symbol;
+                retObj["returnedParam"] = returnedParam 
 
            // }
             async.resolve(retObj);
