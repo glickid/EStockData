@@ -9,10 +9,10 @@
     <!-- <label ng-bind="formatDate(date) |  date:'yyyy-MM-dd'"></label> -->
 
     <!-- <div class="table-responsive"> -->
-    <div class="container portfolio-table">
-        <table class="table table-striped table-responsive">
+    <!-- <div class="container portfolio-table"> -->
+    <div>
+        <!-- <table class="table table-striped table-responsive">
             <thead class="thead-portfolio">
-                <!--class="bg-secondary text-body"-->
                 <tr>
                     <th>Stock Name</th>
                     <th>Symbol</th>
@@ -40,6 +40,51 @@
                     <td>{{stock.cprice}}</td>
                     <td>{{stock.dvolume}}</td>
                     <td id="actions-td">
+                        <button type="button" class="btn btn-danger" ng-click="removeStock(stock)">
+                            <i class="far fa-trash-alt action-icon"></i>
+                        </button>
+                        <button type="button" class="btn btn-success" ng-click="refreshStock(stock)">
+                            <i class="fas fa-sync-alt action-icon"></i>
+                        </button>
+                        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#stockInfoModal" ng-click="getStockInfo(stock)">
+                            <i class="fas fa-info action-icon"></i>
+                        </button>
+                        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#stockAlertModal" ng-click="setAlertInfo(stock)">
+                            <i class="far fa-bell action-icon"></i>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table> -->
+        <table role="table">
+            <thead role="rowgroup">
+                <tr role="row">
+                    <th role="columnheader">Stock Name</th>
+                    <th role="columnheader">Symbol</th>
+                    <th role="columnheader">Todays Change</th>
+                    <th role="columnheader">Yield</th>
+                    <th role="columnheader">Purchase Price</th>
+                    <th role="columnheader">Purchase Date</th>
+                    <th role="columnheader">Current Price</th>
+                    <th role="columnheader">Today's Volume</th>
+                    <th role="columnheader">Action</th>
+                </tr>
+            </thead>
+            <tbody role="rowgroup">
+                <tr role="row" ng-repeat="stock in stockArr">
+                    <td  role="cell">{{stock.name}}</td>
+                    <td  role="cell">{{stock.symbol}}</td>
+                    <td role="cell">
+                        <span ng-class="(stock.dayChange<0)? 'text-danger':'text-success'">{{stock.dayChange}}%</span>
+                    </td>
+                    <td role="cell">
+                        <span ng-class="(stock.overallProfit<0)? 'text-danger':'text-success'">{{stock.overallProfit}}%</span>
+                    </td>
+                    <td role="cell">{{stock.pprice}}</td>
+                    <td role="cell">{{stock.pdate}}</td>
+                    <td role="cell">{{stock.cprice}}</td>
+                    <td role="cell">{{stock.dvolume}}</td>
+                    <td role="cell" id="actions-td">
                         <button type="button" class="btn btn-danger" ng-click="removeStock(stock)">
                             <i class="far fa-trash-alt action-icon"></i>
                         </button>

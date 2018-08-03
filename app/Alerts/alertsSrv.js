@@ -23,14 +23,14 @@ app.factory('alertsSrv', function ($http, $q, $interval, dataSrv) {
                 {
                     case "take-profit":
                         if (response["currentPrice"] >= obj.price) {
-                            sendMailToUser(obj.userId);
+                           //todo: sendMailToUser(obj.userId);
                             obj.triggered = true;
                             //todo: update DB 
                         }
                         break;
                     case "stop-loss":
                         if (response["currentPrice"] <= obj.price) {
-                            sendMailToUser(obj.userId);
+                           //todo: sendMailToUser(obj.userId);
                             obj.triggered = true;
                             //todo: update DB
                         }
