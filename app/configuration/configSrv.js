@@ -2,6 +2,7 @@
 app.factory('configSrv', function () {
     const stockInfoApiKey = "0ME2BHQ21RW7FMKX";
     const currencyArr = ["USD", "EUR", "GBP", "JPY", "CAD", "HKD"];
+    const maxStcokNameLen = 35;
 
 
 function getStockInfoApiKey () {
@@ -12,9 +13,14 @@ function getCurrencyArr() {
     return currencyArr;
 }
 
+function getMaxStcokNameLen() {
+    return maxStcokNameLen;
+}
+
 return {
     getStockInfoApiKey : getStockInfoApiKey,
-    getCurrencyArr : getCurrencyArr
+    getCurrencyArr : getCurrencyArr,
+    getMaxStcokNameLen : getMaxStcokNameLen
 }
 
 })

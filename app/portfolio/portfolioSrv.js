@@ -1,7 +1,10 @@
-app.factory('portfolioSrv', function ($http, $q) {
+app.factory('portfolioSrv', function ($http, $q, configSrv) {
+
+    var maxStockNameLen = configSrv.getMaxStcokNameLen();
+
 
     function Stock(name, symbol, purchasePrice, purchaseDate, CurrentPrice, dayVolume, dayOpen, alerts) {
-        this.name = name;
+        this.name = shorten(name, maxStockNameLen);
         this.symbol = symbol;
         this.pprice = purchasePrice;
         this.pdate = purchaseDate;
@@ -15,6 +18,12 @@ app.factory('portfolioSrv', function ($http, $q) {
 
     var stockArr = [];
 
+    function shorten(str, maxLen, separator = ' ') {
+        if (str.length <= maxLen)
+            return str;
+        return str.substr(0, str.lastIndexOf(separator, maxLen));
+    }
+
     function calcDayChange(stock) {
         var num = (((stock.cprice - stock.dopen) / stock.dopen) * 100);
         return num.toFixed(2);
@@ -24,7 +33,7 @@ app.factory('portfolioSrv', function ($http, $q) {
         var num = (((stock.cprice - stock.pprice) / stock.pprice) * 100);
         return num.toFixed(2);
     }
- 
+
     function buildStockPortfolio(obj, infoObj) {
         var async = $q.defer();
 
@@ -36,7 +45,7 @@ app.factory('portfolioSrv', function ($http, $q) {
                 stockArr[i].dayOpen = infoObj["openPrice"];
                 // for (var j=0; j< obj.alerts.legth; j++)
                 // {
-                    // stockArr[i].alerts = alertsSrv.getAlertInfo(obj.alerts[j].alertId);
+                // stockArr[i].alerts = alertsSrv.getAlertInfo(obj.alerts[j].alertId);
                 // }
                 stockArr[i].alerts = obj.alerts;
                 updated = true;
@@ -116,13 +125,12 @@ app.factory('portfolioSrv', function ($http, $q) {
 
     }
 
-    function addAlertToStock (stockSymbol, alertId) {
+    function addAlertToStock(stockSymbol, alertId) {
         var async = $q.defer();
 
-        for(var i=0; i<stockArr.length; i++){
-            if (stockArr[i].symbol === stockSymbol)
-            {
-                stockArr[i].alertsArr.push({"alertId": alertId});
+        for (var i = 0; i < stockArr.length; i++) {
+            if (stockArr[i].symbol === stockSymbol) {
+                stockArr[i].alertsArr.push({ "alertId": alertId });
                 //todo: update DB
                 async.resolve(stockArr);
                 break;
@@ -133,7 +141,7 @@ app.factory('portfolioSrv', function ($http, $q) {
     }
 
     return {
-        addAlertToStock : addAlertToStock,
+        addAlertToStock: addAlertToStock,
         updateStockInPortfolio: updateStockInPortfolio,
         buildStockPortfolio: buildStockPortfolio,
         addStockToPortfolio: addStockToPortfolio,
