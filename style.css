@@ -8,8 +8,12 @@
 }
 
 /* #the-container { */
-.portfolio-container, .home-container {
+.home-container {
     background-color: rgb(68,114,196)
+}
+
+.portfolio-container {
+    background-color: white;
 }
 
 #QDays {
