@@ -13,10 +13,10 @@ app.controller('homeCtrl', function ($scope, $location, dataSrv, configSrv, user
         ("00" + d.getMinutes()).slice(-2) + ":" +
         ("00" + d.getSeconds()).slice(-2));
 
-    getRTPerformance();
+    //getRTPerformance();
     getNDXinfo();
     getCurrencies();
-    
+    getGainers();
 
     // $interval(getCurrencies, 2000);
     $scope.isUserLoggedIn = function() {
@@ -25,14 +25,27 @@ app.controller('homeCtrl', function ($scope, $location, dataSrv, configSrv, user
 
     $scope.activerUser = userSrv.getActiveUser();
 
-    function getRTPerformance() {
-        dataSrv.getRTperformance().then(function (reply) {
-            $scope.RTPUpdated = reply["updated"];
-            $scope.RTPObject = reply["data"];
-        }, function (err) {
+    // function getRTPerformance() {
+    //     dataSrv.getRTperformance().then(function (reply) {
+    //         $scope.RTPUpdated = reply["updated"];
+    //         $scope.RTPObject = reply["data"];
+    //     }, function (err) {
+    //         console.log(err);
+    //     })
+    // }
+
+    function getGainers()
+    {
+        dataSrv.getGainersList().then(function(response) {
+            for(var i=0; i<response.length; i++)
+            {
+                $scope.gainersList = response;
+            }
+        }, function(err){
             console.log(err);
         })
     }
+    
 
     function getCurrency(C1, C2) {
         dataSrv.getCurrencyValue(C1, C2).then(function (reply) {

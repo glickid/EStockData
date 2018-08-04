@@ -1,16 +1,36 @@
-<div class="container home-container" >
+<div class="container home-container">
     <div class="row">
         <div class="col-md-3 col-sm-6 mt-1 mb-1" style="background-color: black">
             <div class="container bg-info text-light mt-1">
                 <small>
-                    <u>Real-Time US-Sector performance</u>
+                    <u>Gainers</u>
                 </small>
                 <br/>
-                <small>last updated: {{RTPUpdated}}</small>
-                <div ng-repeat="(key,val) in RTPObject">
+                <!-- <small>last updated: {{RTPUpdated}}</small> -->
+                <!-- <div ng-repeat="(key,val) in RTPObject">
                     <small>{{key}}:
                         <span class="float-right">{{val}}</span>
                     </small>
+                </div> -->
+                <div class="table-responsive-sm">
+                    <table class="table small-table">
+                        <thead>
+                            <tr>
+                                <th class="th-sm" >Symbol</th>
+                                <th class="th-sm">Last Price</th>
+                                <th class="th-sm">Change</th>
+                                <th class="th-sm">%Change</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="gainer in gainersList | orderBy:'-changePercent' | limitTo: 5">
+                                <th class="small-table-td" scope="row">{{gainer.symbol}}</th>
+                                <td class="small-table-td" >{{gainer.latestPrice|number}}</td>
+                                <td class="small-table-td" >{{gainer.change}}</td>
+                                <td class="small-table-td" >{{gainer.changePercent*100 | number:2}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
             <div class="container bg-info text-light mt-2">

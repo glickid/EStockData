@@ -56,7 +56,7 @@
                 </tr>
             </tbody>
         </table> -->
-        <table role="table">
+        <table id="portfolio-table" role="table">
             <thead role="rowgroup">
                 <tr role="row">
                     <th role="columnheader">Stock Name</th>
@@ -71,9 +71,9 @@
                 </tr>
             </thead>
             <tbody role="rowgroup">
-                <tr role="row" ng-repeat="stock in stockArr">
-                    <td  role="cell">{{stock.name}}</td>
-                    <td  role="cell">{{stock.symbol}}</td>
+                <tr class="portfolio-row" role="row" ng-repeat="stock in stockArr">
+                    <td role="cell">{{stock.name}}</td>
+                    <td role="cell">{{stock.symbol}}</td>
                     <td role="cell">
                         <span ng-class="(stock.dayChange<0)? 'text-danger':'text-success'">{{stock.dayChange}}%</span>
                     </td>

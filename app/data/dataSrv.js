@@ -6,6 +6,7 @@ app.factory('dataSrv', function ($http, $q, $log, $timeout, $localStorage, confi
     var premises = [];
     var Ndxinfo = {};
     var stocksArr = [];
+    var gainersArr = [];
 
     if (typeof $localStorage.currencyObject !== "undefined") {
         currencyObject = $localStorage.currencyObject;
@@ -179,12 +180,27 @@ app.factory('dataSrv', function ($http, $q, $log, $timeout, $localStorage, confi
             async.resolve(stocksArr);
         }, function (err) {
             $log.error(err);
-            async.reject("failed to get NDX info");
-        })
+            async.reject("failed to get symbol list");
+        });
 
         return async.promise;
     }
 
+    function getGainersList() {
+        var theUrl = "https://api.iextrading.com/1.0/stock/market/list/gainers";
+        var async = $q.defer();
+
+        $http.get(theUrl).then(function (response) {
+            gainersArr.length = 0;
+            gainersArr = response.data.slice(0);
+            async.resolve(gainersArr);
+        }, function (err) {
+            $log.error(err);
+            async.reject("failed to get gainers info");
+        });
+
+        return async.promise;
+    }
     function searchStock(searchStr) {
         var async = $q.defer();
         var stockList = {};
@@ -234,6 +250,7 @@ app.factory('dataSrv', function ($http, $q, $log, $timeout, $localStorage, confi
         getRTperformance: getRTperformance,
         getCurrencies: getCurrencies,
         getCurrencyValue: getCurrencyValue,
-        getNDX: getNDX
+        getNDX: getNDX,
+        getGainersList : getGainersList
     }
 })
