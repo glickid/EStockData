@@ -53,6 +53,10 @@ app.controller('portfolioCtrl', function ($scope, $location, dataSrv, alertsSrv,
                 $scope.stockList = "";
             })
         }
+        else
+        {
+            $scope.stockList = "";
+        }
     }
 
     $scope.addStockToPortfolio = function (stockName, stockSymbol) {
