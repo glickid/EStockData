@@ -16,7 +16,7 @@
                     <table class="table small-table">
                         <thead>
                             <tr>
-                                <th class="th-sm" >Symbol</th>
+                                <th class="th-sm">Symbol</th>
                                 <th class="th-sm">Last Price</th>
                                 <th class="th-sm">Change</th>
                                 <th class="th-sm">%Change</th>
@@ -25,9 +25,35 @@
                         <tbody>
                             <tr ng-repeat="gainer in gainersList | orderBy:'-changePercent' | limitTo: 5">
                                 <th class="small-table-td" scope="row">{{gainer.symbol}}</th>
-                                <td class="small-table-td" >{{gainer.latestPrice|number}}</td>
-                                <td class="small-table-td" >{{gainer.change}}</td>
-                                <td class="small-table-td" >{{gainer.changePercent*100 | number:2}}</td>
+                                <td class="small-table-td">{{gainer.latestPrice|number}}</td>
+                                <td class="small-table-td">{{gainer.change}}</td>
+                                <td class="small-table-td">{{gainer.changePercent*100 | number:2}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="container bg-info text-light mt-1">
+                <small>
+                    <u>Losers</u>
+                </small>
+                <br/>
+                <div class="table-responsive-sm">
+                    <table class="table small-table">
+                        <thead>
+                            <tr>
+                                <th class="th-sm">Symbol</th>
+                                <th class="th-sm">Last Price</th>
+                                <th class="th-sm">Change</th>
+                                <th class="th-sm">%Change</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="loser in losersList | orderBy:'changePercent' | limitTo: 5">
+                                <th class="small-table-td" scope="row">{{loser.symbol}}</th>
+                                <td class="small-table-td">{{loser.latestPrice|number}}</td>
+                                <td class="small-table-td">{{loser.change}}</td>
+                                <td class="small-table-td">{{loser.changePercent*100 | number:2}}</td>
                             </tr>
                         </tbody>
                     </table>

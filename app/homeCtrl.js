@@ -17,6 +17,7 @@ app.controller('homeCtrl', function ($scope, $location, dataSrv, configSrv, user
     getNDXinfo();
     getCurrencies();
     getGainers();
+    getLosers();
 
     // $interval(getCurrencies, 2000);
     $scope.isUserLoggedIn = function() {
@@ -46,6 +47,17 @@ app.controller('homeCtrl', function ($scope, $location, dataSrv, configSrv, user
         })
     }
     
+    function getLosers()
+    {
+        dataSrv.getLosersList().then(function(response) {
+            for(var i=0; i<response.length; i++)
+            {
+                $scope.losersList = response;
+            }
+        }, function(err){
+            console.log(err);
+        })
+    }
 
     function getCurrency(C1, C2) {
         dataSrv.getCurrencyValue(C1, C2).then(function (reply) {
