@@ -5,12 +5,19 @@ app.factory('dataSrv', function ($http, $q, $log, $timeout, $localStorage, confi
     // var currencyIndex = 0;
     var premises = [];
     var Ndxinfo = {};
+    var stocksArr = [];
 
-    if (typeof $localStorage.currencyObject !== "undefined")
-    {
+    if (typeof $localStorage.currencyObject !== "undefined") {
         currencyObject = $localStorage.currencyObject;
     }
 
+    if (stocksArr.length === 0) {
+        getStockSymboles().then(function (response) {
+            //do_nothing
+        }, function (err) {
+            $log.error(err);
+        })
+    }
     function getRTperformance() {
         var key = configSrv.getStockInfoApiKey()
         var theUrl = "https://www.alphavantage.co/query?function=SECTOR&apikey=" + key;
@@ -25,8 +32,7 @@ app.factory('dataSrv', function ($http, $q, $log, $timeout, $localStorage, confi
                 var reply = { "data": RTperformance };
                 async.resolve(reply);
             }
-            else 
-            {
+            else {
                 $log.log("failed to parse Currency response ");
                 $log.log(response.data);
                 async.resolve({});
@@ -82,8 +88,8 @@ app.factory('dataSrv', function ($http, $q, $log, $timeout, $localStorage, confi
 
         for (var i = 1; i < currArr.length; i++) {
             C2 = currArr[i];
-                $timeout(getCurrencyValue.bind(null, C1, C2),
-                    (30000 + (15000 * (i - 1))))
+            $timeout(getCurrencyValue.bind(null, C1, C2),
+                (30000 + (15000 * (i - 1))))
         }
 
         $q.all(premises).then(function (response) {
@@ -94,7 +100,7 @@ app.factory('dataSrv', function ($http, $q, $log, $timeout, $localStorage, confi
             async.reject("failed to currency values")
         });
 
-        return (async.promise); 
+        return (async.promise);
     }
 
     function getNDX() {
@@ -134,22 +140,22 @@ app.factory('dataSrv', function ($http, $q, $log, $timeout, $localStorage, confi
             // $log.log(response);
 
             // if (response.data.hasOwnProperty("Time Series (Daily)")) {
-                // infoObj = response.data["Time Series (Daily)"];
-                infoObj = response.data;
-                var last = infoObj[Object.keys(infoObj)[Object.keys(infoObj).length - 1]];
+            // infoObj = response.data["Time Series (Daily)"];
+            infoObj = response.data;
+            var last = infoObj[Object.keys(infoObj)[Object.keys(infoObj).length - 1]];
 
-                // retObj["currentPrice"] = first["4. close"];
-                // retObj["openPrice"] = first["1. open"];
-                // retObj["dayVolume"] = first["5. volume"];
-                retObj["currentPrice"] = last["close"];
-                retObj["openPrice"] = last["open"];
-                retObj["dayVolume"] = last["volume"];
-                retObj["changePercent"] = last["changePercent"];
-                retObj["name"] = name;
-                retObj["symbol"] = symbol;
-                retObj["returnedParam"] = returnedParam 
+            // retObj["currentPrice"] = first["4. close"];
+            // retObj["openPrice"] = first["1. open"];
+            // retObj["dayVolume"] = first["5. volume"];
+            retObj["currentPrice"] = last["close"];
+            retObj["openPrice"] = last["open"];
+            retObj["dayVolume"] = last["volume"];
+            retObj["changePercent"] = last["changePercent"];
+            retObj["name"] = name;
+            retObj["symbol"] = symbol;
+            retObj["returnedParam"] = returnedParam
 
-           // }
+            // }
             async.resolve(retObj);
         }, function (err) {
             $log.error(err);
@@ -160,32 +166,46 @@ app.factory('dataSrv', function ($http, $q, $log, $timeout, $localStorage, confi
         return async.promise;
     }
 
-    function searchStock (searchStr){
+    function getStockSymboles() {
+        var theUrl = "https://api.iextrading.com/1.0/ref-data/symbols";
         var async = $q.defer();
-        var stockList = {};
-        //var loginURL = "app/db.json/users?email=" + email + "&password=" + password;
-        var loginURL = "app/db.json";
-        $http.get(loginURL).then(function (response) {
-            var stocksArr = response.data.Stocks;
-            var lowerName = "";
-            var lowerSym = "";
-            var lowerStr = searchStr.toLowerCase();
 
-            for (var i =0; i<stocksArr.length; i++)
-            {
-                lowerName = stocksArr[i].Name.toLowerCase();
-                lowerSym = stocksArr[i].Symbol.toLowerCase();
-                
-                if (( lowerName.includes(lowerStr)) || 
-                    ( lowerSym.includes(lowerStr)))
-                {
-                    stockList[stocksArr[i].Name] = stocksArr[i].Symbol;
+        $http.get(theUrl).then(function (response) {
+            for (var i = 0; i < response.data.length; i++) {
+                if (response.data[i].isEnabled === true) {
+                    stocksArr.push(response.data[i]);
                 }
             }
-            async.resolve(stockList);
+            async.resolve(stocksArr);
         }, function (err) {
-            async.reject(err);
-        });
+            $log.error(err);
+            async.reject("failed to get NDX info");
+        })
+
+        return async.promise;
+    }
+
+    function searchStock(searchStr) {
+        var async = $q.defer();
+        var stockList = {};
+       
+        var lowerName = "";
+        var lowerSym = "";
+        var lowerStr = searchStr.toLowerCase();
+
+        for (var i = 0; i < stocksArr.length; i++) {
+            lowerName = stocksArr[i].name.toLowerCase();
+            lowerSym = stocksArr[i].symbol.toLowerCase();
+
+            if ((lowerName.includes(lowerStr)) ||
+                (lowerSym.includes(lowerStr))) {
+                stockList[stocksArr[i].name] = stocksArr[i].symbol;
+            }
+        }
+        async.resolve(stockList);
+        // }, function (err) {
+        // async.reject(err);
+        // });
 
         return async.promise;
     }
@@ -208,9 +228,9 @@ app.factory('dataSrv', function ($http, $q, $log, $timeout, $localStorage, confi
     }
 
     return {
-        searchStock : searchStock,
-        getStockInfo : getStockInfo,
-        getStockStats : getStockStats,
+        searchStock: searchStock,
+        getStockInfo: getStockInfo,
+        getStockStats: getStockStats,
         getRTperformance: getRTperformance,
         getCurrencies: getCurrencies,
         getCurrencyValue: getCurrencyValue,
