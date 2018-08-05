@@ -7,6 +7,19 @@
     background-color: rgb(246, 174, 144);
 }
 
+.alert-icon {
+    position: absolute;
+    font-size: 50px;
+    right:100px;
+}
+
+.badge {
+    position: absolute;
+    bottom: 20px;
+    right: 102px;
+    color: red;
+    background-color: blue;
+}
 /* #the-container { */
 .home-container {
     background-color: rgb(68,114,196)
@@ -195,10 +208,6 @@ span.input-group-addon i {
     line-height: 1em;
 }
 
-.portfolio-container {
-    /* max-width: 1106px;  */
-    height:100%;
-}
 /**************** portfolio table style ***/
 #portfolio-table th {
     border: 1px solid grey;
@@ -289,9 +298,9 @@ and (max-device-width: 1024px)  {
     .small-table td:nth-of-type(4):before { content: "%Change"; } */
 }
 /******************************************/
-@media screen and (min-width: 992px) {
+@media screen and (min-width: 576px) {
     .portfolio-container {
-        max-width: 1106px;
+        /* max-width: 1106px; */
         height:100%;
     }
 }
