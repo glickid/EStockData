@@ -253,11 +253,11 @@ and (max-device-width: 1024px)  {
         margin: 0 0 1rem 0;
     }
   
-    #portfolio-table tr:nth-child(odd) {
+    #portfolio-table tbody:nth-child(odd) {
         background: #ccc;
     }
 
-    td {
+    tbody tr:first-child td{
         /* Behave  like a "row" */
         border: none;
         border-bottom: 1px solid #eee;
