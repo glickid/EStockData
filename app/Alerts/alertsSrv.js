@@ -73,13 +73,30 @@ app.factory('alertsSrv', function ($http, $q, $interval, dataSrv) {
 
     function setNewAlert(userId, alertType, stockSymbol, price) {
         var async = $q.defer();
-        var alert = new Alert(userId, alertType, stockSymbol, price);
+        var found = false;
 
-        alertsArr.push(alert);
+        for (var i=0; i< alertsArr.length; i++) {
+            if ((alertsArr[i].stockSymbol === stockSymbol) &&
+                (alertsArr[i].userId === userId) &&
+                (alertsArr[i].price === price)) {
+                    found = true;
+                }
+        }
 
-        //todo: update DB
+        if (!found)
+        {
+            var alert = new Alert(userId, alertType, stockSymbol, price);
 
-        async.resolve(alert);
+            alertsArr.push(alert);
+
+            //todo: update DB
+
+            async.resolve(alert);
+        }
+        else
+        {
+            async.reject("alert already added!");
+        }
 
         return async.promise;
     }
