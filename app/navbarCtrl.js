@@ -12,11 +12,11 @@ app.controller("navbarCtrl", function ($scope, userSrv, alertsSrv, $interval, $l
     }
 
     $interval(function () {
-        if ($scope.isUserLoggedIn()) {
+        if (userSrv.isLoggedIn()) {
             $scope.alertNum = alertsSrv.getNumOfAlertsforUser(activeUser.id);
         }
         else {
             $scope.alertNum = 0;
         }
-    }, 2000);
+    }, 4000);
 })

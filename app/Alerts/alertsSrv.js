@@ -99,11 +99,31 @@ app.factory('alertsSrv', function ($http, $q, $interval, dataSrv) {
         return num;
     }
 
+    function getAlertInfo(alertId) {
+        for (var i=0; i< alertsArr.length; i++)
+        {
+            if (alertsArr[i].id === alertId)
+            {
+                return alertsArr[i];
+            }
+        }
+        return null;
+    }
 
-
+    function removeAlert(alertId) {
+        for (var i=0; i< alertsArr.length; i++)
+        {
+            if (alertsArr[i].id === alertId)
+            {
+                alertsArr.splice(i, 1);
+            }
+        }
+    }
     return {
         setNewAlert : setNewAlert,
         loadAlerts : loadAlerts,
-        getNumOfAlertsforUser : getNumOfAlertsforUser
+        getNumOfAlertsforUser : getNumOfAlertsforUser,
+        getAlertInfo : getAlertInfo,
+        removeAlert : removeAlert
     }
 })

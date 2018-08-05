@@ -140,11 +140,31 @@ app.factory('portfolioSrv', function ($http, $q, configSrv) {
         return async.promise;
     }
 
+    function removeAlertFromStock(alertId, symbol) {
+        var async = $q.defer();
+
+        for (var i = 0; i < stockArr.length; i++) {
+            if (stockArr[i].symbol === symbol) {
+                for (var j=0; j<stockArr[i].alertsArr.length; j++)
+                {
+                if (stockArr[i].alertsArr[j].alertId === alertId){
+                    stockArr[i].alertsArr.splice(j,1);
+                }
+                //todo: update DB
+                async.resolve(stockArr);
+                break;
+                }
+            }
+        }
+
+        return async.promise;
+    }
     return {
         addAlertToStock: addAlertToStock,
         updateStockInPortfolio: updateStockInPortfolio,
         buildStockPortfolio: buildStockPortfolio,
         addStockToPortfolio: addStockToPortfolio,
-        removeStockFromPortfolio: removeStockFromPortfolio
+        removeStockFromPortfolio: removeStockFromPortfolio,
+        removeAlertFromStock : removeAlertFromStock
     }
 })

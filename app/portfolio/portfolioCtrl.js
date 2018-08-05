@@ -178,4 +178,32 @@ app.controller('portfolioCtrl', function ($scope, $location, dataSrv, alertsSrv,
             });
 
     }
+
+    $scope.alertsInfoArr = [];
+
+    $scope.getAlertsInfo = function () {
+        $scope.alertsInfoArr.length = 0;
+        for (var i=0; i<$scope.stockArr.length; i++)
+        {
+            for(var j=0; j<$scope.stockArr[i].alertsArr.length; j++)
+            {
+                var alertInfo = alertsSrv.getAlertInfo($scope.stockArr[i].alertsArr[j].alertId);
+                if (alertInfo !== null)
+                    $scope.alertsInfoArr.push(alertInfo);
+            }
+        }
+    }
+
+    $scope.removeAlert= function (alertId, symbol) {
+        alertsSrv.removeAlert(alertId);
+        portfolioSrv.removeAlertFromStock(alertId, symbol).then (function(response) {
+            $scope.stockArr = response;
+            $scope.getAlertsInfo();
+            if ($scope.alertsInfoArr.length === 0) {
+                angular.element( document.querySelector('#'+symbol)).collapse('hide');
+            }
+        }, function(err){
+            consol.log(err)
+        })
+    }
 });
