@@ -84,8 +84,26 @@ app.factory('alertsSrv', function ($http, $q, $interval, dataSrv) {
         return async.promise;
     }
 
+    function getNumOfAlertsforUser(userId)
+    {
+        var num = 0;
+
+        for (var i=0; i<alertsArr.length; i++)
+        {
+            if (alertsArr[i].userId === userId)
+            {
+                num++;
+            }
+        }
+
+        return num;
+    }
+
+
+
     return {
         setNewAlert : setNewAlert,
-        loadAlerts : loadAlerts
+        loadAlerts : loadAlerts,
+        getNumOfAlertsforUser : getNumOfAlertsforUser
     }
 })

@@ -20,6 +20,9 @@
     <link href='https://fonts.googleapis.com/css?family=Passion+One' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Oxygen' rel='stylesheet' type='text/css'>
         
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <!-- <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script> -->
+
     <script src="app/app.js"></script>
     <script src="app/homeCtrl.js"></script>
     <script src="app/user/userCtrl.js"></script>
@@ -31,6 +34,7 @@
     <script src="app/portfolio/portfolioCtrl.js"></script>
     <script src="app/portfolio/portfolioSrv.js"></script>
     <script src="app/Alerts/alertsSrv.js"></script>
+    <script src="app/data/chartsCtrl.js"></script>
 
     <link rel="stylesheet" href="style.css">
 </head>
@@ -58,6 +62,10 @@
                 </li>
             </ul>
             <ul class="navbar-nav ml-auto">
+                <li class="nav-item position-relative">
+                    <i class="fas fa-bell alert-icon" ng-class="(alertNum>0)?'text-danger':''"></i>
+                    <span class="badge" ng-hide="(alertNum === 0)">{{alertNum}}</span> 
+                </li>
                 <li class="nav-item" ng-hide="isUserLoggedIn()">
                     <a class="nav-link" href="#!/signup">Sign Up</a>
                 </li>

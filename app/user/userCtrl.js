@@ -1,4 +1,4 @@
-app.controller('userCtrl', function ($scope, $log, $location, userSrv) {
+app.controller('userCtrl', function ($scope, $log, $location, userSrv, alertsSrv) {
     $scope.user = userSrv.getActiveUser();
 
     resetScopeInfo();
@@ -26,6 +26,11 @@ app.controller('userCtrl', function ($scope, $log, $location, userSrv) {
             $location.path("#!/");
             $('#SignInModal').modal('hide');
             resetScopeInfo();
+            alertsSrv.loadAlerts().then(function (response) {
+                //do_nothing
+            }, function (err) {
+                console.log(err);
+            });
         }, function () {
             $scope.invalidLogin = true;
             $scope.errorMessage = "Invalid Username or password!";
