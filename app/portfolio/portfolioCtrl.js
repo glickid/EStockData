@@ -218,4 +218,8 @@ app.controller('portfolioCtrl', function ($scope, $location, dataSrv, alertsSrv,
             consol.log(err)
         })
     }
+
+    $scope.openStockChart = function(stock, period) {
+        $location.path("/charts/"+ stock.symbol +"/" + period );
+    }
 });

@@ -133,22 +133,14 @@ app.factory('dataSrv', function ($http, $q, $log, $timeout, $localStorage, confi
     }
 
     function getStockInfo(name, symbol, returnedParam) {
-        // var key = configSrv.getStockInfoApiKey();
-        // var theUrl = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=" + symbol + "&outputsize=compact&apikey=" + key;
         var theUrl = "https://api.iextrading.com/1.0/stock/" + symbol + "/chart/1m";
         var async = $q.defer();
         var retObj = {}
-        $http.get(theUrl).then(function (response) {
-            // $log.log(response);
 
-            // if (response.data.hasOwnProperty("Time Series (Daily)")) {
-            // infoObj = response.data["Time Series (Daily)"];
+        $http.get(theUrl).then(function (response) {
             infoObj = response.data;
             var last = infoObj[Object.keys(infoObj)[Object.keys(infoObj).length - 1]];
 
-            // retObj["currentPrice"] = first["4. close"];
-            // retObj["openPrice"] = first["1. open"];
-            // retObj["dayVolume"] = first["5. volume"];
             retObj["currentPrice"] = last["close"];
             retObj["openPrice"] = last["open"];
             retObj["dayVolume"] = last["volume"];
@@ -157,7 +149,6 @@ app.factory('dataSrv', function ($http, $q, $log, $timeout, $localStorage, confi
             retObj["symbol"] = symbol;
             retObj["returnedParam"] = returnedParam
 
-            // }
             async.resolve(retObj);
         }, function (err) {
             $log.error(err);
@@ -261,6 +252,21 @@ app.factory('dataSrv', function ($http, $q, $log, $timeout, $localStorage, confi
         return async.promise;
     }
 
+    function getStockChartInfo(symbol, timePeriod) {
+        var theUrl = "https://api.iextrading.com/1.0/stock/" + symbol + "/chart/" + timePeriod;
+        var async = $q.defer();
+        
+        $http.get(theUrl).then(function (response) {
+            async.resolve(response);
+        }, function (err) {
+            $log.error(err);
+            async.reject("failed to get NDX info");
+        })
+
+        premises.push(async.promise);
+        return async.promise;
+    }
+    
     return {
         searchStock: searchStock,
         getStockInfo: getStockInfo,
@@ -270,6 +276,7 @@ app.factory('dataSrv', function ($http, $q, $log, $timeout, $localStorage, confi
         getCurrencyValue: getCurrencyValue,
         getNDX: getNDX,
         getGainersList : getGainersList,
-        getLosersList : getLosersList
+        getLosersList : getLosersList,
+        getStockChartInfo : getStockChartInfo
     }
 })

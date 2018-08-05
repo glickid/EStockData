@@ -1,0 +1,29 @@
+<div class="container mt-5 mb-5">
+    <div id="chartContainer" style="height: 500px; width: 100%"></div>
+    <div class="container my-5 text-center">
+        <a href="javascript:void(0)" ng-click="openStockChart(Title, '1d')">
+            <span class="badge-primary">1 Day</span>
+        </a>
+        <a href="javascript:void(0)" ng-click="openStockChart(Title, '1m')">
+            <span class="badge-secondary">1 Month</span>
+        </a>
+        <a href="javascript:void(0)" ng-click="openStockChart(Title, '3m')">
+            <span class="badge-success">3 Month</span>
+        </a>
+        <a href="javascript:void(0)" ng-click="openStockChart(Title, '6m')">
+            <span class="badge-danger">6 Month</span>
+        </a>
+        <a href="javascript:void(0)" ng-click="openStockChart(Title, 'ytd')">
+            <span class="badge-warning">YTD</span>
+        </a>
+        <a class="ml-2" href="javascript:void(0)" ng-click="openStockChart(Title, '1y')">
+            <span class="badge-info">1 Year</span>
+        </a>
+        <a href="javascript:void(0)" ng-click="openStockChart(Title, '2y')">
+            <span class="badge-light">2 Year</span>
+        </a>
+        <a href="javascript:void(0)" ng-click="openStockChart(Title, '5y')">
+            <span class="badge-dark">5 Year</span>
+        </a>
+    </div>
+</div>

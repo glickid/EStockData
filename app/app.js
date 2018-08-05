@@ -18,6 +18,10 @@ app.config(function($routeProvider) {
         templateUrl : 'App/portfolio/portfolio.html',
         controller : 'portfolioCtrl'
     })
+    .when('/charts/:stockSymbol/:period', {
+        templateUrl : 'App/data/charts.html',
+        controller : 'chartsCtrl'
+    })
     // .when('/movies/:movieID', {
     //     templateUrl : 'App/Movies/movieDetails.html',
     //     controller : 'movieDetailsCtrl'
