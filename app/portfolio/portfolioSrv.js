@@ -83,6 +83,7 @@ app.factory('portfolioSrv', function ($http, $q, configSrv) {
         var stock = new Stock(stockName, stockSymbol, infoObj["currentPrice"], calcCurrentDate(), infoObj["currentPrice"],
             infoObj["dayVolume"], infoObj["openPrice"], []);
         stockArr.push(stock);
+
         //TODO : post stock to user portfolio in DB
         async.resolve(stockArr);
 
@@ -145,14 +146,13 @@ app.factory('portfolioSrv', function ($http, $q, configSrv) {
 
         for (var i = 0; i < stockArr.length; i++) {
             if (stockArr[i].symbol === symbol) {
-                for (var j=0; j<stockArr[i].alertsArr.length; j++)
-                {
-                if (stockArr[i].alertsArr[j].alertId === alertId){
-                    stockArr[i].alertsArr.splice(j,1);
-                }
-                //todo: update DB
-                async.resolve(stockArr);
-                break;
+                for (var j = 0; j < stockArr[i].alertsArr.length; j++) {
+                    if (stockArr[i].alertsArr[j].alertId === alertId) {
+                        stockArr[i].alertsArr.splice(j, 1);
+                    }
+                    //todo: update DB
+                    async.resolve(stockArr);
+                    break;
                 }
             }
         }
@@ -165,6 +165,6 @@ app.factory('portfolioSrv', function ($http, $q, configSrv) {
         buildStockPortfolio: buildStockPortfolio,
         addStockToPortfolio: addStockToPortfolio,
         removeStockFromPortfolio: removeStockFromPortfolio,
-        removeAlertFromStock : removeAlertFromStock
+        removeAlertFromStock: removeAlertFromStock
     }
 })

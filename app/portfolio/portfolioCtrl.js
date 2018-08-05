@@ -53,25 +53,39 @@ app.controller('portfolioCtrl', function ($scope, $location, dataSrv, alertsSrv,
                 $scope.stockList = "";
             })
         }
-        else
-        {
+        else {
             $scope.stockList = "";
         }
     }
 
     $scope.addStockToPortfolio = function (stockName, stockSymbol) {
 
-        dataSrv.getStockInfo(stockName, stockSymbol).then(function (response) {
-            portfolioSrv.addStockToPortfolio(stockName, stockSymbol, response).then(function (response1) {
-                $scope.stockArr = response1;
+        var found = false;
+        for (var i = 0; i < $scope.stockArr.length; i++) {
+            if ($scope.stockArr[i].symbol === stockSymbol) {
+                //stock already found in array - bail out
+                found = true;
+                break;
+            }
+        }
+        if (!found) {
+            dataSrv.getStockInfo(stockName, stockSymbol).then(function (response) {
+                portfolioSrv.addStockToPortfolio(stockName, stockSymbol, response).then(function (response1) {
+                    $scope.stockArr = response1;
+                }, function (err) {
+                    console.log(err);
+                });
             }, function (err) {
                 console.log(err);
             });
-        }, function (err) {
-            console.log(err);
-        });
+            $scope.input = "";
+        }
+        else
+        {
+            $scope.input = "Stock already found in portfolio!!!!";
+        }
         $scope.stockList = "";
-        $scope.input = "";
+        
     }
 
 
@@ -162,15 +176,15 @@ app.controller('portfolioCtrl', function ($scope, $location, dataSrv, alertsSrv,
         alertsSrv.setNewAlert(activerUser["id"], $scope.alertType, $scope.alertSymbol, $scope.alertPrice)
             .then(function (response) {
                 portfolioSrv.addAlertToStock($scope.alertSymbol, response.id)
-                .then(function (response) {
-                    $scope.stockArr = response;
-                    $('#stockAlertModal').modal('hide');
-                    $scope.resetAlertModal();
-                }, function (err) {
-                    console.log(err);
-                    $('#stockAlertModal').modal('hide');
-                    $scope.resetAlertModal();
-                });
+                    .then(function (response) {
+                        $scope.stockArr = response;
+                        $('#stockAlertModal').modal('hide');
+                        $scope.resetAlertModal();
+                    }, function (err) {
+                        console.log(err);
+                        $('#stockAlertModal').modal('hide');
+                        $scope.resetAlertModal();
+                    });
             }, function (err) {
                 console.log(err);
                 $('#stockAlertModal').modal('hide');
@@ -183,10 +197,8 @@ app.controller('portfolioCtrl', function ($scope, $location, dataSrv, alertsSrv,
 
     $scope.getAlertsInfo = function () {
         $scope.alertsInfoArr.length = 0;
-        for (var i=0; i<$scope.stockArr.length; i++)
-        {
-            for(var j=0; j<$scope.stockArr[i].alertsArr.length; j++)
-            {
+        for (var i = 0; i < $scope.stockArr.length; i++) {
+            for (var j = 0; j < $scope.stockArr[i].alertsArr.length; j++) {
                 var alertInfo = alertsSrv.getAlertInfo($scope.stockArr[i].alertsArr[j].alertId);
                 if (alertInfo !== null)
                     $scope.alertsInfoArr.push(alertInfo);
@@ -194,15 +206,15 @@ app.controller('portfolioCtrl', function ($scope, $location, dataSrv, alertsSrv,
         }
     }
 
-    $scope.removeAlert= function (alertId, symbol) {
+    $scope.removeAlert = function (alertId, symbol) {
         alertsSrv.removeAlert(alertId);
-        portfolioSrv.removeAlertFromStock(alertId, symbol).then (function(response) {
+        portfolioSrv.removeAlertFromStock(alertId, symbol).then(function (response) {
             $scope.stockArr = response;
             $scope.getAlertsInfo();
             if ($scope.alertsInfoArr.length === 0) {
-                angular.element( document.querySelector('#'+symbol)).collapse('hide');
+                angular.element(document.querySelector('#' + symbol)).collapse('hide');
             }
-        }, function(err){
+        }, function (err) {
             consol.log(err)
         })
     }
