@@ -167,10 +167,12 @@ app.controller('portfolioCtrl', function ($scope, $location, dataSrv, alertsSrv,
 
     $scope.alertPrice = 0;
     $scope.alertType = "";
-
+    $scope.alertCurrentPrice = 0;
+    
     $scope.setAlertInfo = function (stock) {
         $scope.alertStock = stock.name;
         $scope.alertSymbol = stock.symbol;
+        $scope.alertCurrentPrice = stock.cprice;
     }
 
     $scope.resetAlertModal = function () {
