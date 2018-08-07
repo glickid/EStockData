@@ -168,7 +168,7 @@ app.controller('portfolioCtrl', function ($scope, $location, dataSrv, alertsSrv,
     $scope.alertPrice = 0;
     $scope.alertType = "";
     $scope.alertCurrentPrice = 0;
-    
+
     $scope.setAlertInfo = function (stock) {
         $scope.alertStock = stock.name;
         $scope.alertSymbol = stock.symbol;
@@ -183,6 +183,7 @@ app.controller('portfolioCtrl', function ($scope, $location, dataSrv, alertsSrv,
     }
 
     $scope.setStockAlert = function () {
+
         alertsSrv.setNewAlert(activerUser["id"], $scope.alertType, $scope.alertSymbol, $scope.alertPrice)
             .then(function (response) {
                 portfolioSrv.addAlertToStock($scope.alertSymbol, response.id)
@@ -214,22 +215,26 @@ app.controller('portfolioCtrl', function ($scope, $location, dataSrv, alertsSrv,
         var alertsArr = portfolioSrv.getStockAlertsArr(symbol);
         var stockAlertInfoArr = [];
 
-        for (var j = 0; j < alertsArr.length; j++) {
-            alertsSrv.getAlertInfo(alertsArr[j].alertId)
-                .then(function (response) {
-                    var alertInfo = response;
-                    if (alertInfo !== null) {
-                        stockAlertInfoArr.push(alertInfo);
-                        $scope.alertsInfoObj[symbol] = stockAlertInfoArr;
-                    }
-                }, function (err) {
-                    console.log(err);
-                    angular.element(document.querySelector('#' + symbol)).collapse('hide');
-                    $scope.alertsInfoObj[symbol] = [];
-                });
+        if ($('#' + symbol).hasClass('show')) {
+            $('#' + symbol).collapse('hide');
+            $scope.alertsInfoObj[symbol] = [];
         }
-        
-        
+        else {
+            for (var j = 0; j < alertsArr.length; j++) {
+                alertsSrv.getAlertInfo(alertsArr[j].alertId)
+                    .then(function (response) {
+                        var alertInfo = response;
+                        if (alertInfo !== null) {
+                            stockAlertInfoArr.push(alertInfo);
+                            $scope.alertsInfoObj[symbol] = stockAlertInfoArr;
+                        }
+                    }, function (err) {
+                        console.log(err);
+                        angular.element(document.querySelector('#' + symbol)).collapse('hide');
+                        $scope.alertsInfoObj[symbol] = [];
+                    });
+            }
+        }
     }
 
     $scope.removeAlert = function (alertId, symbol) {
