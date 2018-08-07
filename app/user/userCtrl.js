@@ -24,7 +24,7 @@ app.controller('userCtrl', function ($scope, $log, $location, userSrv, alertsSrv
         $scope.invalidLogin = false;
         userSrv.login($scope.email, $scope.password).then(function (activeUser) {
             $location.path("#!/");
-            $('#SignInModal').modal('hide');
+            $('#loginModal').modal('hide');
             resetScopeInfo();
             alertsSrv.loadAlerts().then(function (response) {
                 //do_nothing
@@ -40,6 +40,6 @@ app.controller('userCtrl', function ($scope, $log, $location, userSrv, alertsSrv
 
     $scope.resetModal = function () {
         resetScopeInfo();
-        // $('#SignInModal').modal('hide');
+        // $('#loginModal').modal('hide');
     }
 })
