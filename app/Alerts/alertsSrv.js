@@ -134,15 +134,25 @@ app.factory('alertsSrv', function ($http, $q, $log, $interval, dataSrv) {
         return async.promise;
     }
 
+    function getAlertsforUser(userId) {
+        var num = 0;
+        var url = "https://estockdata.herokuapp.com/alerts?userID=" + userId;
+        var async = $q.defer();
+
+        $http.get(url).then(function (response) {
+            async.resolve(response.data);
+        }, function (err) {
+            $log.error(err);
+            async.reject("failed to get alerts for user" + userId);
+        })
+
+        return async.promise;
+    }
+
     function getAlertInfo(alertId) {
         var url="https://estockdata.herokuapp.com/alerts/" + alertId;
         var async = $q.defer();
-        // for (var i = 0; i < alertsArr.length; i++) {
-        //     if (alertsArr[i].id === alertId) {
-        //         return alertsArr[i];
-        //     }
-        // }
-
+        
         $http.get(url).then( function(success){
             async.resolve(success.data);
         }, function(err){
@@ -178,6 +188,7 @@ app.factory('alertsSrv', function ($http, $q, $log, $interval, dataSrv) {
         loadAlerts: loadAlerts,
         getNumOfAlertsforUser: getNumOfAlertsforUser,
         getAlertInfo: getAlertInfo,
-        removeAlert: removeAlert
+        removeAlert: removeAlert,
+        getAlertsforUser : getAlertsforUser
     }
 })

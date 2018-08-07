@@ -1,9 +1,9 @@
 app.controller('userCtrl', function ($scope, $log, $location, userSrv, alertsSrv) {
     $scope.user = userSrv.getActiveUser();
 
-    resetScopeInfo();
+    resetLoginModalScopeInfo();
 
-    function resetScopeInfo() {
+    function resetLoginModalScopeInfo() {
         $scope.email = "";
         $scope.password = "";
         $scope.fname = "";
@@ -17,7 +17,7 @@ app.controller('userCtrl', function ($scope, $log, $location, userSrv, alertsSrv
                         "password": $scope.password, "portfolio":[]};
         userSrv.createNewUser(newUser);
         $location.path("#!/");
-        resetScopeInfo();
+        resetLoginModalScopeInfo();
     }
 
     $scope.login = function () {
@@ -25,7 +25,7 @@ app.controller('userCtrl', function ($scope, $log, $location, userSrv, alertsSrv
         userSrv.login($scope.email, $scope.password).then(function (activeUser) {
             $location.path("#!/");
             $('#loginModal').modal('hide');
-            resetScopeInfo();
+            resetLoginModalScopeInfo();
             alertsSrv.loadAlerts().then(function (response) {
                 //do_nothing
             }, function (err) {
@@ -38,8 +38,8 @@ app.controller('userCtrl', function ($scope, $log, $location, userSrv, alertsSrv
         })
     }
 
-    $scope.resetModal = function () {
-        resetScopeInfo();
+    $scope.resetLoginModal = function () {
+        resetLoginModalScopeInfo();
         // $('#loginModal').modal('hide');
     }
 })

@@ -186,11 +186,11 @@ app.factory('portfolioSrv', function ($http, $q, $log, configSrv, userSrv) {
                     for (var i = 0; i < stockArr.length; i++) {
                         if (stockArr[i].symbol === stockSymbol) {
                             stockArr[i].alertsArr.push({ "alertId": alertId });
-                            async.resolve(stockArr);
+                            async.resolve(stockArr, stockSymbol);
                             break;
                         }
                     }            
-                    async.resolve(stockArr);
+                    async.resolve(stockArr, stockSymbol);
                 });
             }, function(err) {
                 $log.error(err);
@@ -209,7 +209,7 @@ app.factory('portfolioSrv', function ($http, $q, $log, configSrv, userSrv) {
 
         var activeUser = userSrv.getActiveUser();
         
-        if (activeUser.id) {
+        if (activeUser && activeUser.id) {
             var url = "https://estockdata.herokuapp.com/users/" + activeUser.id;
 
             for (var i=0; i< activeUser.portfolio.length; i++)

@@ -187,7 +187,7 @@ app.controller('portfolioCtrl', function ($scope, $location, dataSrv, alertsSrv,
         alertsSrv.setNewAlert(activerUser["id"], $scope.alertType, $scope.alertSymbol, $scope.alertPrice)
             .then(function (response) {
                 portfolioSrv.addAlertToStock($scope.alertSymbol, response.id)
-                    .then(function (response) {
+                    .then(function (response, symbol) {
                         $scope.stockArr = response;
                         $('#stockAlertModal').modal('hide');
                         $scope.resetAlertModal();
