@@ -31,7 +31,8 @@ app.controller('userCtrl', function ($scope, $log, $location, userSrv, alertsSrv
             }, function (err) {
                 console.log(err);
             });
-        }, function () {
+        }, function (err) {
+            console.log(err);
             $scope.invalidLogin = true;
             $scope.errorMessage = "Invalid Username or password!";
         })

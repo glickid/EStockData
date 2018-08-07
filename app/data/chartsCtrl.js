@@ -48,21 +48,25 @@ app.controller('chartsCtrl', function ($scope, $location, $routeParams, dataSrv)
 
         function setChartInfoForStockPeriod(stockSymbol, period) {
             dataSrv.getStockChartInfo(stockSymbol, period).then(function (response) {
+                // console.log(JSON.stringify(response.data[response.data.length-1]));
                 for (var i = 0; i < response.data.length; i++) {
-
+                    
                     dataPoints.push({
                         x: new Date(
-                            parseInt(response.data[i]["date"].split("-")[0]),
-                            parseInt(response.data[i]["date"].split("-")[1]),
-                            parseInt(response.data[i]["date"].split("-")[2])
+                            response.data[i]["date"]
+                            // .split("-")[0]),
+                            // parseInt(response.data[i]["date"].split("-")[1]),
+                            // parseInt(response.data[i]["date"].split("-")[2])
                         ),
                         y: [
                             parseFloat(response.data[i]["open"]),
-                            parseFloat(response.data[i]["close"]),
                             parseFloat(response.data[i]["high"]),
-                            parseFloat(response.data[i]["low"])
+                            parseFloat(response.data[i]["low"]),
+                            parseFloat(response.data[i]["close"])
                         ]
                     });
+                    // if (i=== response.data.length-1)
+                        // console.log(dataPoints[dataPoints.length-1]);
                 }
 
                 chart.render();

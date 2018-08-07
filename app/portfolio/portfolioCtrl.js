@@ -1,28 +1,33 @@
 app.controller('portfolioCtrl', function ($scope, $location, dataSrv, alertsSrv, userSrv, portfolioSrv) {
 
     $scope.stockArr = [];
+    var userPortfolio = [];
 
     var activerUser = userSrv.getActiveUser();
+
     if (activerUser === null) {
-        $location.path("#!/");
+        $location.path("/");
+    } else {
+        userPortfolio = activerUser["portfolio"];
+        buildStockArray();
     }
 
-    var userPortfolio = activerUser["portfolio"];
+    function buildStockArray() {
+        for (var i = 0; i < userPortfolio.length; i++) {
+            dataSrv.getStockInfo(userPortfolio[i]["name"], userPortfolio[i]["symbol"], userPortfolio[i])
+                .then(function (response) {
+                    //var obj = userPortfolio.find(x => x.Symbol === response.symbol)
 
-    for (var i = 0; i < userPortfolio.length; i++) {
-        dataSrv.getStockInfo(userPortfolio[i]["Name"], userPortfolio[i]["Symbol"], userPortfolio[i])
-            .then(function (response) {
-                //var obj = userPortfolio.find(x => x.Symbol === response.symbol)
-
-                portfolioSrv.buildStockPortfolio(response["returnedParam"], response)
-                    .then(function (response1) {
-                        $scope.stockArr = response1;
-                    }, function (err) {
-                        console.log(err);
-                    });
-            }, function (err) {
-                console.log(err);
-            })
+                    portfolioSrv.buildStockPortfolio(response["returnedParam"], response)
+                        .then(function (response1) {
+                            $scope.stockArr = response1;
+                        }, function (err) {
+                            console.log(err);
+                        });
+                }, function (err) {
+                    console.log(err);
+                })
+        }
     }
 
     alertsSrv.loadAlerts().then(function (response) {
@@ -80,16 +85,19 @@ app.controller('portfolioCtrl', function ($scope, $location, dataSrv, alertsSrv,
             });
             $scope.input = "";
         }
-        else
-        {
+        else {
             $scope.input = "Stock already found in portfolio!!!!";
         }
         $scope.stockList = "";
-        
+
     }
 
 
     $scope.removeStock = function (stock) {
+        for (var i = 0; i < stock.alertsArr.length; i++) {
+            $scope.removeAlert(stock.alertsArr[i]["alertId"], stock.symbol);
+        }
+
         portfolioSrv.removeStockFromPortfolio(stock.name, stock.symbol).then(function (response1) {
             $scope.stockArr = response1;
         }, function (err) {
@@ -180,6 +188,7 @@ app.controller('portfolioCtrl', function ($scope, $location, dataSrv, alertsSrv,
                         $scope.stockArr = response;
                         $('#stockAlertModal').modal('hide');
                         $scope.resetAlertModal();
+                        $scope.getAlertsInfo(symbol);
                     }, function (err) {
                         console.log(err);
                         $('#stockAlertModal').modal('hide');
@@ -193,33 +202,49 @@ app.controller('portfolioCtrl', function ($scope, $location, dataSrv, alertsSrv,
 
     }
 
-    $scope.alertsInfoArr = [];
+    $scope.alertsInfoObj = {};
 
-    $scope.getAlertsInfo = function () {
-        $scope.alertsInfoArr.length = 0;
-        for (var i = 0; i < $scope.stockArr.length; i++) {
-            for (var j = 0; j < $scope.stockArr[i].alertsArr.length; j++) {
-                var alertInfo = alertsSrv.getAlertInfo($scope.stockArr[i].alertsArr[j].alertId);
-                if (alertInfo !== null)
-                    $scope.alertsInfoArr.push(alertInfo);
-            }
+    $scope.getAlertsInfo = function (symbol) {
+
+        // for (var i = 0; i < $scope.stockArr.length; i++) {
+        //     if ($scope.stockArr[i].symbol === symbol) {
+        //         for (var j = 0; j < $scope.stockArr[i].alertsArr.length; j++) {
+        var alertsArr = portfolioSrv.getStockAlertsArr(symbol);
+        var stockAlertInfoArr = [];
+
+        for (var j = 0; j < alertsArr.length; j++) {
+            alertsSrv.getAlertInfo(alertsArr[j].alertId)
+                .then(function (response) {
+                    var alertInfo = response;
+                    if (alertInfo !== null) {
+                        stockAlertInfoArr.push(alertInfo);
+                        $scope.alertsInfoObj[symbol] = stockAlertInfoArr;
+                    }
+                }, function (err) {
+                    console.log(err);
+                });
         }
+        
+        
     }
 
     $scope.removeAlert = function (alertId, symbol) {
-        alertsSrv.removeAlert(alertId);
-        portfolioSrv.removeAlertFromStock(alertId, symbol).then(function (response) {
-            $scope.stockArr = response;
-            $scope.getAlertsInfo();
-            if ($scope.alertsInfoArr.length === 0) {
-                angular.element(document.querySelector('#' + symbol)).collapse('hide');
-            }
+        alertsSrv.removeAlert(alertId).then(function (response) {
+            portfolioSrv.removeAlertFromStock(alertId, symbol).then(function (response1) {
+                $scope.stockArr = response1;
+                $scope.getAlertsInfo(symbol);
+                if ($scope.alertsInfoObj[symbol].length) {
+                    angular.element(document.querySelector('#' + symbol)).collapse('hide');
+                }
+            }, function (err) {
+                console.log(err)
+            })
         }, function (err) {
-            consol.log(err)
-        })
+            console.log(err);
+        });
     }
 
-    $scope.openStockChart = function(stock, period) {
-        $location.path("/charts/"+ stock.symbol +"/" + period );
+    $scope.openStockChart = function (stock, period) {
+        $location.path("/charts/" + stock.symbol + "/" + period);
     }
 });

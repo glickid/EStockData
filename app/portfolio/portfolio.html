@@ -23,7 +23,7 @@
                 </thead>
                 <tbody role="rowgroup" ng-repeat="stock in stockArr">
                     <tr class="portfolio-row" role="row">
-                        <td role="cell" data-toggle="collapse" data-target="#{{stock.symbol}}" class="clickable" ng-click="getAlertsInfo()">
+                        <td role="cell" data-toggle="collapse" data-target="#{{stock.symbol}}" class="clickable" ng-click="getAlertsInfo(stock.symbol)">
                             {{stock.name}}</td>
                         <td role="cell">{{stock.symbol}}</td>
                         <td role="cell">
@@ -58,7 +58,7 @@
                         <td colspan="3">
                             <div id="{{stock.symbol}}" class="collapse">
                                 Alerts:
-                                <div ng-repeat="alert in alertsInfoArr">
+                                <div ng-repeat="alert in alertsInfoObj[stock.symbol]">
                                     Type: {{alert.alertType}} Price: {{alert.price}} Triggerd: {{alert.triggerd}}
                                     <button type="button" class="btn btn-danger" ng-click="removeAlert(alert.id, alert.stockSymbol)">
                                         <i class="far fa-trash-alt action-icon"></i>
@@ -71,7 +71,7 @@
             </table>
         </div>
         <div class="empty-portfolio text-center mt-5 bg-success" ng-show="stockArr.length===0">
-            <p class="mb-0">Use the search-box to look for your desired stock (from S&P500)</p>
+            <p class="mb-0">Use the search-box to look for your desired stock</p>
             <p class="mb-0">On opend list - click to add to portfolio </p>
         </div>
 

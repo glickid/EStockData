@@ -1,7 +1,6 @@
 app.controller("navbarCtrl", function ($scope, userSrv, alertsSrv, $interval, $location) {
-
-    var activeUser = userSrv.getActiveUser();
-
+    var activeUser = null;
+    
     $scope.isUserLoggedIn = function () {
         return userSrv.isLoggedIn();
     }
@@ -13,7 +12,12 @@ app.controller("navbarCtrl", function ($scope, userSrv, alertsSrv, $interval, $l
 
     $interval(function () {
         if (userSrv.isLoggedIn()) {
-            $scope.alertNum = alertsSrv.getNumOfAlertsforUser(activeUser.id);
+            activeUser = userSrv.getActiveUser();
+            alertsSrv.getNumOfAlertsforUser(activeUser.id).then(function(response){
+                $scope.alertNum = response;
+            }, function(err){
+                console.log(err);
+            })
         }
         else {
             $scope.alertNum = 0;

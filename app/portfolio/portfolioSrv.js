@@ -1,11 +1,11 @@
-app.factory('portfolioSrv', function ($http, $q, configSrv) {
+app.factory('portfolioSrv', function ($http, $q, $log, configSrv, userSrv) {
 
     var maxStockNameLen = configSrv.getMaxStcokNameLen();
 
 
     function Stock(name, symbol, purchasePrice, purchaseDate, CurrentPrice, dayVolume, dayOpen, alerts) {
         this.name = shorten(name, maxStockNameLen);
-        this.symbol = symbol;
+        this.symbol = symbol.replace(".", "-");
         this.pprice = purchasePrice;
         this.pdate = purchaseDate;
         this.cprice = CurrentPrice;
@@ -35,30 +35,30 @@ app.factory('portfolioSrv', function ($http, $q, configSrv) {
     }
 
     function buildStockPortfolio(obj, infoObj) {
+        //build the local array - server is already up-to-date at this stage
         var async = $q.defer();
 
         var updated = false;
         for (var i = 0; i < stockArr.length; i++) {
+
             if (stockArr[i].symbol === infoObj["symbol"]) {
+
                 stockArr[i].cprice = infoObj["currentPrice"];
                 stockArr[i].dvolume = infoObj["dayVolume"];
                 stockArr[i].dayOpen = infoObj["openPrice"];
-                // for (var j=0; j< obj.alerts.legth; j++)
-                // {
-                // stockArr[i].alerts = alertsSrv.getAlertInfo(obj.alerts[j].alertId);
-                // }
                 stockArr[i].alerts = obj.alerts;
+
                 updated = true;
                 break;
             }
         }
-        if (!updated) //need to add
+        if (!updated) //need to add to array
         {
-            var stock = new Stock(obj["Name"], obj["Symbol"], obj["purchasePrice"], obj["purchaseDate"],
-                infoObj["currentPrice"], infoObj["dayVolume"], infoObj["openPrice"], obj["alerts"]);
+            var stock = new Stock(obj["name"], obj["symbol"], obj["pprice"], obj["pdate"],
+                infoObj["currentPrice"], infoObj["dayVolume"], infoObj["openPrice"], obj["alertsArr"]);
             stockArr.push(stock);
         }
-        //TODO : post stock to user portfolio in DB
+
         async.resolve(stockArr);
 
         return async.promise;
@@ -82,10 +82,26 @@ app.factory('portfolioSrv', function ($http, $q, configSrv) {
 
         var stock = new Stock(stockName, stockSymbol, infoObj["currentPrice"], calcCurrentDate(), infoObj["currentPrice"],
             infoObj["dayVolume"], infoObj["openPrice"], []);
-        stockArr.push(stock);
 
-        //TODO : post stock to user portfolio in DB
-        async.resolve(stockArr);
+        var activeUser = userSrv.getActiveUser();
+
+        if (activeUser.id) {
+            var url = "https://estockdata.herokuapp.com/users/" + activeUser.id;
+
+            activeUser.portfolio.push(stock);
+            $http.put(url, activeUser).then(function (success) {
+                userSrv.updateActiveUser().then(function(response1){
+                    stockArr.push(stock);
+                    async.resolve(stockArr);
+                });
+            }, function(err) {
+                $log.error(err);
+            });
+        }
+        else {
+            //oops, something very wrong here!
+            async.reject("user does not have an id!!")
+        }
 
         return async.promise;
     }
@@ -93,14 +109,37 @@ app.factory('portfolioSrv', function ($http, $q, configSrv) {
     function removeStockFromPortfolio(stockName, stockSymbol) {
         var async = $q.defer();
 
-        for (var i = 0; i < stockArr.length; i++) {
-            if (stockArr[i].symbol === stockSymbol) {
-                stockArr.splice(i, 1);
-                break;
+        var activeUser = userSrv.getActiveUser();
+        if (activeUser.id) {
+            var url = "https://estockdata.herokuapp.com/users/" + activeUser.id;
+
+            for (var i=0; i< activeUser.portfolio.length; i++)
+            {
+                if (activeUser.portfolio[i]["symbol"] === stockSymbol)
+                {
+                    activeUser.portfolio.splice(i,1);
+                    break;
+                }
             }
+
+            $http.put(url, activeUser).then(function (success) {
+                userSrv.updateActiveUser().then(function(response1){
+                    for (var i = 0; i < stockArr.length; i++) {
+                        if (stockArr[i].symbol === stockSymbol) {
+                            stockArr.splice(i, 1);
+                            break;
+                        }
+                    }
+                    async.resolve(stockArr);
+                });
+            }, function(err) {
+                $log.error(err);
+            });
         }
-        //todo: update stock array to user in DB
-        async.resolve(stockArr);
+        else {
+            //oops, something very wrong here!
+            async.reject("user does not have an id!!")
+        }
 
         return async.promise;
     };
@@ -116,7 +155,7 @@ app.factory('portfolioSrv', function ($http, $q, configSrv) {
                 break;
             }
         }
-        //TODO : post stock to user portfolio in DB
+
         if (i < stockArr.length)
             async.resolve(stockArr);
         else
@@ -129,13 +168,37 @@ app.factory('portfolioSrv', function ($http, $q, configSrv) {
     function addAlertToStock(stockSymbol, alertId) {
         var async = $q.defer();
 
-        for (var i = 0; i < stockArr.length; i++) {
-            if (stockArr[i].symbol === stockSymbol) {
-                stockArr[i].alertsArr.push({ "alertId": alertId });
-                //todo: update DB
-                async.resolve(stockArr);
-                break;
+        var activeUser = userSrv.getActiveUser();
+        
+        if (activeUser.id) {
+            var url = "https://estockdata.herokuapp.com/users/" + activeUser.id;
+
+            for (var i=0; i< activeUser.portfolio.length; i++)
+            {
+                if (activeUser.portfolio[i]["symbol"] === stockSymbol)
+                {
+                    activeUser.portfolio[i].alertsArr.push({"alertId":alertId});
+                    break;
+                }
             }
+            $http.put(url, activeUser).then(function (success) {
+                userSrv.updateActiveUser().then(function(response1){
+                    for (var i = 0; i < stockArr.length; i++) {
+                        if (stockArr[i].symbol === stockSymbol) {
+                            stockArr[i].alertsArr.push({ "alertId": alertId });
+                            async.resolve(stockArr);
+                            break;
+                        }
+                    }            
+                    async.resolve(stockArr);
+                });
+            }, function(err) {
+                $log.error(err);
+            });
+        }
+        else {
+            //oops, something very wrong here!
+            async.reject("user does not have an id!!")
         }
 
         return async.promise;
@@ -144,27 +207,69 @@ app.factory('portfolioSrv', function ($http, $q, configSrv) {
     function removeAlertFromStock(alertId, symbol) {
         var async = $q.defer();
 
-        for (var i = 0; i < stockArr.length; i++) {
-            if (stockArr[i].symbol === symbol) {
-                for (var j = 0; j < stockArr[i].alertsArr.length; j++) {
-                    if (stockArr[i].alertsArr[j].alertId === alertId) {
-                        stockArr[i].alertsArr.splice(j, 1);
-                    }
-                    //todo: update DB
-                    async.resolve(stockArr);
+        var activeUser = userSrv.getActiveUser();
+        
+        if (activeUser.id) {
+            var url = "https://estockdata.herokuapp.com/users/" + activeUser.id;
+
+            for (var i=0; i< activeUser.portfolio.length; i++)
+            {
+                if (activeUser.portfolio[i]["symbol"] === symbol)
+                {
+                    var index = activeUser.portfolio[i].alertsArr.indexOf(alertId);
+                    
+                    activeUser.portfolio[i].alertsArr.splice(index, 1);
                     break;
                 }
             }
+            $http.put(url, activeUser).then(function (success) {
+                userSrv.updateActiveUser().then(function(response1){
+                    for (var i = 0; i < stockArr.length; i++) {
+                        if (stockArr[i].symbol === symbol) {
+                            for (var j = 0; j < stockArr[i].alertsArr.length; j++) {
+                                if (stockArr[i].alertsArr[j].alertId === alertId) {
+                                    stockArr[i].alertsArr.splice(j, 1);
+                                    break;
+                                }
+                            }
+                            break;
+                        }
+                    }           
+                    async.resolve(stockArr);
+                });
+            }, function(err) {
+                $log.error(err);
+            });
+        }
+        else {
+            //oops, something very wrong here!
+            async.reject("user does not have an id!!")
         }
 
         return async.promise;
     }
+
+    function getStockAlertsArr(symbol) {
+        //var async = $.defer();
+
+        var activerUser = userSrv.getActiveUser();
+
+        for(var i=0;i<activerUser.portfolio.length; i++)
+        {
+            if (activerUser.portfolio[i]["symbol"] === symbol)
+            {
+                return activerUser.portfolio[i].alertsArr;
+            }
+        }
+    }
+
     return {
         addAlertToStock: addAlertToStock,
         updateStockInPortfolio: updateStockInPortfolio,
         buildStockPortfolio: buildStockPortfolio,
         addStockToPortfolio: addStockToPortfolio,
         removeStockFromPortfolio: removeStockFromPortfolio,
-        removeAlertFromStock: removeAlertFromStock
+        removeAlertFromStock: removeAlertFromStock,
+        getStockAlertsArr: getStockAlertsArr
     }
 })

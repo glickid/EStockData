@@ -503,4 +503,5 @@
 {"Name":"Discovery Inc. Class A","Symbol":"DISCA"},
 {"Name":"Under Armour Inc. Class A","Symbol":"UAA"},
 {"Name":"Under Armour Inc. Class C","Symbol":"UA"},
-{"Name":"News Corporation Class B","Symbol":"NWS"},
+{"Name":"News Corporation Class B","Symbol":"NWS"}
+]
