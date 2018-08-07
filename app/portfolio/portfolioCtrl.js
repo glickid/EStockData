@@ -222,6 +222,8 @@ app.controller('portfolioCtrl', function ($scope, $location, dataSrv, alertsSrv,
                     }
                 }, function (err) {
                     console.log(err);
+                    angular.element(document.querySelector('#' + symbol)).collapse('hide');
+                    $scope.alertsInfoObj[symbol] = [];
                 });
         }
         
