@@ -53,9 +53,20 @@
         <a class="navbar-brand" href="#!/">
             <img src="assests/1477521928_10_icon-icons.com_74620.png" alt="" width="50px"> EStockData
         </a>
-
+        <ul class="alert-icon navbar-brand">
+            <li class="text-danger" ng-show="isUserLoggedIn()">
+                <a href="javascript:void(0)" class="" data-toggle="modal" data-target="#alertsModal">
+                    <i class="fas fa-bell" ng-class="(alertNum>0)?'text-danger':''"></i>
+                    <span class="badge" ng-hide="(alertNum === 0)">{{alertNum}}</span>
+                </a>
+            </li>
+            <li class="text-dark" ng-hide="isUserLoggedIn()">
+                <i class="fas fa-bell" ng-class="(alertNum>0)?'text-danger':''"></i>
+                <span class="badge" ng-hide="(alertNum === 0)">{{alertNum}}</span>
+            </li>
+        </ul>
         <!-- Toggler/collapsibe Button -->
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+        <button id="navbar-humburger" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
             <span class="navbar-toggler-icon"></span>
         </button>
 
@@ -82,20 +93,9 @@
                 </li>
             </ul>
         </div>
-        <div class="position-relative">
-            <ul class="alert-icon">
-                <li class="" ng-show="isUserLoggedIn()">
-                    <a href="javascript:void(0)" class="" data-toggle="modal" data-target="#alertsModal">
-                        <i class="fas fa-bell" ng-class="(alertNum>0)?'text-danger':''"></i>
-                        <span class="badge" ng-hide="(alertNum === 0)">{{alertNum}}</span>
-                    </a>
-                </li>
-                <li class="" ng-hide="isUserLoggedIn()">
-                    <i class="fas fa-bell" ng-class="(alertNum>0)?'text-danger':''"></i>
-                    <span class="badge" ng-hide="(alertNum === 0)">{{alertNum}}</span>
-                </li>
-            </ul>
-        </div>
+        <!-- <div class="position-relative">
+            
+        </div> -->
     </nav>
 
     <div id="the-container">
