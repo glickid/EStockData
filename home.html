@@ -92,7 +92,7 @@
                 </small>
                 <br/>
                 <div ng-repeat="(key,val) in currencyObj">
-                    <small class="mt-2">{{key}}:
+                    <small class="text-dark mt-2">{{key}}:
                         <span class="float-right">{{val}}</span>
                     </small>
                 </div>
@@ -142,7 +142,7 @@
                     <label for="QDays">Last days to show:</label>
                     <input type="number" name="QDays" id="QDays" ng-model="quantity">
                 </div>
-                <div ng-repeat="(key1, val1) in NDXinfo | objLimitTo:quantity">
+                <div class="text-dark" ng-repeat="(key1, val1) in NDXinfo | objLimitTo:quantity">
                     <small>
                         <u>{{key1}}</u>
                     </small>
