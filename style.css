@@ -11,15 +11,15 @@
     position: relative;
     right: 20px;
 }
-.alert-icon {
+/* .alert-icon {
     position: absolute;
     font-size: 40px;
     right:100px;
-}
+} */
 
 .badge {
     position: absolute;
-    bottom: 20px;
+    bottom: 7px;
     right: 102px;
     color: red;
     background-color: blue;
@@ -27,6 +27,23 @@
 /* #the-container { */
 .home-container {
     background-color: rgb(68,114,196)
+}
+
+#features-list {
+    list-style: none;
+    padding: 0;
+}
+ 
+#features-list li {
+    padding-left: 1.3em;
+}
+  
+#features-list li:before {
+    content: "\f00c"; /* FontAwesome Unicode */
+    font-family: FontAwesome;
+    display: inline-block;
+    margin-left: -1.3em; /* same as padding-left set on li */
+    width: 1.3em; /* same as padding-left set on li */
 }
 
 .portfolio-container {
