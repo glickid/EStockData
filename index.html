@@ -70,16 +70,6 @@
                 </li>
             </ul>
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item position-relative" ng-show="isUserLoggedIn()">
-                    <a href="javascript:void(0)" class="nav-link" data-toggle="modal" data-target="#alertsModal">
-                        <i class="fas fa-bell alert-icon" ng-class="(alertNum>0)?'text-danger':''"></i>
-                        <span class="badge" ng-hide="(alertNum === 0)">{{alertNum}}</span>
-                    </a>
-                </li>
-                <li class="nav-item position-relative" ng-hide="isUserLoggedIn()">
-                    <i class="fas fa-bell alert-icon" ng-class="(alertNum>0)?'text-danger':''"></i>
-                    <span class="badge" ng-hide="(alertNum === 0)">{{alertNum}}</span>
-                </li>
                 <li class="nav-item" ng-hide="isUserLoggedIn()">
                     <a class="nav-link" href="#!/signup">Sign Up</a>
                 </li>
@@ -89,6 +79,20 @@
                 </li>
                 <li class="nav-item" ng-show="isUserLoggedIn()">
                     <a class="nav-link" href="javascript:void(0)" ng-click="logout()">Logout</a>
+                </li>
+            </ul>
+        </div>
+        <div class="position-relative">
+            <ul class="alert-icon">
+                <li class="" ng-show="isUserLoggedIn()">
+                    <a href="javascript:void(0)" class="" data-toggle="modal" data-target="#alertsModal">
+                        <i class="fas fa-bell" ng-class="(alertNum>0)?'text-danger':''"></i>
+                        <span class="badge" ng-hide="(alertNum === 0)">{{alertNum}}</span>
+                    </a>
+                </li>
+                <li class="" ng-hide="isUserLoggedIn()">
+                    <i class="fas fa-bell" ng-class="(alertNum>0)?'text-danger':''"></i>
+                    <span class="badge" ng-hide="(alertNum === 0)">{{alertNum}}</span>
                 </li>
             </ul>
         </div>
@@ -115,7 +119,7 @@
                 </div>
                 <div class="modal-body">
                     <form class="form-signin">
-                        <h2 class="form-signin-heading">Please sign in</h2>
+                        <h2 class="form-signin-heading">Please login</h2>
                         <label for="inputEmail" class="sr-only">Email address</label>
                         <input ng-model="email" type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
                         <label for="inputPassword" class="sr-only">Password</label>
@@ -125,7 +129,7 @@
                                     <input type="checkbox" value="remember-me"> Remember me
                                 </label>
                             </div> -->
-                        <button ng-click="login()" class="btn btn-lg btn-primary btn-block" type="button">Sign in</button>
+                        <button ng-click="login()" class="btn btn-lg btn-primary btn-block" type="button">Log me in</button>
                     </form>
                     <div id="login-error" class="alert alert-danger" role="alert" ng-hide='errorMessage===""'>{{errorMessage}}</div>
                 </div>
@@ -152,28 +156,29 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                        <!-- <div class="table-responsive"> -->
-                            <div>
-                    <table class="table table-sm table-hover">
-                        <thead class-"thead-dark">
-                            <th>Symbol</th>
-                            <th>Type</th>
-                            <th>Price</th>
-                            <th>Triggerd</th>
-                        </thead>
-                        <tbody>
-                            <tr ng-repeat="alert in userManageAlertsArr">
-                                <td>{{alert.stockSymbol}}</td>
-                                <td>{{alert.alertType}}</td>
-                                <td>{{alert.price}}</td>
-                                <td>{{alert.triggerd?'Yes':'No'}}</td>
-                                <td><button id="alert-remove-btn" type="button" class="btn btn-danger d-inline-block float-right" ng-click="removeAlert(alert.id, alert.stockSymbol)">
-                                        <i class="far fa-trash-alt action-icon"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <!-- <div class="table-responsive"> -->
+                    <div>
+                        <table class="table table-sm table-hover">
+                            <thead class- "thead-dark">
+                                <th>Symbol</th>
+                                <th>Type</th>
+                                <th>Price</th>
+                                <th>Triggerd</th>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="alert in userManageAlertsArr">
+                                    <td>{{alert.stockSymbol}}</td>
+                                    <td>{{alert.alertType}}</td>
+                                    <td>{{alert.price}}</td>
+                                    <td>{{alert.triggerd?'Yes':'No'}}</td>
+                                    <td>
+                                        <button id="alert-remove-btn" type="button" class="btn btn-danger d-inline-block float-right" ng-click="removeAlert(alert.id, alert.stockSymbol)">
+                                            <i class="far fa-trash-alt action-icon"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="resetAlertsModal()">Close</button>

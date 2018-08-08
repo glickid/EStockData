@@ -11,16 +11,21 @@
     position: relative;
     right: 20px;
 }
-/* .alert-icon {
+
+.alert-icon {
+    list-style: none;
+    padding: 0;
     position: absolute;
     font-size: 40px;
-    right:100px;
-} */
+    right: 134px;
+    top: -26px;
+} 
 
 .badge {
     position: absolute;
-    bottom: 7px;
-    right: 102px;
+    bottom: 23px;
+    right: 18px;
+    font-size: 15px;
     color: red;
     background-color: blue;
 }
@@ -339,8 +344,8 @@ and (max-device-width: 1024px)  {
 
     .badge {
         position: absolute;
-        bottom: -16px;
-        right: 102px;
+        bottom: 23px;
+        right: 22px;
         color: red;
         background-color: blue;
     }
