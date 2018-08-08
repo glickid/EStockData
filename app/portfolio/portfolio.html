@@ -59,10 +59,14 @@
                             <div id="{{stock.symbol}}" class="collapse">
                                 Alerts:
                                 <div ng-repeat="alert in alertsInfoObj[stock.symbol]">
-                                    Type: {{alert.alertType}} Price: {{alert.price}} Triggerd: {{alert.triggerd}}
-                                    <button type="button" class="btn btn-danger" ng-click="removeAlert(alert.id, alert.stockSymbol)">
-                                        <i class="far fa-trash-alt action-icon"></i>
-                                    </button>
+                                    <div class="text-info clearfix">
+                                        <p class="d-inline-block">
+                                            Type: {{alert.alertType}} Price: {{alert.price}} Triggerd: {{alert.triggerd==true?'Yes':'No'}}
+                                        </p>
+                                        <button type="button" class="btn btn-danger float-right" ng-click="removeAlert(alert.id, alert.stockSymbol)">
+                                            <i class="far fa-trash-alt action-icon"></i>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </td>

@@ -7,6 +7,10 @@
     background-color: rgb(246, 174, 144);
 }
 
+#alert-modal-x {
+    position: relative;
+    right: 20px;
+}
 .alert-icon {
     position: absolute;
     font-size: 40px;
@@ -263,7 +267,7 @@ and (max-device-width: 1024px)  {
         background: #ccc;
     }
 
-    tbody tr:first-child td{
+    #portfolio-table tbody tr:first-child td{
         /* Behave  like a "row" */
         border: none;
         border-bottom: 1px solid #eee;
@@ -314,6 +318,34 @@ and (max-device-width: 1024px)  {
 @media screen and (max-width: 576px) {
     .portfolio-container {
         height:100%;
+    }
+
+    .badge {
+        position: absolute;
+        bottom: -16px;
+        right: 102px;
+        color: red;
+        background-color: blue;
+    }
+
+    #signin-btn {
+        position: relative;
+        bottom: 25px;
+    }
+
+    #alert-remove-btn {
+        position: relative;
+        right: 10px;
+    }
+
+    #alert-modal-load {
+        position: relative;
+        right: 10px;
+        font-size: 20px;
+    }
+
+    #alert-modal-load > h2 {
+        font-size : 1.2rem;
     }
 }
 
