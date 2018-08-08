@@ -21,7 +21,7 @@
                         <th role="columnheader">Action</th>
                     </tr>
                 </thead>
-                <tbody role="rowgroup" ng-repeat="stock in stockArr">
+                <tbody role="rowgroup" ng-repeat="stock in stockArr" ng-class="{'mb-5':$last}">
                     <tr class="portfolio-row" role="row">
                         <td role="cell" data-toggle="collapse" data-target="#{{stock.symbol}}" class="clickable" ng-click="getAlertsInfo(stock.symbol)">
                             {{stock.name}}</td>
