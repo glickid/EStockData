@@ -249,7 +249,7 @@ and (max-device-width: 1024px)  {
         display: block;
     }
 
-    th {
+    #portfolio-table > thead > th {
         min-width: 75px;
     }
     /* Hide table headers (but not display: none;, for accessibility) */
