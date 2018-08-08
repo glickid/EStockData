@@ -18,6 +18,7 @@ app.controller('homeCtrl', function ($scope, $location, dataSrv, configSrv, user
     getCurrencies();
     getGainers();
     getLosers();
+    getMostActive();
 
     // $interval(getCurrencies, 2000);
     $scope.isUserLoggedIn = function() {
@@ -53,6 +54,18 @@ app.controller('homeCtrl', function ($scope, $location, dataSrv, configSrv, user
             for(var i=0; i<response.length; i++)
             {
                 $scope.losersList = response;
+            }
+        }, function(err){
+            console.log(err);
+        })
+    }
+
+    function getMostActive() {
+        
+        dataSrv.getMostActive().then(function(response) {
+            for(var i=0; i<response.length; i++)
+            {
+                $scope.mostActiveList = response;
             }
         }, function(err){
             console.log(err);

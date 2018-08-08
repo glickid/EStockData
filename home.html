@@ -59,6 +59,33 @@
                     </table>
                 </div>
             </div>
+            <div class="container bg-info text-light mt-1">
+                <small>
+                    <u>Losers</u>
+                </small>
+                <br/>
+                <div class="table-responsive-sm">
+                    <table class="table small-table">
+                        <thead>
+                            <tr>
+                                <th class="th-sm">Symbol</th>
+                                <th class="th-sm">Last Price</th>
+                                <th class="th-sm">Change</th>
+                                <th class="th-sm">%Change</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="active in mostActiveList | orderBy:'changePercent' | limitTo: 5">
+                                <th class="small-table-td" scope="row">{{active.symbol}}</th>
+                                <td class="small-table-td">{{active.latestPrice|number}}</td>
+                                <td class="small-table-td">{{active.change}}</td>
+                                <td class="small-table-td">{{active.changePercent*100 | number:2}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <small ng-show="!mostActiveList.length">No Info out of trading hours.</small>
+            </div>
             <div class="container bg-info text-light mt-2 mb-2">
                 <small>
                     <u>Major Currencies (value in USD)</u>
@@ -86,8 +113,7 @@
                         </ul>
                         <div class="lead mt-2 float-right">
                             <a id="signin-btn" class="btn btn-primary btn-lg" role="button" href="#!/signup">Register Now!</a>
-                            <a id="login-btn" class="btn btn-primary btn-lg" 
-                                href="" role="button" data-toggle="modal" data-target="#loginModal">Login</a>
+                            <a id="login-btn" class="btn btn-primary btn-lg" href="" role="button" data-toggle="modal" data-target="#loginModal">Login</a>
                         </div>
                 </div>
             </div>

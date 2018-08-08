@@ -8,6 +8,7 @@ app.factory('dataSrv', function ($http, $q, $log, $timeout, $localStorage, confi
     var stocksArr = [];
     var gainersArr = [];
     var losersArr = [];
+    var mostActiveArr = [];
 
     if (typeof $localStorage.currencyObject !== "undefined") {
         currencyObject = $localStorage.currencyObject;
@@ -204,7 +205,24 @@ app.factory('dataSrv', function ($http, $q, $log, $timeout, $localStorage, confi
             async.resolve(losersArr);
         }, function (err) {
             $log.error(err);
-            async.reject("failed to get gainers info");
+            async.reject("failed to get losers info");
+        });
+
+        return async.promise;
+    }
+
+    function getMostActive() {
+        var theUrl = "https://api.iextrading.com/1.0/stock/market/list/mostactive";
+
+        var async = $q.defer();
+        mostActiveArr.length = 0;
+
+        $http.get(theUrl).then(function (response) {
+            mostActiveArr = response.data.slice(0);
+            async.resolve(mostActiveArr);
+        }, function (err) {
+            $log.error(err);
+            async.reject("failed to get losers info");
         });
 
         return async.promise;
@@ -245,7 +263,7 @@ app.factory('dataSrv', function ($http, $q, $log, $timeout, $localStorage, confi
             async.resolve(response);
         }, function (err) {
             $log.error(err);
-            async.reject("failed to get NDX info");
+            async.reject("failed to get stock stats info");
         })
 
         premises.push(async.promise);
@@ -260,7 +278,7 @@ app.factory('dataSrv', function ($http, $q, $log, $timeout, $localStorage, confi
             async.resolve(response);
         }, function (err) {
             $log.error(err);
-            async.reject("failed to get NDX info");
+            async.reject("failed to get chart info");
         })
 
         premises.push(async.promise);
@@ -277,6 +295,7 @@ app.factory('dataSrv', function ($http, $q, $log, $timeout, $localStorage, confi
         getNDX: getNDX,
         getGainersList : getGainersList,
         getLosersList : getLosersList,
-        getStockChartInfo : getStockChartInfo
+        getStockChartInfo : getStockChartInfo,
+        getMostActive : getMostActive
     }
 })
