@@ -6,7 +6,7 @@ app.controller('chartsCtrl', function ($scope, $location, $routeParams, dataSrv)
 
 
     $scope.openStockChart = function(symbol, period) {
-        $location.path("/charts/"+ symbol +"/" + period );
+        $location.path("/charts/"+ symbol + "/" + period );
     }
 
     loadChart();
@@ -75,5 +75,26 @@ app.controller('chartsCtrl', function ($scope, $location, $routeParams, dataSrv)
                 console.log(err);
             });
         }
+    }
+
+    $scope.stockList = "";
+
+    $scope.searchStock = function (searchStr) {
+        if (searchStr.length > 1) {
+            dataSrv.searchStock(searchStr).then(function (response) {
+                $scope.stockList = response;
+            }, function (err) {
+                console.log(err);
+                $scope.stockList = "";
+            })
+        }
+        else {
+            $scope.stockList = "";
+        }
+    }
+
+    $scope.showChartOfStock = function(name, symbol)
+    {
+        $location.path("/charts/" + symbol + "/1m");
     }
 });

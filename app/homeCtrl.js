@@ -102,4 +102,9 @@ app.controller('homeCtrl', function ($scope, $location, dataSrv, configSrv, user
         $location.path("/portfolio");
         // resetScopeInfo();
     }
+
+    $scope.seeCharts = function ()
+    {
+        $location.path("/charts/AAPL/1m")
+    }
 });

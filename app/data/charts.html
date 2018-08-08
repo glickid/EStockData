@@ -1,4 +1,10 @@
 <div class="container mt-5 mb-5">
+    <form class="search-box my-2">
+        <input type="text" class="bg-info text-dark form-control" placeholder="Search Stock" ng-model="input" ng-change="searchStock(input)">
+        <div class="search-results list-group">
+            <a href="javascript:void(0)" class="list-group-item list-group-item-action" ng-repeat="(key, value) in stockList" ng-click="showChartOfStock(key, value)">{{key}} (Symbol: {{value}})</a>
+        </div>
+    </form>
     <div class="container my-5 text-center">
         <a href="javascript:void(0)" ng-click="openStockChart(Title, '1d')">
             <span class="badge-primary">1 Day</span>
