@@ -61,7 +61,7 @@
             </div>
             <div class="container bg-info text-light mt-1">
                 <small>
-                    <u>Losers</u>
+                    <u>Most Active</u>
                 </small>
                 <br/>
                 <div class="table-responsive-sm">
@@ -70,15 +70,15 @@
                             <tr>
                                 <th class="th-sm">Symbol</th>
                                 <th class="th-sm">Last Price</th>
-                                <th class="th-sm">Change</th>
+                                <th class="th-sm">last Volume</th>
                                 <th class="th-sm">%Change</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="active in mostActiveList | orderBy:'changePercent' | limitTo: 5">
+                            <tr ng-repeat="active in mostActiveList | orderBy:'-latestVolume' | limitTo: 5">
                                 <th class="small-table-td" scope="row">{{active.symbol}}</th>
                                 <td class="small-table-td">{{active.latestPrice|number}}</td>
-                                <td class="small-table-td">{{active.change}}</td>
+                                <td class="small-table-td">{{active.latestVolume|number}}</td>
                                 <td class="small-table-td">{{active.changePercent*100 | number:2}}</td>
                             </tr>
                         </tbody>
