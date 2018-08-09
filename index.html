@@ -68,8 +68,7 @@
             </li>
         </ul>
         <!-- Toggler/collapsibe Button -->
-        <button id="navbar-humburger" class="navbar-toggler" type="button" 
-            data-toggle="collapse" data-target="#collapsibleNavbar">
+        <button id="navbar-humburger" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
             <span class="navbar-toggler-icon"></span>
         </button>
 
@@ -81,6 +80,9 @@
                 </li>
                 <li class="nav-item" ng-show="isUserLoggedIn()">
                     <a class="nav-link" href="#!/cryptoCurrency">Crypto Currrencies</a>
+                </li>
+                <li class="nav-item" ng-show="isUserLoggedIn()">
+                    <a class="nav-link" href="#!/charts/:AAPL/:1m">Charts</a>
                 </li>
             </ul>
             <ul class="navbar-nav ml-auto">
@@ -100,8 +102,7 @@
             
         </div> -->
         <!-- Alerts Modal -->
-        <div class="modal fade" id="alertsModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
-            aria-hidden="true">
+        <div class="modal fade" id="alertsModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -189,4 +190,5 @@
         </div>
     </div>
 </body>
+
 </html>
