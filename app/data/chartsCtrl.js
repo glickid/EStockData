@@ -1,4 +1,4 @@
-app.controller('chartsCtrl', function ($scope, $location, $routeParams, dataSrv) {
+app.controller('chartsCtrl', function ($scope, $location, $routeParams, dataSrv, userSrv) {
 
     var dataPoints = [];
     $scope.Title = $routeParams.stockSymbol;
@@ -9,7 +9,13 @@ app.controller('chartsCtrl', function ($scope, $location, $routeParams, dataSrv)
         $location.path("/charts/"+ symbol + "/" + period );
     }
 
-    loadChart();
+    var activerUser = userSrv.getActiveUser();
+
+    if (activerUser === null) {
+         $location.path("/");
+    } else { 
+        loadChart();
+    }
     
     //$scope.loadChart = function () {
     function loadChart() {
