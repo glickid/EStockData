@@ -180,9 +180,19 @@ app.controller('portfolioCtrl', function ($scope, $location, dataSrv, alertsSrv,
         $scope.alertSymbol = "";
         $scope.alertPrice = 0;
         $scope.alertType = "";
+        $scope.errorMessage = "";
     }
 
     $scope.setStockAlert = function () {
+
+        if ($scope.alertType === "") {
+            $scope.errorMessage = "Please select Alert Type";
+            return;
+        }
+        if ($scope.alertPrice === 0) {
+            $scope.errorMessage = "Please enter price";
+            return;
+        }
 
         alertsSrv.setNewAlert(activerUser["id"], $scope.alertType, $scope.alertSymbol, $scope.alertPrice)
             .then(function (response) {
@@ -192,6 +202,7 @@ app.controller('portfolioCtrl', function ($scope, $location, dataSrv, alertsSrv,
                         $('#stockAlertModal').modal('hide');
                         $scope.resetAlertModal();
                         $scope.getAlertsInfo(symbol);
+                        $scope.errorMessage = "";
                     }, function (err) {
                         console.log(err);
                         $('#stockAlertModal').modal('hide');

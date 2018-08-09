@@ -1,7 +1,7 @@
 <div class="bg-info">
     <div class="container portfolio-container pt-1">
         <form class="search-box my-2">
-            <input type="text" class="bg-info text-dark form-control" placeholder="Search Stock" ng-model="input" ng-change="searchStock(input)">
+            <input type="text" class="bg-info text-white form-control search-stock" placeholder="Search Stock" ng-model="input" ng-change="searchStock(input)">
             <div class="search-results list-group">
                 <a href="javascript:void(0)" class="list-group-item list-group-item-action" ng-repeat="(key, value) in stockList" ng-click="addStockToPortfolio(key, value)">{{key}} (Symbol: {{value}})</a>
             </div>
@@ -259,13 +259,14 @@
                     <div class="modal-body">
                         <form class="form-signin">
                             <h5>Current price: {{alertCurrentPrice}}</h5>
-                            <label for="alert-price">Enter Price to set Alert for</label>
-                            <input ng-model="alertPrice" type="number" id="alert-price" class="form-control" required autofocus>
                             <label for="alert-type">Select Alert type</label>
                             <select ng-model="alertType" id="alert-type" class="form-control" required>
+                                <option value="">---Please select---</option>
                                 <option value="take-profit">Take Profit</option>
                                 <option value="stop-loss">Stop Loss</option>
                             </select>
+                            <label for="alert-price">Enter Price to set Alert for</label>
+                            <input ng-model="alertPrice" type="number" id="alert-price" class="form-control" required autofocus>
                             <!-- <div class="checkbox">
                                 <label>
                                     <input type="checkbox" value="remember-me"> Remember me
@@ -273,7 +274,7 @@
                             </div> -->
                             <button ng-click="setStockAlert()" class="btn btn-lg btn-primary btn-block" type="button">Set Alert</button>
                         </form>
-                        <!-- <div id="login-error" class="alert alert-danger" role="alert" ng-hide='errorMessage===""'>{{errorMessage}}</div> -->
+                        <div id="alert-error" class="alert alert-danger" role="alert" ng-hide='errorMessage===""'>{{errorMessage}}</div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal" ng-click="resetLoginModal()">Close</button>
