@@ -15,18 +15,18 @@
 .alert-icon {
     list-style: none;
     padding: 0;
-    position: absolute;
+    /* position: absolute; */
     font-size: 40px;
-    right: 134px;
+    /* right: 134px; */
     
     /* top: -26px; */
-} 
+}
 
 .badge {
     position: absolute;
-    bottom: 23px;
-    right: 18px;
-    font-size: 15px;
+    bottom: 34px;
+    left: 185px;
+    font-size: 11px;
     color: red;
     background-color: blue;
 }
@@ -338,18 +338,47 @@ and (max-device-width: 1024px)  {
     }
 }
 
+@media screen and (max-width: 768px) {
+    .badge {
+        position: absolute;
+        /* bottom: 23px; */
+        left: 185px;
+        color: red;
+        background-color: blue;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    #login-btn {
+        position: relative;
+        bottom: 25px;
+    }
+
+    .badge {
+        position: absolute;
+        /* bottom: 23px; */
+        left: 491px;
+        color: red;
+        background-color: blue;
+    }
+
+    #main-icon {
+        margin-bottom: 5px;
+    }
+}
+
 @media screen and (max-width: 576px) {
     .portfolio-container {
         height:100%;
     }
 
-    .alert-icon {
+    /* .alert-icon {
         left: 50px;
-    }
+    } */
     .badge {
         position: absolute;
-        bottom: 23px;
-        right: 22px;
+        /* bottom: 23px; */
+        left: 268px;
         color: red;
         background-color: blue;
     }
@@ -380,13 +409,12 @@ and (max-device-width: 1024px)  {
     } */
 }
 
-@media only screen and (max-width: 600px) {
-    #login-btn {
-        position: relative;
-        bottom: 25px;
-    }
-
-    #main-icon {
-        margin-bottom: 5px;
+@media screen and (max-width: 350px) {
+    .badge {
+        position: absolute;
+        /* bottom: 23px; */
+        left: 213px;
+        color: red;
+        background-color: blue;
     }
 }

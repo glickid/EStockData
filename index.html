@@ -43,6 +43,8 @@
     <script src="app/portfolio/portfolioSrv.js"></script>
     <script src="app/Alerts/alertsSrv.js"></script>
     <script src="app/data/chartsCtrl.js"></script>
+    <!-- <script src="app/cryptoCurrecies/cryptoCurCtrl.js"></script>
+    <script src="app/cryptoCurrecies/cryptoCurSrv.js"></script> -->
 
     <link rel="stylesheet" href="style.css">
 </head>
@@ -53,20 +55,21 @@
         <a class="navbar-brand" href="#!/">
             <img src="assests/1477521928_10_icon-icons.com_74620.png" alt="" width="50px"> EStockData
         </a>
-        <ul class="alert-icon navbar-brand">
-            <li class="text-danger" ng-show="isUserLoggedIn()">
-                <a href="javascript:void(0)" class="" data-toggle="modal" data-target="#alertsModal">
+        <ul class="navbar-nav ml-auto alert-icon">
+            <li class="nav-item text-danger" ng-show="isUserLoggedIn()">
+                <a href="javascript:void(0)" class="" data-toggle="modal" data-target="#alertsModal" ng-click="getUserAlertsInfo()">
                     <i class="fas fa-bell" ng-class="(alertNum>0)?'text-danger':''"></i>
                     <span class="badge" ng-hide="(alertNum === 0)">{{alertNum}}</span>
                 </a>
             </li>
-            <li class="text-dark" ng-hide="isUserLoggedIn()">
+            <li class="nav-item text-dark" ng-hide="isUserLoggedIn()">
                 <i class="fas fa-bell" ng-class="(alertNum>0)?'text-danger':''"></i>
                 <span class="badge" ng-hide="(alertNum === 0)">{{alertNum}}</span>
             </li>
         </ul>
         <!-- Toggler/collapsibe Button -->
-        <button id="navbar-humburger" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+        <button id="navbar-humburger" class="navbar-toggler" type="button" 
+            data-toggle="collapse" data-target="#collapsibleNavbar">
             <span class="navbar-toggler-icon"></span>
         </button>
 
@@ -96,6 +99,52 @@
         <!-- <div class="position-relative">
             
         </div> -->
+        <!-- Alerts Modal -->
+        <div class="modal fade" id="alertsModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="modal-footer">
+                            <button id="alert-modal-load" type="button" class="btn btn-primary" ng-click="getUserAlertsInfo()">
+                                <h2 class="form-signin-heading">Click to Manage Your Alerts</h2>
+                            </button>
+                        </div>
+                        <button id="alert-modal-x" type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="resetAlertsModal()">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- <div class="table-responsive"> -->
+                        <div>
+                            <table class="table table-sm table-hover">
+                                <thead class- "thead-dark">
+                                    <th>Symbol</th>
+                                    <th>Type</th>
+                                    <th>Price</th>
+                                    <th>Triggerd</th>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="alert in userManageAlertsArr">
+                                        <td>{{alert.stockSymbol}}</td>
+                                        <td>{{alert.alertType}}</td>
+                                        <td>{{alert.price}}</td>
+                                        <td>{{alert.triggerd?'Yes':'No'}}</td>
+                                        <td>
+                                            <button id="alert-remove-btn" type="button" class="btn btn-danger d-inline-block float-right" ng-click="removeAlert(alert.id, alert.stockSymbol)">
+                                                <i class="far fa-trash-alt action-icon"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="resetAlertsModal()">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
     </nav>
 
     <div id="the-container">
@@ -139,53 +188,5 @@
             </div>
         </div>
     </div>
-
-    <!-- Alerts Modal -->
-    <div ng-controller="navbarCtrl" class="modal fade" id="alertsModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <div class="modal-footer">
-                        <button id="alert-modal-load" type="button" class="btn btn-primary" ng-click="getUserAlertsInfo()">
-                            <h2 class="form-signin-heading">Click to Manage Your Alerts</h2>
-                        </button>
-                    </div>
-                    <button id="alert-modal-x" type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="resetAlertsModal()">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <!-- <div class="table-responsive"> -->
-                    <div>
-                        <table class="table table-sm table-hover">
-                            <thead class- "thead-dark">
-                                <th>Symbol</th>
-                                <th>Type</th>
-                                <th>Price</th>
-                                <th>Triggerd</th>
-                            </thead>
-                            <tbody>
-                                <tr ng-repeat="alert in userManageAlertsArr">
-                                    <td>{{alert.stockSymbol}}</td>
-                                    <td>{{alert.alertType}}</td>
-                                    <td>{{alert.price}}</td>
-                                    <td>{{alert.triggerd?'Yes':'No'}}</td>
-                                    <td>
-                                        <button id="alert-remove-btn" type="button" class="btn btn-danger d-inline-block float-right" ng-click="removeAlert(alert.id, alert.stockSymbol)">
-                                            <i class="far fa-trash-alt action-icon"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="resetAlertsModal()">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
 </body>
-
 </html>
