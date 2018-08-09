@@ -6,11 +6,11 @@ app.controller('cryptoCurCtrl', function ($scope, $timeout, $location, cryptoCur
     var dataPoints = [];
 
 
-    // var activerUser = userSrv.getActiveUser();
+    var activerUser = userSrv.getActiveUser();
 
-    // if (activerUser === null) {
-    //     $location.path("/");
-    // } 
+    if (activerUser === null) {
+        $location.path("/");
+    } 
 
     $scope.informationSize = function () {
         if (Object.keys($scope.information).length === 0)

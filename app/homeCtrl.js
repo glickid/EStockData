@@ -107,4 +107,9 @@ app.controller('homeCtrl', function ($scope, $location, dataSrv, configSrv, user
     {
         $location.path("/charts/AAPL/1m")
     }
+
+    $scope.seeCryptoCurrencies = function ()
+    {
+        $location.path("/cryptoCurrency");
+    }
 });
