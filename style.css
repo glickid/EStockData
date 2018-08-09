@@ -204,9 +204,14 @@ span.input-group-addon i {
     position: absolute;
     z-index: 2;
     width: 100%;
-  }
+}
 
-
+.search-stock::placeholder {
+/* .search-stock::-ms-input-placeholder,  */
+/* .search-stock::-ms-input-placeholder  { */
+    color:white;
+    opacity: 1; /* Firefox */
+}
 
 .thead-portfolio {
     color: rgb(246, 174, 144);
