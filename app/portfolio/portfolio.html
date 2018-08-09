@@ -1,8 +1,8 @@
 <div class="bg-info">
     <div class="container portfolio-container pt-1">
-        <form class="search-box my-2">
+        <form class="search-box my-2 position-relative">
             <input type="text" class="bg-info text-white form-control search-stock" placeholder="Search Stock" ng-model="input" ng-change="searchStock(input)">
-            <div class="search-results list-group">
+            <div class="search-results list-group w-100">
                 <a href="javascript:void(0)" class="list-group-item list-group-item-action" ng-repeat="(key, value) in stockList" ng-click="addStockToPortfolio(key, value)">{{key}} (Symbol: {{value}})</a>
             </div>
         </form>
