@@ -1,10 +1,17 @@
-
 <div class="container bg-secondary">
 
-    <button type="text" ng-click="getBTCDailyISR()">start</button>
+    <div class="row">
+        <div class="col-sm-12 justify-content-center mt-5 text-center">
+            <button type="button" class="btn btn-primary" ng-click="getDigitalCurrencyInfo('BTC', 'ILS')">BTC to ILS</button>
+            <button type="button" class="btn btn-success" ng-click="getDigitalCurrencyInfo('BTC','USD')">BTC to USD</button>
+            <button type="button" class="btn btn-warning" ng-click="getDigitalCurrencyInfo('BTC', 'AUD')">BTC to AUD</button>
+            <button type="button" class="btn btn-success" ng-click="getDigitalCurrencyInfo('ETH', 'USD')">ETH to USD</button>
+            <button type="button" class="btn btn-danger" ng-click="getDigitalCurrencyInfo('ETH', 'CNY')">ETH to CNY</button>
+            <button type="button" class="btn btn-warning" ng-click="getDigitalCurrencyInfo('ETH', 'AUD')">ETH to AUD</button>
+        </div>
+    </div>
     <div class="row">
         <div class="col-sm-12" ng-show="informationSize()">
-            <!-- </div>ng-repeat="(key, val) in information"> -->
             <h2 class="bg-info text-center">{{information["1. Information"]}}</h2>
             <h5 class="text-center">
                 {{information["2. Digital Currency Code"]}} ({{information["3. Digital Currency Name"]}}) - {{information["4. Market Code"]}}
@@ -15,9 +22,6 @@
             </h5>
         </div>
     </div>
-    <!-- <div class="col-sm-12" ng-show="informationSize()">
-            <div id="chartContainer" style="height: 300px; width: 100%;"></div>
-        </div> -->
     <div class="container mb-5">
         <div class="row justify-content-center">
             <div class="col-sm-12" ng-show="informationSize()">
@@ -41,6 +45,5 @@
             </div>
         </div>
     </div>
-
 </div>
 </div>

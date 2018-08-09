@@ -1,9 +1,16 @@
-app.controller('cryptoCurCtrl', function ($scope, $timeout, cryptoCurSrv, dataSrv) {
+app.controller('cryptoCurCtrl', function ($scope, $timeout, $location, cryptoCurSrv, userSrv) {
 
     $scope.dataObj = {};
     $scope.noData = false;
     $scope.information = {};
     var dataPoints = [];
+
+
+    // var activerUser = userSrv.getActiveUser();
+
+    // if (activerUser === null) {
+    //     $location.path("/");
+    // } 
 
     $scope.informationSize = function () {
         if (Object.keys($scope.information).length === 0)
@@ -12,11 +19,12 @@ app.controller('cryptoCurCtrl', function ($scope, $timeout, cryptoCurSrv, dataSr
             return true;
     }
 
-    $scope.getBTCDailyISR  =  function ()
+    $scope.getDigitalCurrencyInfo  =  function (coin, market)
     {
         // var dataObj = {};
+        var text = "";
 
-        cryptoCurSrv.getBtcData( "ILS", "DIGITAL_CURRENCY_DAILY")
+        cryptoCurSrv.getBtcData( coin, market, "DIGITAL_CURRENCY_DAILY")
         .then( function(response) {
            // console.log(response);
            if (!response.data.hasOwnProperty("Meta Data")) 
@@ -24,22 +32,29 @@ app.controller('cryptoCurCtrl', function ($scope, $timeout, cryptoCurSrv, dataSr
 
            $scope.information = response.data["Meta Data"];
            $scope.dataObj = response.data["Time Series (Digital Currency Daily)"];
-            loadChart();
+           text = "" + $scope.information["2. Digital Currency Code"] + " (" +
+                       $scope.information["3. Digital Currency Name"] + ") - " + 
+                       $scope.information["4. Market Code"] + " (" + 
+                       $scope.information["5. Market Name"] + ")";
+
+            loadChart(coin, market, text);
         }, function(err) {
             console.log(err);
         });
     }
 
-    function loadChart() {
+   
 
-        buildDataPoints();
+    function loadChart(coin, market, text) {
+
+        buildDataPoints(market);
 
         var chart = new CanvasJS.Chart("chartContainer", {
             theme: "light1", // "light1", "light2", "dark1", "dark2"
             animationEnabled: true,
             maintainAspectRatio: false,
             title:{
-                text: "Share Value - 2016"   
+                text: text   
             },
             axisX: {
                 interval: 1,
@@ -47,7 +62,7 @@ app.controller('cryptoCurCtrl', function ($scope, $timeout, cryptoCurSrv, dataSr
                 valueFormatString: "DD-MM-YYYY"
             },
             axisY:{
-                title: "Price (in USD)",
+                title: "Price (in " + market + ")",
                 valueFormatString: "$####"
             },
             data: [{        
@@ -66,7 +81,7 @@ app.controller('cryptoCurCtrl', function ($scope, $timeout, cryptoCurSrv, dataSr
     }
 
 
-    function buildDataPoints() {
+    function buildDataPoints(market) {
         var lastPrice = 0;
         var days = 30;
         var index = 0;
@@ -74,6 +89,7 @@ app.controller('cryptoCurCtrl', function ($scope, $timeout, cryptoCurSrv, dataSr
         var strFloat = "";
         var price = 0;
         var obj = {};
+        var priceField = "";
 
         dataPoints.length = 0;
 
@@ -84,14 +100,19 @@ app.controller('cryptoCurCtrl', function ($scope, $timeout, cryptoCurSrv, dataSr
                 
                 // let dateArr = key.split("-");
                 // let date = new Date(dateArr[2], dateArr[1] - 1, dateArr[0]);
+                if (market==="USD")
+                    priceField = "4b. close (USD)";
+                else
+                    priceField = "4a. close (" + market + ")";
+
                 date = new Date(key);
-                strFloat = (value["4b. close (USD)"]);
+                strFloat = (value[priceField]);
                 price = parseFloat(parseFloat(strFloat).toFixed(2));
 
                 obj = {"x": date, "y": price,
                             "indexLabel" : (price > lastPrice)? "gain":"loss",
                             "markerType" : (price > lastPrice)? "triangle":"cross",
-                            "marketColor" : (price > lastPrice)? "#6B8E23": "tomato" };
+                            "markerColor" : (price > lastPrice)? "#6B8E23": "tomato" };
 
                 dataPoints.push(obj);
                 if (++index === days)
