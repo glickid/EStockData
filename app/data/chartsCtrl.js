@@ -38,7 +38,7 @@ app.controller('chartsCtrl', function ($scope, $location, $routeParams, dataSrv)
             },
             data: [{
                 type: "candlestick",
-                yValueFormatString: "$##0.00",
+                yValueFormatString: "$####.##",
                 dataPoints: dataPoints
             }]
         });

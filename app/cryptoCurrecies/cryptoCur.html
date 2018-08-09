@@ -1,0 +1,46 @@
+
+<div class="container bg-secondary">
+
+    <button type="text" ng-click="getBTCDailyISR()">start</button>
+    <div class="row">
+        <div class="col-sm-12" ng-show="informationSize()">
+            <!-- </div>ng-repeat="(key, val) in information"> -->
+            <h2 class="bg-info text-center">{{information["1. Information"]}}</h2>
+            <h5 class="text-center">
+                {{information["2. Digital Currency Code"]}} ({{information["3. Digital Currency Name"]}}) - {{information["4. Market Code"]}}
+                ({{information["5. Market Name"]}})
+            </h5>
+            <h5 class="text-center">
+                {{information["6. Last Refreshed"]}} ({{information["7. Time Zone"]}})
+            </h5>
+        </div>
+    </div>
+    <!-- <div class="col-sm-12" ng-show="informationSize()">
+            <div id="chartContainer" style="height: 300px; width: 100%;"></div>
+        </div> -->
+    <div class="container mb-5">
+        <div class="row justify-content-center">
+            <div class="col-sm-12" ng-show="informationSize()">
+                <div id="chartContainer" style="height: 300px; width: 100%;"></div>
+            </div>
+        </div>
+    </div>
+    <div class="container mt-5">
+        <div class="row mx-auto">
+            <div class="col-md-3 card mb-2" ng-repeat="(key, val) in dataObj">
+                <div class="card-header bg-success">{{key}}</div>
+                <div class="card-body bg-important">
+                    <p>
+                        <small class="d-block text-white" ng-class-odd="'bg-dark'" ng-class-even="'bg-secondary'" ng-repeat="(key, value) in val">
+                            {{" " + key.substr(3)}} :
+                            <span class="float-right">{{value|number:2}}</span>
+                        </small>
+                    </p>
+                </div>
+                <!-- <div class="card-footer bg-secondary">Footer</div> -->
+            </div>
+        </div>
+    </div>
+
+</div>
+</div>

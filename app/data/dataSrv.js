@@ -22,7 +22,7 @@ app.factory('dataSrv', function ($http, $q, $log, $timeout, $localStorage, confi
         })
     }
     function getRTperformance() {
-        var key = configSrv.getStockInfoApiKey()
+        var key = configSrv.getStockInfoApiKey();
         var theUrl = "https://www.alphavantage.co/query?function=SECTOR&apikey=" + key;
 
         var async = $q.defer();
