@@ -44,7 +44,7 @@
     </div>
     <div class="container mt-5">
         <div class="row mx-auto">
-            <div class="col-md-3 card mb-2" ng-repeat="(key, val) in dataObj | limitTo : 52">
+            <div class="col-md-3 card mb-2" ng-repeat="(key, val) in dataObj | objLimitTo : 52">
                 <div class="card-header bg-success">{{key}}</div>
                 <div class="card-body bg-important">
                     <p>
