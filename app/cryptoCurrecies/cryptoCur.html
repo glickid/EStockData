@@ -2,15 +2,28 @@
 
     <div class="row">
         <div class="col-sm-12 justify-content-center mt-5 text-center">
-            <button type="button" class="btn btn-primary" ng-click="getDigitalCurrencyInfo('BTC', 'ILS')">BTC to ILS</button>
-            <button type="button" class="btn btn-success" ng-click="getDigitalCurrencyInfo('BTC','USD')">BTC to USD</button>
-            <button type="button" class="btn btn-warning" ng-click="getDigitalCurrencyInfo('BTC', 'AUD')">BTC to AUD</button>
-            <button type="button" class="btn btn-success" ng-click="getDigitalCurrencyInfo('ETH', 'USD')">ETH to USD</button>
-            <button type="button" class="btn btn-danger" ng-click="getDigitalCurrencyInfo('ETH', 'CNY')">ETH to CNY</button>
-            <button type="button" class="btn btn-warning" ng-click="getDigitalCurrencyInfo('ETH', 'AUD')">ETH to AUD</button>
+            <div class="form-group">
+                <label for="sel1">Select Graph Type</label>
+                <select class="form-control" id="select-graph-type" ng-model="graphType">
+                    <option value="">---Please select---</option>
+                    <option value="DIGITAL_CURRENCY_DAILY">Daily</option>
+                    <option value="DIGITAL_CURRENCY_WEEKLY">Weekly</option>
+                    <option value="DIGITAL_CURRENCY_MONTHLY">Monthly</option>
+                </select>
+                <div id="login-error" class="alert alert-danger" role="alert" ng-hide='errorMessage===""'>{{errorMessage}}</div>
+            </div>
+            <div>
+                <button type="button" class="btn btn-primary" ng-click="getDigitalCurrencyInfo('BTC', 'ILS')">BTC to ILS</button>
+                <button type="button" class="btn btn-success" ng-click="getDigitalCurrencyInfo('BTC','USD')">BTC to USD</button>
+                <button type="button" class="btn btn-warning" ng-click="getDigitalCurrencyInfo('BTC', 'AUD')">BTC to AUD</button>
+                <button type="button" class="btn btn-success" ng-click="getDigitalCurrencyInfo('ETH', 'USD')">ETH to USD</button>
+                <button type="button" class="btn btn-danger" ng-click="getDigitalCurrencyInfo('ETH', 'CNY')">ETH to CNY</button>
+                <button type="button" class="btn btn-warning" ng-click="getDigitalCurrencyInfo('ETH', 'AUD')">ETH to AUD</button>
+            </div>
         </div>
     </div>
     <div class="row">
+            <div id="login-error" class="alert alert-danger" role="alert" ng-hide='noData===false'>{{dataErrorMessage}}</div>
         <div class="col-sm-12" ng-show="informationSize()">
             <h2 class="bg-info text-center">{{information["1. Information"]}}</h2>
             <h5 class="text-center">
@@ -31,7 +44,7 @@
     </div>
     <div class="container mt-5">
         <div class="row mx-auto">
-            <div class="col-md-3 card mb-2" ng-repeat="(key, val) in dataObj">
+            <div class="col-md-3 card mb-2" ng-repeat="(key, val) in dataObj | limitTo : 52">
                 <div class="card-header bg-success">{{key}}</div>
                 <div class="card-body bg-important">
                     <p>

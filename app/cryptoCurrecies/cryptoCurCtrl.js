@@ -4,7 +4,9 @@ app.controller('cryptoCurCtrl', function ($scope, $timeout, $location, cryptoCur
     $scope.noData = false;
     $scope.information = {};
     var dataPoints = [];
-
+    $scope.errorMessage = "";
+    $scope.graphType = "";
+    $scope.dataErrorMessage = "";
 
     var activerUser = userSrv.getActiveUser();
 
@@ -23,16 +25,32 @@ app.controller('cryptoCurCtrl', function ($scope, $timeout, $location, cryptoCur
     {
         // var dataObj = {};
         var text = "";
+        if ($scope.graphType === "") {
+            $scope.errorMessage = "Please, select graph Type";
+            return;
+        }
+        $scope.errorMessage = "";
 
-        cryptoCurSrv.getBtcData( coin, market, "DIGITAL_CURRENCY_DAILY")
+        cryptoCurSrv.getBtcData( coin, market, $scope.graphType)
         .then( function(response) {
            // console.log(response);
-           if (!response.data.hasOwnProperty("Meta Data")) 
+           if (!response.data.hasOwnProperty("Meta Data")) {
                 $scope.noData = true;
-
+                $scope.dataErrorMessage = "Sorry Server return empty message";
+                $scope.dataObj = {};
+                return;
+           }
+           $scope.dataErrorMessage = "";
            $scope.information = response.data["Meta Data"];
-           $scope.dataObj = response.data["Time Series (Digital Currency Daily)"];
-           text = "" + $scope.information["2. Digital Currency Code"] + " (" +
+
+           if ($scope.graphType === "DIGITAL_CURRENCY_DAILY")
+                $scope.dataObj = response.data["Time Series (Digital Currency Daily)"];
+            else if ($scope.graphType === "DIGITAL_CURRENCY_WEEKLY")
+                $scope.dataObj = response.data["Time Series (Digital Currency Weekly)"];
+            else if ($scope.graphType === "DIGITAL_CURRENCY_MONTHLY")
+                $scope.dataObj = response.data["Time Series (Digital Currency Monthly)"];
+
+            text = "" + $scope.information["2. Digital Currency Code"] + " (" +
                        $scope.information["3. Digital Currency Name"] + ") - " + 
                        $scope.information["4. Market Code"] + " (" + 
                        $scope.information["5. Market Name"] + ")";
@@ -43,11 +61,18 @@ app.controller('cryptoCurCtrl', function ($scope, $timeout, $location, cryptoCur
         });
     }
 
-   
-
     function loadChart(coin, market, text) {
+        var interval = "";
 
         buildDataPoints(market);
+
+
+        if ($scope.graphType === "DIGITAL_CURRENCY_DAILY")
+            interval = "day";
+        else if ($scope.graphType === "DIGITAL_CURRENCY_WEEKLY")
+            interval = "week";
+       else if ($scope.graphType === "DIGITAL_CURRENCY_MONTHLY")
+            interval = "month";
 
         var chart = new CanvasJS.Chart("chartContainer", {
             theme: "light1", // "light1", "light2", "dark1", "dark2"
@@ -58,7 +83,7 @@ app.controller('cryptoCurCtrl', function ($scope, $timeout, $location, cryptoCur
             },
             axisX: {
                 interval: 1,
-                intervalType: "day",
+                intervalType: interval,
                 valueFormatString: "DD-MM-YYYY"
             },
             axisY:{
@@ -83,7 +108,7 @@ app.controller('cryptoCurCtrl', function ($scope, $timeout, $location, cryptoCur
 
     function buildDataPoints(market) {
         var lastPrice = 0;
-        var days = 30;
+        var days = 0;
         var index = 0;
         var date = new Date;
         var strFloat = "";
@@ -93,49 +118,41 @@ app.controller('cryptoCurCtrl', function ($scope, $timeout, $location, cryptoCur
 
         dataPoints.length = 0;
 
+        if ($scope.graphType === "DIGITAL_CURRENCY_DAILY")
+            days = 45;
+        else if ($scope.graphType === "DIGITAL_CURRENCY_WEEKLY")
+            days = 45;
+        else if ($scope.graphType === "DIGITAL_CURRENCY_MONTHLY")
+            days = 36;
+
         for (let [key, value] of Object.entries($scope.dataObj)) {
-            // for (let [key1, val1] of Object.entries(value)) {
-                // console.log(key);
-                // console.log(JSON.stringify(value));
-                
-                // let dateArr = key.split("-");
-                // let date = new Date(dateArr[2], dateArr[1] - 1, dateArr[0]);
-                if (market==="USD")
-                    priceField = "4b. close (USD)";
-                else
-                    priceField = "4a. close (" + market + ")";
+            if (market==="USD")
+                priceField = "4b. close (USD)";
+            else
+                priceField = "4a. close (" + market + ")";
 
-                date = new Date(key);
-                strFloat = (value[priceField]);
-                price = parseFloat(parseFloat(strFloat).toFixed(2));
+            date = new Date(key);
+            strFloat = (value[priceField]);
+            price = parseFloat(parseFloat(strFloat).toFixed(2));
 
-                obj = {"x": date, "y": price,
-                            "indexLabel" : (price > lastPrice)? "gain":"loss",
-                            "markerType" : (price > lastPrice)? "triangle":"cross",
-                            "markerColor" : (price > lastPrice)? "#6B8E23": "tomato" };
+            obj = {"x": date, "y": price};
 
-                dataPoints.push(obj);
-                if (++index === days)
-                    break;
-                lastPrice = price;
-            // }
-            // if (index === days)
-                    // break;
+            dataPoints.push(obj);
+            if (++index === days)
+                break;
+            lastPrice = price;
+        }
+
+        for (var i=dataPoints.length-1; i>0; i--){
+            if (dataPoints[i]["y"] < dataPoints[i-1]["y"]) {
+                dataPoints[i-1]["indexLabel"] = "gain";
+                dataPoints[i-1]["markerType"] = "triangle";
+                dataPoints[i-1]["markerColor"] = "#6B8E23";
+            } else {
+                dataPoints[i-1]["indexLabel"] = "loss";
+                dataPoints[i-1]["markerType"] = "cross";
+                dataPoints[i-1]["markerColor"] = "tomato";
+            }
         }
     }
-    // dataPoints = [        
-    //     { x: new Date("2016-01-1"), y: 6796.85, indexLabel: "gain", markerType: "triangle",  markerColor: "#6B8E23" },
-    //     { x: new Date("2016-01-2"), y: 6922.26, indexLabel: "gain", markerType: "triangle",  markerColor: "#6B8E23" },
-    //     { x: new Date("2016-01-3") , y: 6793.36, indexLabel: "loss", markerType: "cross", markerColor: "tomato" },
-    //     { x: new Date("2016-01-4") , y: 6900.76, indexLabel: "loss", markerType: "cross", markerColor: "tomato" },
-    //     { x: new Date("2016-01-5") , y: 6863.00, indexLabel: "gain", markerType: "triangle", markerColor: "#6B8E23" },
-    //     { x: new Date("2016-01-6") , y: 7245.35, indexLabel: "gain", markerType: "triangle", markerColor: "#6B8E23" },
-    //     { x: new Date("2016-01-7") , y: 7406.51, indexLabel: "loss", markerType: "cross", markerColor: "tomato" },
-    //     { x: new Date("2016-01-8") , y: 7421.25, indexLabel: "loss", markerType: "cross", markerColor: "tomato" },
-    //     { x: new Date("2016-01-9") , y: 7560.85, indexLabel: "gain", markerType: "triangle", markerColor: "#6B8E23" },
-    //     { x: new Date("2016-01-10") , y: 7947.84, indexLabel: "loss", markerType: "cross", markerColor: "tomato" },
-    //     { x: new Date("2016-01-11") , y: 8010.32, indexLabel: "gain", markerType: "triangle", markerColor: "#6B8E23" },
-    //     { x: new Date("2016-01-12") , y: 7775.48, indexLabel: "loss", markerType: "cross", markerColor: "tomato" }
-    // ];
-    
 });
