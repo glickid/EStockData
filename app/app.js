@@ -11,21 +11,21 @@ app.config(function($routeProvider) {
     //     controller : 'userCtrl'
     // })
     .when('/signup', {
-        templateUrl : 'App/user/signup.html',
+        templateUrl : 'app/user/signup.html',
         controller : 'userCtrl'
     })
     .when('/portfolio', {
-        templateUrl : 'App/portfolio/portfolio.html',
+        templateUrl : 'app/portfolio/portfolio.html',
         controller : 'portfolioCtrl'
     })
     .when('/charts/:stockSymbol/:period', {
-        templateUrl : 'App/data/charts.html',
+        templateUrl : 'app/data/charts.html',
         controller : 'chartsCtrl'
     })
-    // .when('/movies/:movieID', {
-    //     templateUrl : 'App/Movies/movieDetails.html',
-    //     controller : 'movieDetailsCtrl'
-    // })
+    .when('/cryptoCurrency', {
+         templateUrl : 'app/cryptoCurrecies/cryptoCur.html',
+         controller : 'cryptoCurCtrl'
+    })
     .otherwise({redirectTo: '/'
     });
 });
