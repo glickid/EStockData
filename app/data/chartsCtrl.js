@@ -1,4 +1,4 @@
-app.controller('chartsCtrl', function ($scope, $location, $routeParams, dataSrv, userSrv) {
+app.controller('chartsCtrl', function ($scope, $location, $routeParams, dataSrv, userSrv, CanvasJS) {
 
     var dataPoints = [];
     $scope.Title = $routeParams.stockSymbol;
