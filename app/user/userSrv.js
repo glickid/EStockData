@@ -66,14 +66,15 @@ app.factory('userSrv', function ($http, $q) {
     }
 
     function createNewUser(newUser) {
-        activeUser = new User(newUser);
+        var newUserREc = new User(newUser);
         var async = $q.defer();
 
         var loginURL = "https://estockdata.herokuapp.com/users/";
 
-        $http.post(loginURL, activeUser).then(function (response) {
-            activeUser.id = response.data.id;
-            async.resolve(activeUser);
+        $http.post(loginURL, newUserREc).then(function (response) {
+            //activeUser.id = response.data.id;
+            activeUser = null;
+            async.resolve(null);
         }, function (err) {
             async.reject(err);
         });

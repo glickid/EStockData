@@ -15,7 +15,12 @@ app.controller('userCtrl', function ($scope, $log, $location, userSrv, alertsSrv
     $scope.signup = function () {
         var newUser = { "fname": $scope.fname, "lname": $scope.lname, "email": $scope.email, 
                         "password": $scope.password, "portfolio":[]};
-        userSrv.createNewUser(newUser);
+        userSrv.createNewUser(newUser).then(function (response){
+            //nothing to do here
+        }, function(err){
+            console.log(err);
+        })
+        
         $location.path("#!/");
         resetLoginModalScopeInfo();
     }
