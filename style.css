@@ -7,30 +7,20 @@
     background-color: rgb(246, 174, 144);
 }
 
-#alert-modal-x {
-    position: relative;
-    right: 20px;
-}
-
 .alert-icon {
     list-style: none;
     padding: 0;
-    /* position: absolute; */
     font-size: 40px;
-    /* right: 134px; */
-    
-    /* top: -26px; */
 }
 
 .badge {
     position: absolute;
     bottom: 34px; 
-    /* left: 185px; */
     font-size: 11px;
     color: red;
     background-color: blue;
 }
-/* #the-container { */
+
 .home-container {
     background-color: rgb(68,114,196)
 }
@@ -69,13 +59,6 @@
     width: 100%;
 }
 
-/* signup style */
-#playground-container {
-    height: 500px;
-    overflow: hidden !important;
-    -webkit-overflow-scrolling: touch;
-}
-
 #signup-container{
     padding-top: 10px;
     padding-bottom: 10px;
@@ -99,6 +82,7 @@
     border:none;
 
 }
+
 h1.title { 
 	font-size: 50px;
 	font-family: 'Passion One', cursive; 
@@ -135,9 +119,10 @@ hr{
     box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
 
 }
+
 .form-control {
     height: auto!important;
-padding: 8px 12px !important;
+    padding: 8px 12px !important;
 }
 .input-group {
     -webkit-box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.21)!important;
@@ -180,9 +165,8 @@ padding: 8px 12px !important;
 	    color: #FFF;
     text-shadow: none;
 	-webkit-box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.31);
--moz-box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.31);
-box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.31);
-
+    -moz-box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.31);
+    box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.31);
 }
 
 span.input-group-addon i {
@@ -198,27 +182,20 @@ span.input-group-addon i {
 	font-size: 11px;
 	text-align: center;
 }
-/* signup */
 
+/* postion absolute needed to list to be open at the width of <input> */
 .search-results {
     position: absolute;
     z-index: 2;
 }
 
 .search-stock::placeholder {
-/* .search-stock::-ms-input-placeholder,  */
-/* .search-stock::-ms-input-placeholder  { */
     color:white;
     opacity: 1; /* Firefox */
 }
 
 .thead-portfolio {
     color: rgb(246, 174, 144);
-}
-/* .portfolio-table > table > tbody > tr > td {
-    max-width: 160px;
-    margin-bottom: 50px;
-    height: 100%;
 }
 
 .portfolio-table > table  td, .portfolio-table > table  th {
@@ -227,13 +204,8 @@ span.input-group-addon i {
 
 .action-icon {
     width: 2px;
-    position: relative;
-    right: 5px;
+    margin-right: 7px;
 }
-
-/* #actions-td {
-    width: 137px;
-} */
 
 .stock-info-item {
     line-height: 1em;
@@ -342,29 +314,18 @@ and (max-device-width: 1024px)  {
     }
 }
 
-/* @media screen and (max-width: 768px) {
-  .badge {
-        /* position: absolute; */
-        /* bottom: 23px; */
-        /* left: 185px; */
-        color: red;
-        background-color: blue;
-    }  
-} */
+@media only screen and (max-width: 768px) {
+    
+    #main-container {
+        padding-bottom: 50px;
+    }
+}
 
 @media only screen and (max-width: 600px) {
-    #login-btn {
-        position: relative;
-        bottom: 25px;
+    
+    #main-container {
+        padding-bottom: 44px;
     }
-
-    /* .badge {
-        position: absolute;
-        /* bottom: 23px; */
-   /*     left: 491px;
-        color: red;
-        background-color: blue;
-    } */
 
     #main-icon {
         margin-bottom: 5px;
@@ -375,50 +336,4 @@ and (max-device-width: 1024px)  {
     .portfolio-container {
         height:100%;
     }
-
-    /* .alert-icon {
-        left: 50px;
-    } */
-    /* .badge {
-        position: absolute;
-        bottom: 23px;
-        left: 268px;
-        color: red;
-        background-color: blue;
-    } */
-
-    #signin-btn {
-        position: relative;
-        bottom: 25px;
-    }
-
-    #alert-remove-btn {
-        position: relative;
-        right: 10px;
-    }
-
-    #alert-modal-load {
-        position: relative;
-        right: 10px;
-        font-size: 20px;
-    }
-
-    #alert-modal-load > h2 {
-        font-size : 1.2rem;
-    }
-
-    /* #navbar-humburger {
-        position: relative;
-        right: 50px;
-    } */
 }
-
-/* @media screen and (max-width: 350px) {
-    .badge {
-        position: absolute;
-        bottom: 23px;
-        left: 213px;
-        color: red;
-        background-color: blue;
-    }
-} */
