@@ -217,6 +217,11 @@ span.input-group-addon i {
     text-decoration: underline;
 }
 
+#chartContainer {
+    height: 300px; 
+    width: 100%;
+}
+
 /**************** portfolio table style ***/
 #portfolio-table th {
     border: 1px solid grey;

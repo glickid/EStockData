@@ -1,4 +1,4 @@
-app.controller('cryptoCurCtrl', function ($scope, $timeout, $location, cryptoCurSrv, userSrv) {
+app.controller('cryptoCurCtrl', function ($scope, $timeout, $location, $window, cryptoCurSrv, userSrv) {
 
     $scope.dataObj = {};
     $scope.noData = false;
@@ -12,7 +12,7 @@ app.controller('cryptoCurCtrl', function ($scope, $timeout, $location, cryptoCur
 
     if (activerUser === null) {
         $location.path("/");
-    } 
+    }
 
     $scope.informationSize = function () {
         if (Object.keys($scope.information).length === 0)
@@ -21,8 +21,7 @@ app.controller('cryptoCurCtrl', function ($scope, $timeout, $location, cryptoCur
             return true;
     }
 
-    $scope.getDigitalCurrencyInfo  =  function (coin, market)
-    {
+    $scope.getDigitalCurrencyInfo = function (coin, market) {
         // var dataObj = {};
         var text = "";
         if ($scope.graphType === "") {
@@ -31,35 +30,35 @@ app.controller('cryptoCurCtrl', function ($scope, $timeout, $location, cryptoCur
         }
         $scope.errorMessage = "";
 
-        cryptoCurSrv.getBtcData( coin, market, $scope.graphType)
-        .then( function(response) {
-           // console.log(response);
-           if (!response.data.hasOwnProperty("Meta Data")) {
-                $scope.noData = true;
-                $scope.dataErrorMessage = "Sorry Server return empty message";
-                $scope.dataObj = {};
-                return;
-           }
-           $scope.noData = false;
-           $scope.dataErrorMessage = "";
-           $scope.information = response.data["Meta Data"];
+        cryptoCurSrv.getBtcData(coin, market, $scope.graphType)
+            .then(function (response) {
+                // console.log(response);
+                if (!response.data.hasOwnProperty("Meta Data")) {
+                    $scope.noData = true;
+                    $scope.dataErrorMessage = "Sorry Server return empty message";
+                    $scope.dataObj = {};
+                    return;
+                }
+                $scope.noData = false;
+                $scope.dataErrorMessage = "";
+                $scope.information = response.data["Meta Data"];
 
-           if ($scope.graphType === "DIGITAL_CURRENCY_DAILY")
-                $scope.dataObj = response.data["Time Series (Digital Currency Daily)"];
-            else if ($scope.graphType === "DIGITAL_CURRENCY_WEEKLY")
-                $scope.dataObj = response.data["Time Series (Digital Currency Weekly)"];
-            else if ($scope.graphType === "DIGITAL_CURRENCY_MONTHLY")
-                $scope.dataObj = response.data["Time Series (Digital Currency Monthly)"];
+                if ($scope.graphType === "DIGITAL_CURRENCY_DAILY")
+                    $scope.dataObj = response.data["Time Series (Digital Currency Daily)"];
+                else if ($scope.graphType === "DIGITAL_CURRENCY_WEEKLY")
+                    $scope.dataObj = response.data["Time Series (Digital Currency Weekly)"];
+                else if ($scope.graphType === "DIGITAL_CURRENCY_MONTHLY")
+                    $scope.dataObj = response.data["Time Series (Digital Currency Monthly)"];
 
-            text = "" + $scope.information["2. Digital Currency Code"] + " (" +
-                       $scope.information["3. Digital Currency Name"] + ") - " + 
-                       $scope.information["4. Market Code"] + " (" + 
-                       $scope.information["5. Market Name"] + ")";
+                text = "" + $scope.information["2. Digital Currency Code"] + " (" +
+                    $scope.information["3. Digital Currency Name"] + ") - " +
+                    $scope.information["4. Market Code"] + " (" +
+                    $scope.information["5. Market Name"] + ")";
 
-            loadChart(coin, market, text);
-        }, function(err) {
-            console.log(err);
-        });
+                loadChart(coin, market, text);
+            }, function (err) {
+                console.log(err);
+            });
     }
 
     function loadChart(coin, market, text) {
@@ -72,45 +71,45 @@ app.controller('cryptoCurCtrl', function ($scope, $timeout, $location, cryptoCur
             interval = "day";
         else if ($scope.graphType === "DIGITAL_CURRENCY_WEEKLY")
             interval = "week";
-       else if ($scope.graphType === "DIGITAL_CURRENCY_MONTHLY")
+        else if ($scope.graphType === "DIGITAL_CURRENCY_MONTHLY")
             interval = "month";
 
         var chart = new CanvasJS.Chart("chartContainer", {
             theme: "light1", // "light1", "light2", "dark1", "dark2"
             animationEnabled: true,
             maintainAspectRatio: false,
-            title:{
-                text: text   
+            title: {
+                text: text
             },
             axisX: {
                 interval: 1,
                 intervalType: interval,
                 valueFormatString: "DD-MM-YYYY"
             },
-            axisY:{
+            axisY: {
                 title: "Price (in " + market + ")",
                 valueFormatString: "$####"
             },
-            data: [{        
+            data: [{
                 type: "line",
                 markerSize: 12,
                 xValueFormatString: "DD-MM-YYYY",
                 yValueFormatString: "$###.#",
-                dataPoints: dataPoints 
+                dataPoints: dataPoints
             }]
         });
 
         // chart.render();
         // needed to solve problem with chart appearence 
-        $timeout(function () { 
+        $timeout(function () {
             //chart.resize(); 
-            chart.render(); 
+            chart.render();
         }, 0);
     }
 
 
     function buildDataPoints(market) {
-        var lastPrice = 0;
+        //var lastPrice = 0;
         var days = 0;
         var index = 0;
         var date = new Date;
@@ -118,6 +117,7 @@ app.controller('cryptoCurCtrl', function ($scope, $timeout, $location, cryptoCur
         var price = 0;
         var obj = {};
         var priceField = "";
+        var w = angular.element($window);
 
         dataPoints.length = 0;
 
@@ -128,8 +128,13 @@ app.controller('cryptoCurCtrl', function ($scope, $timeout, $location, cryptoCur
         else if ($scope.graphType === "DIGITAL_CURRENCY_MONTHLY")
             days = 36;
 
+        if (w.width() < 600)
+            days = Math.round(days / 3);
+        else if (w.width < 769)
+            days = Math.round(days / 2);
+
         for (let [key, value] of Object.entries($scope.dataObj)) {
-            if (market==="USD")
+            if (market === "USD")
                 priceField = "4b. close (USD)";
             else
                 priceField = "4a. close (" + market + ")";
@@ -138,23 +143,23 @@ app.controller('cryptoCurCtrl', function ($scope, $timeout, $location, cryptoCur
             strFloat = (value[priceField]);
             price = parseFloat(parseFloat(strFloat).toFixed(2));
 
-            obj = {"x": date, "y": price};
+            obj = { "x": date, "y": price };
 
             dataPoints.push(obj);
             if (++index === days)
                 break;
-            lastPrice = price;
+            // lastPrice = price;
         }
 
-        for (var i=dataPoints.length-1; i>0; i--){
-            if (dataPoints[i]["y"] < dataPoints[i-1]["y"]) {
-                dataPoints[i-1]["indexLabel"] = "gain";
-                dataPoints[i-1]["markerType"] = "triangle";
-                dataPoints[i-1]["markerColor"] = "#6B8E23";
+        for (var i = dataPoints.length - 1; i > 0; i--) {
+            if (dataPoints[i]["y"] < dataPoints[i - 1]["y"]) {
+                dataPoints[i - 1]["indexLabel"] = "gain";
+                dataPoints[i - 1]["markerType"] = "triangle";
+                dataPoints[i - 1]["markerColor"] = "#6B8E23";
             } else {
-                dataPoints[i-1]["indexLabel"] = "loss";
-                dataPoints[i-1]["markerType"] = "cross";
-                dataPoints[i-1]["markerColor"] = "tomato";
+                dataPoints[i - 1]["indexLabel"] = "loss";
+                dataPoints[i - 1]["markerType"] = "cross";
+                dataPoints[i - 1]["markerColor"] = "tomato";
             }
         }
     }
