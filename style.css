@@ -24,8 +24,8 @@
 
 .badge {
     position: absolute;
-    bottom: 34px;
-    left: 185px;
+    bottom: 34px; 
+    /* left: 185px; */
     font-size: 11px;
     color: red;
     background-color: blue;
@@ -342,15 +342,15 @@ and (max-device-width: 1024px)  {
     }
 }
 
-@media screen and (max-width: 768px) {
-    .badge {
-        position: absolute;
+/* @media screen and (max-width: 768px) {
+  .badge {
+        /* position: absolute; */
         /* bottom: 23px; */
-        left: 185px;
+        /* left: 185px; */
         color: red;
         background-color: blue;
-    }
-}
+    }  
+} */
 
 @media only screen and (max-width: 600px) {
     #login-btn {
@@ -358,13 +358,13 @@ and (max-device-width: 1024px)  {
         bottom: 25px;
     }
 
-    .badge {
+    /* .badge {
         position: absolute;
         /* bottom: 23px; */
-        left: 491px;
+   /*     left: 491px;
         color: red;
         background-color: blue;
-    }
+    } */
 
     #main-icon {
         margin-bottom: 5px;
@@ -379,13 +379,13 @@ and (max-device-width: 1024px)  {
     /* .alert-icon {
         left: 50px;
     } */
-    .badge {
+    /* .badge {
         position: absolute;
-        /* bottom: 23px; */
+        bottom: 23px;
         left: 268px;
         color: red;
         background-color: blue;
-    }
+    } */
 
     #signin-btn {
         position: relative;
@@ -413,12 +413,12 @@ and (max-device-width: 1024px)  {
     } */
 }
 
-@media screen and (max-width: 350px) {
+/* @media screen and (max-width: 350px) {
     .badge {
         position: absolute;
-        /* bottom: 23px; */
+        bottom: 23px;
         left: 213px;
         color: red;
         background-color: blue;
     }
-}
+} */

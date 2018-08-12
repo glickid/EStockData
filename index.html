@@ -56,7 +56,7 @@
             <img src="assests/1477521928_10_icon-icons.com_74620.png" alt="" width="50px"> EStockData
         </a>
         <ul class="navbar-nav ml-auto alert-icon">
-            <li class="nav-item text-danger" ng-show="isUserLoggedIn()">
+            <li class="nav-item text-danger position-relative" ng-show="isUserLoggedIn()">
                 <a href="javascript:void(0)" class="" data-toggle="modal" data-target="#alertsModal" ng-click="getUserAlertsInfo()">
                     <i class="fas fa-bell" ng-class="(alertNum>0)?'text-danger':''"></i>
                     <span class="badge" ng-hide="(alertNum === 0)">{{alertNum}}</span>
