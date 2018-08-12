@@ -2,7 +2,6 @@
 app.factory('dataSrv', function ($http, $q, $log, $timeout, $localStorage, configSrv) {
 
     var currencyObject = {};
-    // var currencyIndex = 0;
     var premises = [];
     var Ndxinfo = {};
     var stocksArr = [];
@@ -31,7 +30,6 @@ app.factory('dataSrv', function ($http, $q, $log, $timeout, $localStorage, confi
 
             if (response.data.hasOwnProperty("Rank A: Real-Time Performance")) {
                 var RTperformance = response.data["Rank A: Real-Time Performance"];
-                // var reply = {"updated" : response.data["Meta Data"]["Last Refreshed"],
                 var reply = { "data": RTperformance };
                 async.resolve(reply);
             }
@@ -50,12 +48,8 @@ app.factory('dataSrv', function ($http, $q, $log, $timeout, $localStorage, confi
 
     function getCurrencyValue(C1, C2) {
         var key = configSrv.getStockInfoApiKey();
-        // var currArr = configSrv.getCurrencyArr();
-        // currencyIndex++;
         var theUrl = "https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=" +
             C1 + "&to_currency=" + C2 + "&apikey=" + key;
-        // var theUrl = "https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=" + 
-        //     currArr[0] + "&to_currency=" + currArr[currencyIndex] + "&apikey=" + key;
 
         var async = $q.defer();
 
@@ -113,12 +107,7 @@ app.factory('dataSrv', function ($http, $q, $log, $timeout, $localStorage, confi
 
         var async = $q.defer();
 
-        // DEBUG:
-        // var time = new Date().getSeconds();
-        // $log.log(time);
-
         $http.get(theUrl).then(function (response) {
-            // $log.log(response);
 
             if (response.data.hasOwnProperty("Time Series (Daily)")) {
                 Ndxinfo = response.data["Time Series (Daily)"];
@@ -246,18 +235,13 @@ app.factory('dataSrv', function ($http, $q, $log, $timeout, $localStorage, confi
             }
         }
         async.resolve(stockList);
-        // }, function (err) {
-        // async.reject(err);
-        // });
 
         return async.promise;
     }
 
     function getStockStats(symbol) {
-        // var key = configSrv.getStockInfoApiKey();
         var theUrl = "https://api.iextrading.com/1.0//stock/" + symbol + "/stats";
         var async = $q.defer();
-        // var retObj = {};
 
         $http.get(theUrl).then(function (response) {
             async.resolve(response);

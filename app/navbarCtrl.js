@@ -16,11 +16,7 @@ app.controller("navbarCtrl", function ($scope, userSrv, portfolioSrv, alertsSrv,
         $scope.alertNum = 0 ;
         if (userSrv.isLoggedIn()) {
             activeUser = userSrv.getActiveUser();
-            // alertsSrv.getNumOfAlertsforUser(activeUser.id).then(function (response) {
-            //     $scope.alertNum = response;
-            // }, function (err) {
-            //     console.log(err);
-            // })
+
             for (var i=0; i<activeUser.portfolio.length; i++)
             {
                 $scope.alertNum +=activeUser.portfolio[i].alertsArr.length;
@@ -38,20 +34,7 @@ app.controller("navbarCtrl", function ($scope, userSrv, portfolioSrv, alertsSrv,
         $scope.userManageAlertsArr.length = 0;
         
         if (activeUser !== null) {
-            // for (var j = 0; j < activeUser.portfolio.length; j++) {
-                // var userAlertsArr = activeUser.portfolio[j]["alertsArr"].slice();
-                //alertsSrv.getAlertsforUser(activeUser["id"]).then(function(response) {
-                // for (var i = 0; i < userAlertsArr.length; i++) {
-                    // alertsSrv.getAlertInfo(userAlertsArr[i]["alertId"]).then(function (response) {
-                    //     for(var i=0; i< response.length; i++)
-                    //     {
-                    //         $scope.userManageAlertsArr.push(response[i]);
-                    //     }
-                    // }, function (err) {
-                    //     console.log("failed to get alert info");
-                    // });
-                // }
-            // }
+
             for (var i=0; i<activeUser.portfolio.length; i++)
             {
                 for(var j=0; j<activeUser.portfolio[i].alertsArr.length; j++)
@@ -59,10 +42,7 @@ app.controller("navbarCtrl", function ($scope, userSrv, portfolioSrv, alertsSrv,
 
                     alertsSrv.getAlertInfo(activeUser.portfolio[i].alertsArr[j]["alertId"])
                     .then(function (response) {
-                        //     for(var i=0; i< response.length; i++)
-                        //     {
-                             $scope.userManageAlertsArr.push(response);
-                        //     }
+                        $scope.userManageAlertsArr.push(response);
                      }, function (err) {
                          console.log("failed to get alert info");
                      });

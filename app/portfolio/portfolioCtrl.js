@@ -220,30 +220,27 @@ app.controller('portfolioCtrl', function ($scope, $location, dataSrv, alertsSrv,
 
     $scope.getAlertsInfo = function (symbol) {
 
-        // for (var i = 0; i < $scope.stockArr.length; i++) {
-        //     if ($scope.stockArr[i].symbol === symbol) {
-        //         for (var j = 0; j < $scope.stockArr[i].alertsArr.length; j++) {
-        var alertsArr = portfolioSrv.getStockAlertsArr(symbol);
-        var stockAlertInfoArr = [];
+    var alertsArr = portfolioSrv.getStockAlertsArr(symbol);
+    var stockAlertInfoArr = [];
 
-        if ($('#' + symbol).hasClass('show')) {
-            $('#' + symbol).collapse('hide');
-            $scope.alertsInfoObj[symbol] = [];
-        }
-        else {
-            for (var j = 0; j < alertsArr.length; j++) {
-                alertsSrv.getAlertInfo(alertsArr[j].alertId)
-                    .then(function (response) {
-                        var alertInfo = response;
-                        if (alertInfo !== null) {
-                            stockAlertInfoArr.push(alertInfo);
-                            $scope.alertsInfoObj[symbol] = stockAlertInfoArr;
-                        }
-                    }, function (err) {
-                        console.log(err);
-                        angular.element(document.querySelector('#' + symbol)).collapse('hide');
-                        $scope.alertsInfoObj[symbol] = [];
-                    });
+    if ($('#' + symbol).hasClass('show')) {
+        $('#' + symbol).collapse('hide');
+        $scope.alertsInfoObj[symbol] = [];
+    }
+    else {
+        for (var j = 0; j < alertsArr.length; j++) {
+            alertsSrv.getAlertInfo(alertsArr[j].alertId)
+                .then(function (response) {
+                    var alertInfo = response;
+                    if (alertInfo !== null) {
+                        stockAlertInfoArr.push(alertInfo);
+                        $scope.alertsInfoObj[symbol] = stockAlertInfoArr;
+                    }
+                }, function (err) {
+                    console.log(err);
+                    angular.element(document.querySelector('#' + symbol)).collapse('hide');
+                    $scope.alertsInfoObj[symbol] = [];
+                });
             }
         }
     }

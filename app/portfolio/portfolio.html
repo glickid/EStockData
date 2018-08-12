@@ -79,8 +79,7 @@
             <p class="mb-0">On opend list - click to add to portfolio </p>
         </div>
 
-        <!-- Modal -->
-        <!-- <div ng-controller="userCtrl" class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" -->
+        <!-- Stock Info Modal -->
         <div class="modal fade" id="stockInfoModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content bg-info">
@@ -246,7 +245,7 @@
             </div>
         </div>
 
-        <!-- Modal -->
+        <!-- Stock Alert Modal -->
         <div class="modal fade" id="stockAlertModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -267,11 +266,6 @@
                             </select>
                             <label for="alert-price">Enter Price to set Alert for</label>
                             <input ng-model="alertPrice" type="number" id="alert-price" class="form-control" required autofocus>
-                            <!-- <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" value="remember-me"> Remember me
-                                </label>
-                            </div> -->
                             <button ng-click="setStockAlert()" class="btn btn-lg btn-primary btn-block" type="button">Set Alert</button>
                         </form>
                         <div id="alert-error" class="alert alert-danger" role="alert" ng-hide='errorMessage===""'>{{errorMessage}}</div>

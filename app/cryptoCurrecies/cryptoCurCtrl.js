@@ -101,9 +101,11 @@ app.controller('cryptoCurCtrl', function ($scope, $timeout, $location, cryptoCur
         });
 
         // chart.render();
-
-        $timeout(function () { //chart.resize(); 
-            chart.render(); console.log("timer") }, 0);
+        // needed to solve problem with chart appearence 
+        $timeout(function () { 
+            //chart.resize(); 
+            chart.render(); 
+        }, 0);
     }
 
 

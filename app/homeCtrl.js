@@ -13,28 +13,17 @@ app.controller('homeCtrl', function ($scope, $location, dataSrv, configSrv, user
         ("00" + d.getMinutes()).slice(-2) + ":" +
         ("00" + d.getSeconds()).slice(-2));
 
-    //getRTPerformance();
     getNDXinfo();
     getCurrencies();
     getGainers();
     getLosers();
     getMostActive();
 
-    // $interval(getCurrencies, 2000);
     $scope.isUserLoggedIn = function() {
         return userSrv.isLoggedIn();
     }
 
     $scope.activerUser = userSrv.getActiveUser();
-
-    // function getRTPerformance() {
-    //     dataSrv.getRTperformance().then(function (reply) {
-    //         $scope.RTPUpdated = reply["updated"];
-    //         $scope.RTPObject = reply["data"];
-    //     }, function (err) {
-    //         console.log(err);
-    //     })
-    // }
 
     function getGainers()
     {

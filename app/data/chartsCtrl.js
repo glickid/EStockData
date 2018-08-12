@@ -52,7 +52,6 @@ app.controller('chartsCtrl', function ($scope, $location, $routeParams, dataSrv,
             }]
         });
 
-        // $.get("/app/data/netflix-stock-price.csv", getDataPointsFromCSV);
         setChartInfoForStockPeriod($scope.Title, period);
 
         function setChartInfoForStockPeriod(stockSymbol, period) {
@@ -63,9 +62,6 @@ app.controller('chartsCtrl', function ($scope, $location, $routeParams, dataSrv,
                     dataPoints.push({
                         x: new Date(
                             response.data[i]["date"]
-                            // .split("-")[0]),
-                            // parseInt(response.data[i]["date"].split("-")[1]),
-                            // parseInt(response.data[i]["date"].split("-")[2])
                         ),
                         y: [
                             parseFloat(response.data[i]["open"]),
@@ -74,8 +70,6 @@ app.controller('chartsCtrl', function ($scope, $location, $routeParams, dataSrv,
                             parseFloat(response.data[i]["close"])
                         ]
                     });
-                    // if (i=== response.data.length-1)
-                        // console.log(dataPoints[dataPoints.length-1]);
                 }
 
                 chart.render();

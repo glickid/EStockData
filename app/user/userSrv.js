@@ -76,7 +76,7 @@ app.factory('userSrv', function ($http, $q) {
         var loginURL = "https://estockdata.herokuapp.com/users/";
 
         $http.post(loginURL, newUserREc).then(function (response) {
-            //activeUser.id = response.data.id;
+          //activeUser.id = response.data.id; - let the user login again
             activeUser = null;
             async.resolve(null);
         }, function (err) {

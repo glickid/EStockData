@@ -57,7 +57,6 @@ app.factory('alertsSrv', function ($http, $q, $log, $interval, dataSrv) {
             async.resolve(alertsArr);
         }
         else {
-            //var loginURL = "app/db.json/users?email=" + email + "&password=" + password;
             var loginURL = "https://estockdata.herokuapp.com/alerts";
 
             $http.get(loginURL).then(function (response) {
@@ -94,8 +93,6 @@ app.factory('alertsSrv', function ($http, $q, $log, $interval, dataSrv) {
 
         if (!found) {
             var alert = new Alert(undefined, userId, alertType, stockSymbol, price);
-
-            //alertsArr.push(alert);
 
             $http.post("https://estockdata.herokuapp.com/alerts", alert)
                 .then(function (success) {

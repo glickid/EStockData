@@ -250,7 +250,6 @@ app.factory('portfolioSrv', function ($http, $q, $log, configSrv, userSrv) {
     }
 
     function getStockAlertsArr(symbol) {
-        //var async = $.defer();
 
         var activerUser = userSrv.getActiveUser();
 
@@ -265,7 +264,6 @@ app.factory('portfolioSrv', function ($http, $q, $log, configSrv, userSrv) {
 
     function logout() {
         stockArr.length = 0;
-        //currentUser = null;
     }
 
     return {
