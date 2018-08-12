@@ -1,4 +1,4 @@
-app.factory('alertsSrv', function ($http, $q, $log, $interval, dataSrv) {
+app.factory('alertsSrv', function ($http, $q, $log, $interval, userSrv, dataSrv) {
 
     function Alert(id, userId, alertType, stockSymbol, price) {
         if (id)
@@ -23,13 +23,13 @@ app.factory('alertsSrv', function ($http, $q, $log, $interval, dataSrv) {
                     switch (obj.alertType) {
                         case "take-profit":
                             if (response["currentPrice"] >= obj.price) {
-                                //todo: sendMailToUser(obj.userId);
+                                sendMailToUser(obj.userId, response.symbol);
                                 obj.triggered = true;
                             }
                             break;
                         case "stop-loss":
                             if (response["currentPrice"] <= obj.price) {
-                                //todo: sendMailToUser(obj.userId);
+                                sendMailToUser(obj.userId, response.symbol);
                                 obj.triggered = true;
                             }
                             break;
@@ -52,6 +52,7 @@ app.factory('alertsSrv', function ($http, $q, $log, $interval, dataSrv) {
 
     function loadAlerts() {
         var async = $q.defer();
+        var activeUser = userSrv.getActiveUser();
 
         if (alertsArr.length > 0) {
             async.resolve(alertsArr);
@@ -63,15 +64,17 @@ app.factory('alertsSrv', function ($http, $q, $log, $interval, dataSrv) {
 
                 for (var i = 0; i < response.data.length; i++) {
 
+                    if (activeUser["id"] === response.data[i]["userId"]) {
                     var alert = new Alert(response.data[i]["id"],
                         response.data[i]["userId"],
                         response.data[i]["alertType"],
                         response.data[i]["stockSymbol"],
                         response.data[i]["price"]);
-                    alertsArr.push(alert);
-                    async.resolve(alertsArr);
-                    break;
+
+                        alertsArr.push(alert);
+                    }
                 }
+                async.resolve(alertsArr);
             }, function (err) {
                 async.reject(err);
             });
@@ -178,6 +181,16 @@ app.factory('alertsSrv', function ($http, $q, $log, $interval, dataSrv) {
         });
 
         return async.promise;
+    }
+
+    function sendMailToUser (userId, stockName) {
+        var activeUser = userSrv.getActiveUser();
+        var templateID = "estockdata_2";
+        var templateParams = { "stockName" : stockName, "userName":activeUser["fname"], "toEmail": activeUser["email"]}
+        //just to be sure
+        if (activeUser.id === userId) {
+            emailjs.send("default_service", templateID, templateParams);
+        }
     }
 
     return {
