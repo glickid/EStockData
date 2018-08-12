@@ -40,6 +40,7 @@ app.controller('cryptoCurCtrl', function ($scope, $timeout, $location, cryptoCur
                 $scope.dataObj = {};
                 return;
            }
+           $scope.noData = false;
            $scope.dataErrorMessage = "";
            $scope.information = response.data["Meta Data"];
 
