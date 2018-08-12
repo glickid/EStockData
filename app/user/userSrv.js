@@ -29,7 +29,11 @@ app.factory('userSrv', function ($http, $q) {
 
         $http.get(loginURL).then(function (response) {
             //we assume ther would be only one user with this email!!
-            if(response.data[0].password === password)
+            if (response.data.length === 0)
+            {
+                async.reject("Invalid user");
+            }
+            else if(response.data[0].password === password)
             {
                 activeUser = response.data[0];
                 async.resolve(activeUser);

@@ -263,6 +263,11 @@ app.factory('portfolioSrv', function ($http, $q, $log, configSrv, userSrv) {
         }
     }
 
+    function logout() {
+        stockArr.length = 0;
+        //currentUser = null;
+    }
+
     return {
         addAlertToStock: addAlertToStock,
         updateStockInPortfolio: updateStockInPortfolio,
@@ -270,6 +275,7 @@ app.factory('portfolioSrv', function ($http, $q, $log, configSrv, userSrv) {
         addStockToPortfolio: addStockToPortfolio,
         removeStockFromPortfolio: removeStockFromPortfolio,
         removeAlertFromStock: removeAlertFromStock,
-        getStockAlertsArr: getStockAlertsArr
+        getStockAlertsArr: getStockAlertsArr,
+        logout : logout
     }
 })
