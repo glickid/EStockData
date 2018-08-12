@@ -200,11 +200,12 @@ span.input-group-addon i {
 
 .portfolio-table > table  td, .portfolio-table > table  th {
     padding: .3rem;
-} */
+} 
 
 .action-icon {
     width: 2px;
-    margin-right: 7px;
+    margin-right: 0.3rem;
+    margin-left: -0.4rem;
 }
 
 .stock-info-item {
