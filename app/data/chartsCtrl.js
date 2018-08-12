@@ -4,9 +4,12 @@ app.controller('chartsCtrl', function ($scope, $location, $routeParams, dataSrv,
     $scope.Title = $routeParams.stockSymbol;
     var period = $routeParams.period;
 
-
     $scope.openStockChart = function(symbol, period) {
         $location.path("/charts/"+ symbol + "/" + period );
+    }
+
+    $scope.goBack = function () {
+        window.history.back()
     }
 
     var activerUser = userSrv.getActiveUser();

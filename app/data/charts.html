@@ -1,5 +1,6 @@
 <div class="container mt-5 mb-5">
     <form class="search-box my-2 position-relative">
+        <a class="d-inline-block mb-2" href="javascript:void(0)" ng-click="goBack()"><i class="far fa-hand-point-left ml-1">Back</i></a>
         <input type="text" class="bg-info form-control search-stock" placeholder="Search Stock" ng-model="input" ng-change="searchStock(input)">
         <div class="search-results list-group w-100">
             <a href="javascript:void(0)" class="list-group-item list-group-item-action" ng-repeat="(key, value) in stockList" ng-click="showChartOfStock(key, value)">{{key}} (Symbol: {{value}})</a>
