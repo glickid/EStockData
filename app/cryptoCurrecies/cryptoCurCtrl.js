@@ -88,13 +88,13 @@ app.controller('cryptoCurCtrl', function ($scope, $timeout, $location, $window, 
             },
             axisY: {
                 title: "Price (in " + market + ")",
-                valueFormatString: "$####"
+                valueFormatString: "####"
             },
             data: [{
                 type: "line",
                 markerSize: 12,
                 xValueFormatString: "DD-MM-YYYY",
-                yValueFormatString: "$###.#",
+                yValueFormatString: "###.#",
                 dataPoints: dataPoints
             }]
         });
