@@ -71,4 +71,9 @@ app.controller("navbarCtrl", function ($scope, userSrv, portfolioSrv, alertsSrv,
             console.log(err);
         });
     }
+
+    $scope.closeNavbar = function()
+    {
+        $('.navbar-toggler').click();
+    }
 });
