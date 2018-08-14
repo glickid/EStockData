@@ -81,6 +81,11 @@ app.controller('homeCtrl', function ($scope, $location, dataSrv, configSrv, user
     {
         dataSrv.getNDX().then(function(reply){
             $scope.NDXinfo = reply;
+            var w = angular.element($window);
+
+            if (w.width() > 1200)
+                $scope.quantity = 6;
+                
         }, function(err){
             console.log(err)
         })

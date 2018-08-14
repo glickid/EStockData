@@ -3,6 +3,10 @@
     box-sizing:  border-box;
 }
 
+.row {
+    height: 100%
+}
+
 #the-nav-bar {
     background-color: rgb(246, 174, 144);
 }
@@ -22,6 +26,7 @@
 }
 
 .home-container {
+    height : 100%;
     background-color: rgb(68,114,196)
 }
 
