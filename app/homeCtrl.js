@@ -1,4 +1,4 @@
-app.controller('homeCtrl', function ($scope, $location, dataSrv, configSrv, userSrv) {
+app.controller('homeCtrl', function ($scope, $location, dataSrv, $window, userSrv) {
     var d = new Date();
     $scope.currencyObj = {};
     $scope.RTPUpdated = "";
@@ -84,7 +84,7 @@ app.controller('homeCtrl', function ($scope, $location, dataSrv, configSrv, user
             var w = angular.element($window);
 
             if (w.width() > 1200)
-                $scope.quantity = 6;
+                $scope.quantity = 5;
                 
         }, function(err){
             console.log(err)
