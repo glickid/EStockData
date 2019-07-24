@@ -123,7 +123,7 @@ app.factory('dataSrv', function ($http, $q, $log, $timeout, $localStorage, confi
     }
 
     function getStockInfo(name, symbol, returnedParam) {
-        var theUrl = "https://api.iextrading.com/1.0/stock/" + symbol + "/chart/1m";
+        var theUrl = "https://cloud.iexapis.com/stable/stock/" + symbol + "/chart/1m?token=pk_c8f2aacb954f451991f9aafd38bfa103";
         var async = $q.defer();
         var retObj = {}
 
@@ -150,7 +150,7 @@ app.factory('dataSrv', function ($http, $q, $log, $timeout, $localStorage, confi
     }
 
     function getStockSymboles() {
-        var theUrl = "https://api.iextrading.com/1.0/ref-data/symbols";
+        var theUrl = "https://cloud.iexapis.com/stable/ref-data/symbols?token=pk_c8f2aacb954f451991f9aafd38bfa103";
         var async = $q.defer();
 
         $http.get(theUrl).then(function (response) {
@@ -169,7 +169,7 @@ app.factory('dataSrv', function ($http, $q, $log, $timeout, $localStorage, confi
     }
 
     function getGainersList() {
-        var theUrl = "https://api.iextrading.com/1.0/stock/market/list/gainers";
+        var theUrl = "https://cloud.iexapis.com/stable/stock/market/list/gainers?token=pk_c8f2aacb954f451991f9aafd38bfa103";
         var async = $q.defer();
 
         $http.get(theUrl).then(function (response) {
@@ -185,7 +185,7 @@ app.factory('dataSrv', function ($http, $q, $log, $timeout, $localStorage, confi
     }
 
     function getLosersList() {
-        var theUrl = "https://api.iextrading.com/1.0/stock/market/list/losers";
+        var theUrl = "https://cloud.iexapis.com/stable/stock/market/list/losers?token=pk_c8f2aacb954f451991f9aafd38bfa103";
         var async = $q.defer();
 
         $http.get(theUrl).then(function (response) {
@@ -201,7 +201,8 @@ app.factory('dataSrv', function ($http, $q, $log, $timeout, $localStorage, confi
     }
 
     function getMostActive() {
-        var theUrl = "https://api.iextrading.com/1.0/stock/market/list/mostactive";
+        var theUrl = "https://cloud.iexapis.com/stable/stock/market/collection/sector"
+          + "?collectionName=mostactive&token=pk_c8f2aacb954f451991f9aafd38bfa103";
 
         var async = $q.defer();
         mostActiveArr.length = 0;
@@ -240,7 +241,7 @@ app.factory('dataSrv', function ($http, $q, $log, $timeout, $localStorage, confi
     }
 
     function getStockStats(symbol) {
-        var theUrl = "https://api.iextrading.com/1.0//stock/" + symbol + "/stats";
+        var theUrl = "https://cloud.iexapis.com/stable/stock/" + symbol + "/stats?token=pk_c8f2aacb954f451991f9aafd38bfa103";
         var async = $q.defer();
 
         $http.get(theUrl).then(function (response) {
@@ -255,7 +256,7 @@ app.factory('dataSrv', function ($http, $q, $log, $timeout, $localStorage, confi
     }
 
     function getStockChartInfo(symbol, timePeriod) {
-        var theUrl = "https://api.iextrading.com/1.0/stock/" + symbol + "/chart/" + timePeriod;
+        var theUrl = "https://cloud.iexapis.com/stable/stock/" + symbol + "/chart/" + timePeriod + "?token=pk_c8f2aacb954f451991f9aafd38bfa103";
         var async = $q.defer();
         
         $http.get(theUrl).then(function (response) {
